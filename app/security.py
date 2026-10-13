@@ -33,10 +33,10 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 # ── OTP ──────────────────────────────────────────────────────────────────────
 
-def generate_otp() -> str:
-    """Cryptographically secure N-digit numeric OTP."""
+def generate_otp(length: int | None = None) -> str:
+    """Cryptographically secure N-digit numeric OTP (OTP_LENGTH digits unless given)."""
     digits = string.digits
-    return "".join(secrets.choice(digits) for _ in range(settings.OTP_LENGTH))
+    return "".join(secrets.choice(digits) for _ in range(length or settings.OTP_LENGTH))
 
 
 def hash_otp(otp: str) -> str:

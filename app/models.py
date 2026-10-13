@@ -68,7 +68,7 @@ class OTPCode(Base):
     id           = Column(String, primary_key=True, default=new_uuid)
     investor_id  = Column(String, ForeignKey("investors.id", ondelete="CASCADE"), nullable=False)
     code_hash    = Column(String(200), nullable=False)  # bcrypt hash of the 6-digit code
-    purpose      = Column(String(40), default="login")  # login | password_reset
+    purpose      = Column(String(40), default="login")  # login | password_mfa | password_reset
     used         = Column(Boolean, default=False)
     expires_at   = Column(DateTime(timezone=True), nullable=False)
     created_at   = Column(DateTime(timezone=True), server_default=func.now())

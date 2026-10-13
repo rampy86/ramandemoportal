@@ -144,6 +144,16 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .auth-hint .link:hover,.link:hover{text-decoration:underline}
 .demo-creds{font-size:0.75rem;color:var(--muted);text-align:center;margin-top:0.9rem;padding-top:0.9rem;border-top:1px dashed var(--line)}
 .demo-creds code{color:var(--ink-2);font-family:inherit;font-weight:600}
+.demo-creds code.mfa{color:var(--brand-600);letter-spacing:0.12em}
+.auth-note{font-size:0.75rem;color:var(--muted);margin-top:0.8rem;line-height:1.5}
+.lbl-note{font-weight:500;color:var(--muted)}
+.mfa-wrap{display:flex;gap:8px}
+.mfa-wrap input{flex:1;min-width:0;letter-spacing:0.3em;font-weight:600}
+.mfa-wrap input:placeholder-shown{letter-spacing:normal;font-weight:400}
+.mfa-wrap .btn{height:44px;flex-shrink:0}
+.mfa-help{font-size:0.75rem;color:var(--muted);margin-top:6px;line-height:1.45}
+.mfa-help strong{color:var(--brand-600)}
+.trial-badge{display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--brand-600);background:var(--brand-50);border:1px solid var(--brand-100);border-radius:20px;padding:1px 8px;margin-bottom:6px}
 
 .otp-row{display:flex;gap:10px;justify-content:center;margin:1.2rem 0}
 .otp-row.shake{animation:shake 0.4s}
@@ -876,22 +886,31 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
           <button type="button" class="pass-toggle" onclick="togglePass(this)">SHOW</button>
         </div>
       </div>
+      <div class="form-group">
+        <label for="loginMfa">MFA code <span class="lbl-note">(via email)</span></label>
+        <div class="mfa-wrap">
+          <input type="text" id="loginMfa" inputmode="numeric" maxlength="4" placeholder="4-digit code" autocomplete="one-time-code" aria-describedby="mfaHelp">
+          <button type="button" class="btn" id="mfaSendBtn" onclick="sendPasswordMfa()">Send code</button>
+        </div>
+        <p class="mfa-help" id="mfaHelp">A new 4-digit code is emailed each time you sign in.*</p>
+      </div>
       <button class="auth-btn" type="submit" id="loginBtn">Sign in</button>
       <p class="auth-hint">Forgot your password? <button type="button" class="link" onclick="switchToCode()">Sign in with an email code</button></p>
-      <p class="demo-creds" id="demoCreds">Demo login: <code>j.whitfield@meridian.com</code> / <code>ChangeMe123!</code></p>
+      <p class="auth-note">* The code email may land in your spam or junk folder — please check there if it hasn't arrived within a minute.</p>
+      <p class="demo-creds" id="demoCreds"></p>
     </form>
 
     <!-- STEP 1b: EMAIL ONE-TIME CODE -->
     <form class="auth-step" id="stepOtpEmail" novalidate onsubmit="event.preventDefault();requestCode()">
-      <p class="auth-lead">Enter your email and we'll send you a <strong>6-digit sign-in code</strong> — no password needed. New here? Your account is created automatically.</p>
+      <p class="auth-lead"><span class="trial-badge">Free trial</span><br>Get instant access to a <strong>trial account with limited features</strong>. Enter your work email and we'll send you a <strong>6-digit sign-in code</strong>* — no password needed. Your trial account is created automatically the first time you sign in.</p>
       <div class="auth-error" id="otpReqError" role="alert"></div>
       <div class="form-group">
         <label for="otpEmail">Work email</label>
         <input type="email" id="otpEmail" placeholder="you@company.com" autocomplete="email" required>
       </div>
-      <button class="auth-btn" type="submit" id="sendCodeBtn">Send code</button>
+      <button class="auth-btn" type="submit" id="sendCodeBtn">Send my code</button>
+      <p class="auth-note">* The code email may land in your spam or junk folder — please check there if it hasn't arrived within a minute.</p>
       <p class="auth-hint">Trouble signing in? <button type="button" class="link" onclick="openModal('irModal')">Contact support</button></p>
-      <p class="demo-creds" id="otpModeNote"></p>
     </form>
 
     <!-- STEP 2: MFA -->
@@ -1699,13 +1718,7 @@ function setMode(mode, base = '', health = null, warning = null) {
   if (mode === 'live') setPill('live', 'Live API · secure email verification');
   else setPill('demo', 'Demo mode · sample data, no real emails');
   $('demoTag').hidden = mode !== 'demo';
-  $('demoCreds').innerHTML = mode === 'demo'
-    ? 'Demo mode: any email and password will work.'
-    : 'Demo login: <code>j.whitfield@meridian.com</code> / <code>ChangeMe123!</code>';
-  $('otpModeNote').textContent = mode === 'demo'
-    ? 'Demo mode can\'t send emails — your code will be shown on screen.'
-    : (health && health.email_provider === 'console' ? 'Email sending isn\'t set up on this server yet — your code will be shown on screen.' : '');
-  $('otpModeNote').hidden = !$('otpModeNote').textContent;
+  renderDemoCreds();
   $('connInfo').textContent = mode === 'live'
     ? `Live API ${base || location.origin}${health && health.email_provider ? ' · email: ' + health.email_provider : ''}`
     : 'Demo mode — data stays in this browser tab';
@@ -1781,21 +1794,75 @@ function switchToCode() {
   setAuthMethod('otp');
 }
 
-async function passwordLogin() {
+/* Password sign-in = email + password + a fresh 4-digit MFA code sent by email.
+   POST /api/auth/password-mfa emails the code; POST /api/auth/login-password checks all three. */
+const pwMfa = { code: null, email: '', expires: 0, cooldown: null };
+
+function renderDemoCreds() {
+  const code = pwMfa.code && Date.now() < pwMfa.expires ? `<code class="mfa">${esc(pwMfa.code)}</code>` : 'tap “Send code”';
+  $('demoCreds').innerHTML = (state.mode === 'demo'
+    ? 'Demo mode: any email and password will work.'
+    : 'Demo login: <code>j.whitfield@meridian.com</code> / <code>ChangeMe123!</code>') + `<br>MFA code: ${code}`;
+}
+
+function startMfaCooldown(sec) {
+  const b = $('mfaSendBtn'); clearInterval(pwMfa.cooldown);
+  const tick = () => { b.disabled = sec > 0; b.textContent = sec > 0 ? `Resend ${sec}s` : 'Resend'; sec--; if (sec < -1) clearInterval(pwMfa.cooldown); };
+  tick(); pwMfa.cooldown = setInterval(tick, 1000);
+}
+
+async function sendPasswordMfa() {
   showError('loginError', '');
   const email = $('loginEmail').value.trim().toLowerCase();
   const password = $('loginPass').value;
   if (!isEmail(email)) return showError('loginError', 'Please enter a valid email address.');
+  if (!password) return showError('loginError', 'Please enter your password first.');
+  const btn = $('mfaSendBtn');
+  setBusy(btn, true, 'Sending…');
+  try {
+    let shown = null;
+    if (state.mode === 'demo') {
+      await sleep(400);
+      shown = String(Math.floor(1000 + Math.random() * 9000));
+      $('mfaHelp').innerHTML = 'Demo mode doesn\'t send email — your new 4-digit code is shown below.';
+    } else {
+      const d = await api('/api/auth/password-mfa', { method: 'POST', body: { email, password }, auth: false });
+      shown = d.demo_otp || null;
+      $('mfaHelp').innerHTML = d.delivery === 'email'
+        ? `We've emailed a 4-digit code to <strong>${esc(d.email_masked)}</strong> · valid 10 minutes.*`
+        : 'Your new 4-digit code is shown below · valid 10 minutes.';
+    }
+    Object.assign(pwMfa, { code: shown, email, expires: Date.now() + 10 * 60 * 1000 });
+    $('loginMfa').value = ''; $('loginMfa').focus();
+    renderDemoCreds();
+    setBusy(btn, false); startMfaCooldown(30);
+  } catch (e) {
+    setBusy(btn, false);
+    showError('loginError', e.message);
+  }
+}
+$('loginMfa').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4); });
+
+async function passwordLogin() {
+  showError('loginError', '');
+  const email = $('loginEmail').value.trim().toLowerCase();
+  const password = $('loginPass').value;
+  const mfa = $('loginMfa').value.trim();
+  if (!isEmail(email)) return showError('loginError', 'Please enter a valid email address.');
   if (!password) return showError('loginError', 'Please enter your password.');
+  if (!pwMfa.expires || pwMfa.email !== email) return sendPasswordMfa();   // first press emails the code
+  if (!/^\d{4}$/.test(mfa)) { $('loginMfa').focus(); return showError('loginError', 'Enter the 4-digit MFA code we emailed you.'); }
   const btn = $('loginBtn');
   setBusy(btn, true, 'Signing in…');
   try {
     state.email = email;
     if (state.mode === 'demo') {
       await sleep(450);
+      if (Date.now() > pwMfa.expires) throw new Error('This MFA code has expired. Tap Resend for a new one.');
+      if (mfa !== pwMfa.code) throw new Error('Incorrect MFA code. Check the latest code and try again.');
       state.token = 'demo'; state.user = demoUser(email);
     } else {
-      const d = await api('/api/auth/login-password', { method: 'POST', body: { email, password }, auth: false });
+      const d = await api('/api/auth/login-password', { method: 'POST', body: { email, password, mfa_code: mfa }, auth: false });
       state.token = d.access_token; state.refresh = d.refresh_token;
       state.user = await api('/api/auth/me');
     }
@@ -1823,18 +1890,18 @@ async function requestCode() {
 
 async function sendCode(email, isResend) {
   state.email = email;
-  const label = isResend ? 'new code' : 'your code';
+  const label = isResend ? 'Your new code' : 'Your code';
   if (state.mode === 'demo') {
     await sleep(450);
     state.demoCode = String(Math.floor(100000 + Math.random() * 900000));
-    $('mfaSubText').innerHTML = `Demo mode doesn't send real emails. In the live portal the code goes to <strong>${esc(maskEmail(email))}</strong>.`;
-    $('mfaCodeHint').innerHTML = `Demo — ${label}: <strong>${state.demoCode}</strong>`;
+    $('mfaSubText').innerHTML = `Use the 6-digit code below to sign in to your trial account as <strong>${esc(maskEmail(email))}</strong>.`;
+    $('mfaCodeHint').innerHTML = `${label}: <strong>${state.demoCode}</strong>`;
   } else {
     const d = await api('/api/auth/request-otp', { method: 'POST', body: { email }, auth: false });
     $('mfaSubText').innerHTML = d.delivery === 'email'
-      ? `We've emailed a 6-digit code to <strong>${esc(d.email_masked)}</strong>. Check your inbox (and spam folder).`
-      : `Email sending isn't set up on this server yet, so your code is shown below.`;
-    $('mfaCodeHint').innerHTML = d.demo_otp ? `Demo — ${label}: <strong>${esc(d.demo_otp)}</strong>` : '';
+      ? `We've emailed a 6-digit code to <strong>${esc(d.email_masked)}</strong>. Not in your inbox? Please check your spam or junk folder.`
+      : `Use the 6-digit code below to sign in as <strong>${esc(d.email_masked)}</strong>.`;
+    $('mfaCodeHint').innerHTML = d.demo_otp ? `${label}: <strong>${esc(d.demo_otp)}</strong>` : '';
   }
   state.otpExpires = Date.now() + 10 * 60 * 1000;
   startOtpTimer();
@@ -1842,6 +1909,9 @@ async function sendCode(email, isResend) {
 
 function finishLogin() {
   state.password = ''; state.demoCode = null; clearInterval(otpTimer);
+  Object.assign(pwMfa, { code: null, email: '', expires: 0 }); $('loginMfa').value = '';
+  clearInterval(pwMfa.cooldown); $('mfaSendBtn').disabled = false; $('mfaSendBtn').textContent = 'Send code';
+  $('mfaHelp').textContent = 'A new 4-digit code is emailed each time you sign in.*'; renderDemoCreds();
   $('newPass').value = ''; $('newPass2').value = '';
   saveSession();
   enterApp(true);

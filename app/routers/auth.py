@@ -33,7 +33,7 @@ from app.database import get_db
 from app.email_service import send_mfa_email
 from app.models import AuditLog, Investor, InvestorStatus, OTPCode
 from app.schemas import (
-    LoginRequest, MFARequest, MFASentResponse, OTPRequest, SetPasswordRequest,
+    LoginRequest, MFARequest, MFASentResponse, OTPRequest, PasswordLoginRequest, SetPasswordRequest,
     RefreshRequest, TokenResponse, InvestorProfile,
 )
 from app.security import (
@@ -46,6 +46,7 @@ bearer = HTTPBearer()
 logger = logging.getLogger(__name__)
 
 OTP_RESEND_SECONDS = 30
+PASSWORD_MFA_LENGTH = 4   # digits in the code emailed for password sign-in
 
 
 def _mask_email(email: str) -> str:
@@ -114,14 +115,15 @@ async def _new_investor_code(db: AsyncSession) -> str:
     return f"MCP-LP-{secrets.token_hex(3).upper()}"
 
 
-async def _issue_otp(db: AsyncSession, investor: Investor, request: Request) -> MFASentResponse:
-    """Create, store (hashed) and email a login code. Shared by /login and /request-otp."""
+async def _issue_otp(db: AsyncSession, investor: Investor, request: Request,
+                     purpose: str = "login", length: int | None = None) -> MFASentResponse:
+    """Create, store (hashed) and email a sign-in code. Shared by /login, /request-otp and /password-mfa."""
     # Throttle: one code per OTP_RESEND_SECONDS per investor
     recent_cutoff = otp_expiry() - timedelta(seconds=OTP_RESEND_SECONDS)
     recent = (await db.execute(
         select(OTPCode).where(
             OTPCode.investor_id == investor.id,
-            OTPCode.purpose == "login",
+            OTPCode.purpose == purpose,
             OTPCode.expires_at > recent_cutoff,
         ).limit(1)
     )).scalar_one_or_none()
@@ -129,15 +131,15 @@ async def _issue_otp(db: AsyncSession, investor: Investor, request: Request) -> 
         raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                             detail=f"A code was just sent. Please wait {OTP_RESEND_SECONDS} seconds before requesting another.")
 
-    otp = generate_otp()
+    otp = generate_otp(length)
     db.add(OTPCode(
         investor_id=investor.id,
         code_hash=hash_otp(otp),
-        purpose="login",
+        purpose=purpose,
         expires_at=otp_expiry(),
         ip_address=_client_ip(request),
     ))
-    await _log(db, investor.id, "otp_sent", None, request)
+    await _log(db, investor.id, "otp_sent", f"purpose={purpose}", request)
 
     # Send email in a worker thread so the event loop isn't blocked
     sent = await run_in_threadpool(send_mfa_email, investor.email, investor.full_name, otp)
@@ -166,14 +168,23 @@ async def _password_ok_or_401(db: AsyncSession, investor: Investor | None, body:
     return investor
 
 
-# ── Option A: email + password → tokens ──────────────────────────────────────
+# ── Option A: email + password + 4-digit emailed MFA code → tokens ───────────
 
-@router.post("/login-password", response_model=TokenResponse)
-async def login_password(body: LoginRequest, request: Request, db: AsyncSession = Depends(get_db)):
+@router.post("/password-mfa", response_model=MFASentResponse)
+async def password_mfa(body: LoginRequest, request: Request, db: AsyncSession = Depends(get_db)):
+    """Check the password, then email a fresh 4-digit MFA code for /login-password."""
     investor = await _password_ok_or_401(db, await _get_investor(db, body.email), body, request)
     _check_usable(investor)
+    return await _issue_otp(db, investor, request, purpose="password_mfa", length=PASSWORD_MFA_LENGTH)
+
+
+@router.post("/login-password", response_model=TokenResponse)
+async def login_password(body: PasswordLoginRequest, request: Request, db: AsyncSession = Depends(get_db)):
+    investor = await _password_ok_or_401(db, await _get_investor(db, body.email), body, request)
+    _check_usable(investor)
+    await _consume_otp(db, investor, body.mfa_code, "password_mfa", request)
     investor.last_login_at = datetime.now(timezone.utc)
-    await _log(db, investor.id, "login_success", "method=password", request)
+    await _log(db, investor.id, "login_success", "method=password+mfa", request)
     return _tokens(investor)
 
 
@@ -227,6 +238,22 @@ async def verify_mfa(
     if not investor:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid request.")
 
+    await _consume_otp(db, investor, body.otp_code, "login", request)
+    investor.last_login_at = datetime.now(timezone.utc)
+    await _log(db, investor.id, "login_success", "method=email_code", request)
+
+    access_token  = create_access_token(investor.id, investor.email)
+    refresh_token = create_refresh_token(investor.id)
+
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+    )
+
+
+async def _consume_otp(db: AsyncSession, investor: Investor, code: str, purpose: str, request: Request) -> None:
+    """Check a code against the latest unused one for this purpose; count failures and lock out."""
     locked_until = _aware(investor.otp_locked_until)
     if locked_until and locked_until > datetime.now(timezone.utc):
         raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS,
@@ -237,7 +264,7 @@ async def verify_mfa(
         select(OTPCode)
         .where(
             OTPCode.investor_id == investor.id,
-            OTPCode.purpose == "login",
+            OTPCode.purpose == purpose,
             OTPCode.used == False,          # noqa: E712
             OTPCode.expires_at > datetime.now(timezone.utc),
         )
@@ -246,7 +273,7 @@ async def verify_mfa(
     )
     otp_record = otp_result.scalar_one_or_none()
 
-    if not otp_record or not verify_otp(body.otp_code, otp_record.code_hash):
+    if not otp_record or not verify_otp(code, otp_record.code_hash):
         # Increment failed attempts
         investor.failed_otp_attempts = (investor.failed_otp_attempts or 0) + 1
         locked = investor.failed_otp_attempts >= settings.MAX_OTP_ATTEMPTS
@@ -269,17 +296,6 @@ async def verify_mfa(
     otp_record.used = True
     investor.failed_otp_attempts = 0
     investor.otp_locked_until = None
-    investor.last_login_at = datetime.now(timezone.utc)
-    await _log(db, investor.id, "login_success", "method=email_code", request)
-
-    access_token  = create_access_token(investor.id, investor.email)
-    refresh_token = create_refresh_token(investor.id)
-
-    return TokenResponse(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-    )
 
 
 # ── Refresh token ─────────────────────────────────────────────────────────────
