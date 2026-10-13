@@ -303,21 +303,21 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 .chart-box.lg{height:260px}
 
 /* DASHBOARD */
-.dash{display:flex;flex-direction:column;gap:12px;width:100%}
+.dash{display:flex;flex-direction:column;gap:16px;width:100%}
 .dash-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.dash-top h2{font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;line-height:1.25}
+.dash-top h2{font-size:1.15rem;font-weight:700;letter-spacing:-0.02em;line-height:1.25}
 .dash-top p{font-size:0.8rem;color:var(--muted);margin-top:1px}
 .dash-actions{display:flex;gap:6px}
 .icon-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
 .icon-btn.primary:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:0.75rem 0.85rem;display:flex;gap:10px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;min-width:0}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:0.7rem 0.9rem;display:flex;gap:10px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;min-width:0}
 .kpi:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-1px)}
-.kpi .metric-icon{width:34px;height:34px;border-radius:9px}
+.kpi .metric-icon{width:32px;height:32px;border-radius:9px}
 .kpi .metric-icon svg.i{width:17px;height:17px}
 .kpi-body{min-width:0;flex:1}
-.kpi-label{font-size:0.72rem;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:12px}
-.kpi-val{font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2}
+.kpi-label{font-size:0.7rem;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-val{font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2}
 .kpi-sub{font-size:0.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kpi-sub b{color:var(--brand-600);font-weight:600}
 .kpi-sub b.red{color:var(--rose)}
@@ -325,16 +325,18 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 .kpi:hover .go{color:var(--brand)}
 .metric-icon.rose{background:#FDECEF;color:var(--rose)}
 .metric-icon.green{background:#E8F7EE;color:var(--green)}
-.dash-row{display:grid;gap:12px;min-height:0}
-.dash-row.r1{grid-template-columns:1.05fr 1.25fr 1fr}
-.dash-row.r2{grid-template-columns:2fr 1fr}
-.dash .card{display:flex;flex-direction:column;min-height:0;padding:0.95rem 1.1rem}
-.dash .card-title{margin-bottom:0.55rem}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(240px,1fr);gap:16px}
+.dash .card{display:flex;flex-direction:column;min-height:0;padding:1rem 1.2rem}
+.dash .card-title{font-size:0.88rem;margin-bottom:0.7rem}
+.dash .card-title small{font-size:0.74rem;font-weight:400;color:var(--muted);margin-left:6px}
+.dash .feed-logo{width:30px;height:30px;font-size:0.6rem;border-radius:7px}
+.dash .feed-title{font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dash .feed-meta{margin-top:2px;font-size:0.72rem}
 .scroll-y{flex:1;min-height:0;overflow-y:auto;margin-right:-6px;padding-right:6px}
 .scroll-y::-webkit-scrollbar{width:6px}
 .scroll-y::-webkit-scrollbar-thumb{background:#D5DCE5;border-radius:3px}
-.dash .feed-item{padding:8px 0}
-.dash .chart-box{flex:1;min-height:150px;height:auto}
+.dash .feed-item{padding:8px 0;align-items:center}
+.dash .chart-box{flex:1;min-height:160px;height:auto}
 .card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;margin-top:8px;border-top:1px solid var(--line-2);font-size:0.76rem;color:var(--muted)}
 .card-foot .link{font-size:0.78rem}
 
@@ -363,10 +365,13 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 
 /* Smart summary actions */
 .ai-acts{list-style:none;display:flex;flex-direction:column;gap:4px}
-.ai-acts button{width:100%;display:flex;gap:9px;align-items:flex-start;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:6px 8px;font-family:inherit;font-size:0.8rem;line-height:1.45;color:var(--ink-2);cursor:pointer;transition:all .15s}
+.ai-acts button{width:100%;display:flex;gap:10px;align-items:center;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:8px 8px;font-family:inherit;font-size:0.8rem;line-height:1.45;color:var(--ink-2);cursor:pointer;transition:all .15s}
 .ai-acts button:hover{background:#fff;border-color:var(--brand-100);box-shadow:var(--shadow-sm)}
 .ai-acts button b{color:var(--ink)}
-.ai-acts .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);margin-top:7px;flex-shrink:0}
+.ai-acts .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0}
+.ai-acts .chev{color:#B6C1CE;flex-shrink:0;width:15px;height:15px;transition:color .15s,transform .15s}
+.ai-acts button:hover .chev{color:var(--brand);transform:translateX(2px)}
+.ai-acts li+li{border-top:1px solid rgba(14,140,127,0.08)}
 .ai-acts .txt{flex:1;min-width:0}
 .ai-acts .act{display:block;font-size:0.7rem;font-weight:600;color:var(--brand-600);margin-top:2px;opacity:.7;transition:opacity .15s}
 .ai-acts button:hover .act{opacity:1}
@@ -450,11 +455,11 @@ body.on-dash .app-footer{padding:9px 24px}
 @media(min-width:961px) and (min-height:640px){
   body.on-dash .content-inner{padding:14px 24px;display:flex;flex-direction:column;min-height:0}
   body.on-dash #page-dashboard.active{flex:1;min-height:0;display:flex}
-  .dash-row{flex:1 1 0;min-height:190px}
+  .dash-grid{flex:1;min-height:380px;grid-auto-rows:1fr}
 }
 @media(max-width:1280px){ .kpi-row{grid-template-columns:repeat(3,1fr)} }
 @media(max-width:960px){
-  .dash-row.r1,.dash-row.r2{grid-template-columns:1fr}
+  .dash-grid{grid-template-columns:1fr;grid-auto-rows:auto}
   .scroll-y{max-height:360px}
   .dash .chart-box{height:230px;flex:none}
   .ex-grid{grid-template-columns:1fr}
@@ -598,8 +603,15 @@ body.on-dash .app-footer{padding:9px 24px}
 .player .wave{height:44px;flex:1;cursor:pointer}
 .player-time{display:flex;justify-content:space-between;font-size:0.74rem;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
 .player-ctrls{display:flex;gap:6px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.caption{background:#0F1B2D;color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:1rem;min-height:92px;opacity:.85;transition:opacity .2s}
+.caption.on{opacity:1}
+.cap-hdr{display:flex;gap:8px;align-items:baseline;margin-bottom:6px;font-size:0.74rem}
+.cap-hdr b{color:var(--mint);font-weight:600}
+.cap-hdr span{color:rgba(255,255,255,0.55)}
+.cap-hdr .cap-n{margin-left:auto}
+.caption p{font-size:0.92rem;line-height:1.55;color:rgba(255,255,255,0.92)}
 .hl-list{display:grid;gap:8px}
-.hl{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;background:var(--surface);transition:border-color 0.15s}
+.hl{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
 .hl:hover,.hl.now{border-color:var(--brand);background:#F3FBFA}
 .hl time{font-size:0.74rem;font-weight:600;color:var(--brand-600);font-variant-numeric:tabular-nums;min-width:40px}
 .hl p{font-size:0.82rem;color:var(--ink-2);line-height:1.5}
@@ -1030,7 +1042,7 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
         <div class="dash-top">
           <div>
             <h2 id="greeting">Good morning, James.</h2>
-            <p>Here's what moved across your coverage · as of <span id="asOf">Oct 13, 2026</span></p>
+            <p>Your coverage at a glance · <span id="asOf">Oct 13, 2026</span></p>
           </div>
           <div class="dash-actions">
             <button class="icon-btn" title="Export dashboard as PDF" aria-label="Export PDF" onclick="printReport('summary','Q3 2026')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
@@ -1040,31 +1052,22 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
 
         <div class="kpi-row" id="kpiRow"></div>
 
-        <div class="dash-row r1">
+        <div class="dash-grid">
           <div class="card ue-card">
-            <div class="card-title">Upcoming earnings calls <button class="link" onclick="setCallFilter('all');navTo('earnings')">Full calendar →</button></div>
+            <div class="card-title">Upcoming earnings calls <button class="link" onclick="setCallFilter('all');navTo('earnings')">All calls →</button></div>
             <div class="scroll-y" id="upcomingList"></div>
           </div>
-          <div class="card">
-            <div class="card-title">M&amp;A deal pipeline by stage <small>Click a bar to drill in</small></div>
-            <div class="chart-box"><canvas id="dealStageChart" aria-label="Deal value by stage"></canvas></div>
-            <div class="card-foot"><span id="pipeTotal"></span><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Open deal tracker →</button></div>
-          </div>
           <div class="card ai-card">
-            <div class="card-title">Smart summary <span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI generated</span></div>
+            <div class="card-title">Smart summary <span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI</span></div>
             <ul class="ai-acts scroll-y" id="aiList"></ul>
           </div>
-        </div>
-
-        <div class="dash-row r2">
           <div class="card">
-            <div class="card-title">Latest from your watchlist <button class="btn btn-sm" onclick="openWatchlist()"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Manage watchlist</button></div>
-            <div class="wl-chips" id="wlChips"></div>
-            <div class="scroll-y" id="feedList"></div>
+            <div class="card-title"><span>M&amp;A pipeline <small id="pipeTotal"></small></span><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Deal tracker →</button></div>
+            <div class="chart-box"><canvas id="dealStageChart" aria-label="Deal value by stage — click a bar to open those deals"></canvas></div>
           </div>
           <div class="card">
-            <div class="card-title">Latest expert interviews <button class="link" onclick="navTo('experts')">View all →</button></div>
-            <div class="scroll-y" id="dashExperts"></div>
+            <div class="card-title"><span>Your watchlist <small id="wlSummary"></small></span><button class="link" onclick="openWatchlist()">Manage</button></div>
+            <div class="scroll-y" id="feedList"></div>
           </div>
         </div>
       </div>
@@ -1105,7 +1108,7 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
     <!-- ─── EARNINGS CALLS ─── -->
     <section class="page" id="page-earnings">
       <div class="page-hdr">
-        <div class="page-hdr-left"><h2>Earnings Call Recordings</h2><p>Live and recorded calls with AI highlights, sentiment and key topics</p></div>
+        <div class="page-hdr-left"><h2>Earnings Call Recordings</h2><p>Press play for an audio sample of any recorded or live call, with captions, AI highlights and sentiment</p></div>
         <div class="page-hdr-right">
           <div class="search-bar">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1455,13 +1458,14 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
       </div>
       <div class="player-time"><span id="plNow">0:00</span><span id="plDur">0:00</span></div>
       <div class="player-ctrls">
-        <button class="btn btn-sm" onclick="plSkip(-15)">−15s</button>
-        <button class="btn btn-sm" onclick="plSkip(15)">+15s</button>
-        <button class="btn btn-sm" id="plSpeed" onclick="plCycleSpeed()">1×</button>
+        <button class="btn btn-sm" onclick="plSkip(-1)" aria-label="Previous speaker">‹ Prev</button>
+        <button class="btn btn-sm" onclick="plSkip(1)" aria-label="Next speaker">Next ›</button>
+        <button class="btn btn-sm" id="plSpeed" onclick="plCycleSpeed()" aria-label="Playback speed">1×</button>
         <span style="flex:1"></span>
-        <span class="metric-period">Sample recording · simulated playback</span>
+        <span class="metric-period" id="plNote"></span>
       </div>
     </div>
+    <div class="caption" id="plCaption" aria-live="polite"></div>
     <div class="stat-row" id="plStats"></div>
     <h4>AI highlights</h4>
     <div class="hl-list" id="plHighlights"></div>
@@ -2526,15 +2530,15 @@ function renderKpis() {
   const read = store.get('read') || [], unread = ACTIVITY.filter(a => !read.includes(a.id)).length;
   const fundN = state.docs.filter(d => docSection(d) === 'fund').length;
   const cards = [
-    ['earnings', 'violet', SVG.mic, 'Earnings calls', live + up, live ? `<b class="red">● ${live} live now</b> · ${up} upcoming` : `${up} upcoming`],
-    ['experts', 'green', SVG.users, 'Expert interviews', EXPERTS.length, `<b>${EXPERTS.filter(x => x.date >= '2026-10-01').length} new</b> this month`],
-    ['research', 'amber', SVG.book, 'Research reports', RESEARCH.length, `<b>${RESEARCH.filter(r => r.date >= '2026-10-01').length} new</b> since Oct 1`],
-    ['deals', '', SVG.pulse, 'Tracked M&A deals', deals.length, `<b>${bn(dealVal)}</b> in pipeline`],
-    ['docs', 'blue', SVG.file, 'Fund & investor docs', state.docs.length, `<b>${fundN}</b> fund · <b>${state.docs.length - fundN}</b> investor`],
-    ['alerts', 'rose', SVG.bell, 'Watchlist alerts', unread, unread ? `<b class="red">${unread} unread</b>` : 'All caught up'],
+    ['earnings', 'violet', SVG.mic, 'Earnings calls', live + up, live ? `<b class="red">● ${live} live</b> · ${up} soon` : `${up} upcoming`],
+    ['experts', 'green', SVG.users, 'Expert interviews', EXPERTS.length, `<b>${EXPERTS.filter(x => x.date >= '2026-10-01').length} new</b>`],
+    ['research', 'amber', SVG.book, 'Research', RESEARCH.length, `<b>${RESEARCH.filter(r => r.date >= '2026-10-01').length} new</b>`],
+    ['deals', '', SVG.pulse, 'M&A deals', deals.length, `<b>${bn(dealVal)}</b>`],
+    ['docs', 'blue', SVG.file, 'Documents', state.docs.length, `${fundN} fund · ${state.docs.length - fundN} investor`],
+    ['alerts', 'rose', SVG.bell, 'Alerts', unread, unread ? `<b class="red">${unread} unread</b>` : 'All read'],
   ];
   $('kpiRow').innerHTML = cards.map(([k, c, ic, l, v, s]) => `<button class="kpi" data-kpi="${k}" aria-label="${esc(l)}"><div class="metric-icon ${c}">${ic}</div>
-    <div class="kpi-body"><div class="kpi-label">${esc(l)}</div><div class="kpi-val">${v}</div><div class="kpi-sub">${s}</div></div>${SVG.go}</button>`).join('');
+    <div class="kpi-body"><div class="kpi-label">${esc(l)}</div><div class="kpi-val">${v}</div><div class="kpi-sub">${s}</div></div></button>`).join('');
 }
 $('kpiRow').addEventListener('click', e => {
   const k = e.target.closest('[data-kpi]'); if (!k) return;
@@ -2581,7 +2585,7 @@ const AI_ITEMS = [
   { html: '<b>Apex TechCo</b> beat and raised; Northbridge lifts its price target to <b>$245</b>.', act: 'Read research', go: () => openResearch('r1') },
 ];
 function renderAi() {
-  $('aiList').innerHTML = AI_ITEMS.map((a, i) => `<li><button data-ai="${i}"><span class="dot"></span><span class="txt">${a.html}<span class="act">${esc(a.act)} →</span></span></button></li>`).join('');
+  $('aiList').innerHTML = AI_ITEMS.map((a, i) => `<li><button data-ai="${i}" title="${esc(a.act)}"><span class="dot"></span><span class="txt">${a.html}</span><svg class="i chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button></li>`).join('');
 }
 $('aiList').addEventListener('click', e => { const b = e.target.closest('[data-ai]'); if (b) AI_ITEMS[+b.dataset.ai].go(); });
 
@@ -2595,15 +2599,15 @@ const exAvatar = (x, sm) => { const [ab, c] = EX_TYPES[x.type] || ['EX', '#6B7A9
 function feedItems() {
   const badge = t => t.type === 'Expert Call' ? 'expert' : 'transcript';
   return [
-    ...RESEARCH.map(r => ({ d: r.date, tks: [r.tk], text: r.title + ' ' + r.summary, html: `<div class="feed-item" data-rs="${r.id}">${coLogo(r.tk)}<div class="feed-body"><div class="feed-title">${esc(r.title)}</div><div class="feed-meta"><span class="tbadge research">Research</span><span>${esc(r.broker)}</span><span>${fmtDate(day(r.date))}</span></div></div></div>` })),
-    ...TRANSCRIPTS.map(t => ({ d: t.date, tks: [t.tk], text: t.title + ' ' + t.summary.join(' '), html: `<div class="feed-item" data-tr="${t.id}">${coLogo(t.tk)}<div class="feed-body"><div class="feed-title">${esc(t.title)}</div><div class="feed-meta">${stagePill(t)}<span class="tbadge ${badge(t)}">${esc(t.type)}</span>${sentiHTML(t.senti)}<span>${fmtDate(day(t.date))}</span></div></div></div>` })),
+    ...RESEARCH.map(r => ({ d: r.date, tks: [r.tk], text: r.title + ' ' + r.summary, html: `<div class="feed-item" data-rs="${r.id}">${coLogo(r.tk)}<div class="feed-body"><div class="feed-title">${esc(r.title)}</div><div class="feed-meta"><span class="tbadge research">Research</span><span>${fmtDate(day(r.date))}</span></div></div></div>` })),
+    ...TRANSCRIPTS.map(t => ({ d: t.date, tks: [t.tk], text: t.title + ' ' + t.summary.join(' '), html: `<div class="feed-item" data-tr="${t.id}">${coLogo(t.tk)}<div class="feed-body"><div class="feed-title">${esc(t.title)}</div><div class="feed-meta">${tStage(t) === 'live' ? stagePill(t) : `<span class="tbadge ${badge(t)}">Transcript</span>`}<span>${fmtDate(day(t.date))}</span></div></div></div>` })),
     ...FILINGS.map(f => ({ d: f.date, tks: [f.tk], text: f.title, html: `<div class="feed-item" data-fil="${f.id}">${coLogo(f.tk)}<div class="feed-body"><div class="feed-title">${esc(coName(f.tk))}: ${esc(f.title)}</div><div class="feed-meta"><span class="tbadge filing">${esc(f.form)}</span><span>${fmtDate(day(f.date))}</span></div></div></div>` })),
-    ...EXPERTS.map(x => ({ d: x.date, tks: x.tks, text: x.title + ' ' + x.quote, html: `<div class="feed-item" data-exp="${x.id}">${coLogo(x.tks[0])}<div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span class="tbadge expert">Expert interview</span><span>${esc(x.role)}</span><span>${fmtDate(day(x.date))}</span></div></div></div>` })),
+    ...EXPERTS.map(x => ({ d: x.date, tks: x.tks, text: x.title + ' ' + x.quote, html: `<div class="feed-item" data-exp="${x.id}">${coLogo(x.tks[0])}<div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span class="tbadge expert">Expert</span><span>${fmtDate(day(x.date))}</span></div></div></div>` })),
   ];
 }
 function renderWatchFeed() {
   const kws = watchlist.keywords.map(k => k.toLowerCase());
-  $('wlChips').innerHTML = watchlist.companies.map(tk => `<span class="wl-chip">${esc(tk)}</span>`).join('') + watchlist.keywords.map(k => `<span class="wl-chip kw">“${esc(k)}”</span>`).join('');
+  $('wlSummary').textContent = `${watchlist.companies.length} companies · ${watchlist.keywords.length} keywords`;
   if (!watchlist.companies.length && !watchlist.keywords.length) {
     $('feedList').innerHTML = '<div class="empty-state">Your watchlist is empty.<br><br><button class="btn btn-primary btn-sm" onclick="openWatchlist()">Set up a watchlist</button></div>';
     return;
@@ -2634,15 +2638,10 @@ function saveWatchlist() {
   showToast(`Watchlist saved — ${watchlist.companies.length} companies, ${watchlist.keywords.length} keywords.`);
 }
 
-function renderDashExperts() {
-  $('dashExperts').innerHTML = [...EXPERTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6).map(x => `<div class="feed-item" data-exp="${x.id}">${exAvatar(x, true)}
-    <div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span>${esc(x.role)}</span><span>${fmtDate(day(x.date))}</span></div></div></div>`).join('');
-}
-
 function renderDashboard() {
   const deals = openDeals();
-  $('pipeTotal').textContent = `${deals.length} open deals · ${bn(deals.reduce((a, d) => a + d.value, 0))}`;
-  renderKpis(); renderUpcoming(); renderAi(); renderWatchFeed(); renderDashExperts();
+  $('pipeTotal').textContent = `${deals.length} open · ${bn(deals.reduce((a, d) => a + d.value, 0))}`;
+  renderKpis(); renderUpcoming(); renderAi(); renderWatchFeed();
 }
 
 // One delegated handler for clickable cards/rows anywhere in the app
@@ -2871,7 +2870,7 @@ function renderCalls() {
     const bars = waveBars(e.id.charCodeAt(1) + e.id.length * 7, 60);
     const head = `<div class="call-head">${coLogo(e.tk)}<div style="flex:1;min-width:0"><div class="call-co">${esc(coName(e.tk))} <span style="color:var(--muted);font-weight:500">${esc(e.tk)}</span></div>
         <div class="call-sub">${esc(e.q)} earnings call · ${fmtDate(day(e.date))} · ${e.status === 'recorded' ? fmtDur(e.dur) : esc(e.time || '08:30 ET')}</div></div>`;
-    if (e.status === 'live') return `<div class="call-card" style="border-color:#F9CDD3">${head}<span class="live-pill"><i></i>LIVE</span></div>
+    if (e.status === 'live') return `<div class="call-card" style="border-color:#F9CDD3">${head}<span class="live-pill"><i></i>LIVE</span><button class="play-btn" style="background:var(--rose)" data-play="${e.id}" aria-label="Listen to ${esc(coName(e.tk))} live">${ICON.play}</button></div>
       <div class="wave on">${bars.map((h, i) => `<i class="${i < 40 ? 'p' : ''}" style="height:${h}%;${i < 40 ? 'background:var(--rose)' : ''}"></i>`).join('')}</div>
       <div class="call-foot"><div class="topic-row">${e.topics.map(t => `<span class="topic">${esc(t)}</span>`).join('')}</div><button class="btn btn-sm btn-primary" data-tr="${e.tr}">Follow live transcript</button></div></div>`;
     if (e.status === 'upcoming') return `<div class="call-card">${head}<span class="upcoming-pill">Upcoming</span></div>
@@ -2885,51 +2884,130 @@ function renderCalls() {
 bindChips('callFilters', setCallFilter);
 $('callGrid').addEventListener('click', e => { const p = e.target.closest('[data-play]'); if (p) openCall(p.dataset.play); });
 
-// Simulated player
-const player = { call: null, t: 0, playing: false, speed: 1, timer: null };
+// Audio player — each recorded call has a short sample script that is read aloud
+// with the device's built-in speech voices (Web Speech API), one voice per speaker.
+const CAN_SPEAK = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+const player = { call: null, script: [], durs: [], idx: 0, playing: false, speed: 1, t0: 0, ticker: null, timer: null, token: 0, voices: {} };
+const stripTags = s => s.replace(/<[^>]+>/g, '');
+// Make figures read naturally: "$1.42B" → "1.42 billion dollars", "220bps" → "220 basis points"…
+const speechText = s => stripTags(s)
+  .replace(/\$([\d.,]+)\s?B\b/g, '$1 billion dollars').replace(/\$([\d.,]+)\s?M\b/g, '$1 million dollars').replace(/\$([\d.,]+)\s?K\b/g, '$1 thousand dollars')
+  .replace(/(\d)\s?bps\b/g, '$1 basis points').replace(/\bYoY\b/g, 'year over year').replace(/\bQoQ\b/g, 'quarter over quarter')
+  .replace(/\bFY(\d\d)\b/g, 'fiscal 20$1').replace(/(\d)\s?[–-]\s?(\d)/g, '$1 to $2').replace(/×/g, ' times').replace(/~/g, 'about ').replace(/[—“”"]/g, ' ');
+
+function callScript(e) {
+  const intro = ['Operator', 'Conference operator', `Good day, and welcome to the ${coName(e.tk)} ${e.q} earnings conference call. This call is being recorded.`];
+  const t = TRANSCRIPTS.find(x => x.id === e.tr);
+  if (t) return [intro, ...t.body.filter(b => b[0] !== 'Operator')];
+  const role = { CEO: 'Chief Executive Officer', CFO: 'Chief Financial Officer', COO: 'Chief Operating Officer', 'Q&A': 'Question and answer' };
+  return [intro, ...e.hl.map(([, sp, html]) => [sp, role[sp] || sp, stripTags(html)])];
+}
+const turnSecs = text => Math.max(2.5, text.split(/\s+/).length / 2.6);   // ~155 words a minute at 1×
+
+let VOICE_POOL = [];
+function loadVoices() {
+  if (!CAN_SPEAK) return;
+  const all = speechSynthesis.getVoices().filter(v => /^en[-_]/i.test(v.lang));
+  const pref = ['Samantha', 'Daniel', 'Karen', 'Alex', 'Moira', 'Tessa', 'Rishi', 'Aaron', 'Nicky', 'Google US English', 'Google UK English Male', 'Google UK English Female'];
+  VOICE_POOL = [...pref.map(n => all.find(v => v.name.startsWith(n))).filter(Boolean), ...all.filter(v => !pref.some(n => v.name.startsWith(n)) && v.localService)];
+}
+if (CAN_SPEAK) { loadVoices(); speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged', loadVoices); }
+function voiceFor(speaker) {
+  if (!(speaker in player.voices)) {
+    const n = Object.keys(player.voices).length;
+    player.voices[speaker] = { voice: VOICE_POOL.length ? VOICE_POOL[n % VOICE_POOL.length] : null, pitch: [1, 0.92, 1.08, 0.97, 1.04][n % 5] };
+  }
+  return player.voices[speaker];
+}
+
 function openCall(id) {
   const e = EARNINGS.find(x => x.id === id); if (!e) return;
-  if (e.status === 'live') return openTranscript(e.tr);
   if (e.status === 'upcoming') { setCallFilter('upcoming'); navTo('earnings'); return showToast(`${coName(e.tk)} reports on ${fmtDate(day(e.date))} at ${e.time || '08:30 ET'}.`); }
-  plStop(); Object.assign(player, { call: e, t: 0, speed: 1 });
+  plStop();
+  const script = callScript(e);
+  Object.assign(player, { call: e, script, durs: script.map(s => turnSecs(s[2])), idx: 0, voices: {}, silent: false });
   $('plTitle').textContent = `${coName(e.tk)} — ${e.q} Earnings Call`;
-  $('plSub').textContent = `${e.tk} · ${coSector(e.tk)} · ${fmtDate(day(e.date))}`;
+  $('plSub').textContent = `${e.tk} · ${coSector(e.tk)} · ${fmtDate(day(e.date))}${e.status === 'live' ? ' · live now' : ' · full call ' + fmtDur(e.dur)}`;
   $('plWave').innerHTML = waveBars(e.id.charCodeAt(1), 90).map(h => `<i style="height:${h}%"></i>`).join('');
-  $('plDur').textContent = fmtDur(e.dur); $('plSpeed').textContent = '1×';
-  $('plStats').innerHTML = `<div class="stat"><span>Sentiment</span><b>${sentiHTML(e.senti)}</b></div><div class="stat"><span>Duration</span><b>${fmtDur(e.dur)}</b></div><div class="stat"><span>Key topics</span><b style="font-size:0.85rem">${esc(e.topics.join(', '))}</b></div>`;
-  $('plHighlights').innerHTML = e.hl.map(([t, sp, text], i) => `<div class="hl" data-seek="${t}" data-i="${i}"><time>${fmtDur(t)}</time><p><b>${esc(sp)}:</b> ${text}</p></div>`).join('');
+  $('plDur').textContent = fmtDur(player.durs.reduce((a, b) => a + b, 0)); $('plSpeed').textContent = '1×'; player.speed = 1;
+  $('plNote').textContent = CAN_SPEAK ? 'Audio sample · read aloud by your device’s voices' : 'Audio isn’t supported in this browser — captions only';
+  $('plStats').innerHTML = `<div class="stat"><span>Sentiment</span><b>${sentiHTML(e.senti)}</b></div><div class="stat"><span>${e.status === 'live' ? 'Status' : 'Full call'}</span><b>${e.status === 'live' ? 'Live now' : fmtDur(e.dur)}</b></div><div class="stat"><span>Key topics</span><b style="font-size:0.85rem">${esc(e.topics.join(', '))}</b></div>`;
+  $('plHighlights').innerHTML = e.hl.length ? e.hl.map(([t, sp, text]) => `<div class="hl"><time>${fmtDur(t)}</time><p><b>${esc(sp)}:</b> ${text}</p></div>`).join('') : '<p class="metric-period">Highlights appear once the call ends.</p>';
   $('plTranscriptBtn').disabled = !e.tr;
   $('plTranscriptBtn').textContent = e.tr ? 'Open transcript' : 'Transcript processing…';
   $('plTranscriptBtn').onclick = () => { closeModal('playerModal'); openTranscript(e.tr); };
   plUpdate(); openModal('playerModal');
 }
+function plElapsed() {
+  const before = player.durs.slice(0, player.idx).reduce((a, b) => a + b, 0);
+  const within = player.playing ? Math.min(player.durs[player.idx] || 0, (Date.now() - player.t0) / 1000 * player.speed) : 0;
+  return before + within;
+}
 function plUpdate() {
   const e = player.call; if (!e) return;
-  const pct = player.t / e.dur, bars = $('plWave').children, n = bars.length;
-  for (let i = 0; i < n; i++) bars[i].classList.toggle('p', i / n < pct);
-  $('plNow').textContent = fmtDur(player.t);
+  const total = player.durs.reduce((a, b) => a + b, 0), now = plElapsed(), bars = $('plWave').children, n = bars.length;
+  for (let i = 0; i < n; i++) bars[i].classList.toggle('p', i / n < now / total);
+  $('plNow').textContent = fmtDur(now);
   $('plPlay').innerHTML = player.playing ? ICON.pause : ICON.play;
   $('plPlay').setAttribute('aria-label', player.playing ? 'Pause' : 'Play');
-  let cur = -1; e.hl.forEach(([t], i) => { if (player.t >= t) cur = i; });
-  document.querySelectorAll('#plHighlights .hl').forEach((h, i) => h.classList.toggle('now', i === cur));
+  const [sp, role, text] = player.script[player.idx] || ['', '', ''];
+  $('plCaption').innerHTML = `<div class="cap-hdr"><b>${esc(sp)}</b><span>${esc(role)}</span><span class="cap-n">${player.idx + 1} / ${player.script.length}</span></div><p>${esc(stripTags(text))}</p>`;
+  $('plCaption').classList.toggle('on', player.playing);
+}
+function plSpeak() {
+  const token = ++player.token;
+  clearTimeout(player.timer);
+  player.t0 = Date.now(); plUpdate();
+  const [sp, , text] = player.script[player.idx];
+  const next = () => { if (token !== player.token || !player.playing) return; if (player.idx < player.script.length - 1) { player.idx++; plSpeak(); } else { plStop(); player.idx = 0; plUpdate(); } };
+  if (!CAN_SPEAK || player.silent) { player.timer = setTimeout(next, player.durs[player.idx] * 1000 / player.speed); return; }
+  // No usable voice (speech never starts) → keep going with timed captions only
+  const goSilent = () => { if (token !== player.token) return; player.silent = true; $('plNote').textContent = 'No speech voice available on this device — captions only'; plSpeak(); };
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(speechText(text)), v = voiceFor(sp);
+  if (v.voice) u.voice = v.voice;
+  u.pitch = v.pitch; u.rate = player.speed; u.lang = (v.voice && v.voice.lang) || 'en-US';
+  let started = false;
+  u.onstart = () => { started = true; };
+  u.onend = () => (started ? next() : goSilent());
+  u.onerror = ev => { if (ev.error !== 'interrupted' && ev.error !== 'canceled') (started ? next() : goSilent()); };
+  speechSynthesis.speak(u);
+  // Safety net: some browsers never start (no voices) or never fire "end" — keep the call moving
+  player.timer = setTimeout(function check() {
+    if (token !== player.token) return;
+    if (!started) return goSilent();
+    player.timer = setTimeout(next, player.durs[player.idx] * 1500 / player.speed + 3000);
+  }, 2500);
 }
 function plToggle() {
   if (!player.call) return;
-  player.playing = !player.playing;
-  clearInterval(player.timer);
-  if (player.playing) player.timer = setInterval(() => {
-    player.t = Math.min(player.call.dur, player.t + 1 * player.speed);
-    if (player.t >= player.call.dur) { player.playing = false; clearInterval(player.timer); }
-    plUpdate();
-  }, 1000);
-  plUpdate();
+  if (player.playing) { plStop(); return plUpdate(); }
+  player.playing = true;
+  clearInterval(player.ticker); player.ticker = setInterval(plUpdate, 250);
+  plSpeak();
 }
-function plStop() { clearInterval(player.timer); player.playing = false; }
-function plSkip(s) { if (!player.call) return; player.t = Math.max(0, Math.min(player.call.dur, player.t + s)); plUpdate(); }
-function plCycleSpeed() { const sp = [1, 1.5, 2, 4]; player.speed = sp[(sp.indexOf(player.speed) + 1) % sp.length]; $('plSpeed').textContent = player.speed + '×'; }
+function plStop() {
+  player.playing = false; player.token++;
+  clearTimeout(player.timer); clearInterval(player.ticker);
+  if (CAN_SPEAK) speechSynthesis.cancel();
+}
+function plSkip(d) {
+  if (!player.call) return;
+  player.idx = Math.max(0, Math.min(player.script.length - 1, player.idx + d));
+  if (player.playing) plSpeak(); else plUpdate();
+}
+function plCycleSpeed() {
+  const sp = [1, 1.25, 1.5, 2]; player.speed = sp[(sp.indexOf(player.speed) + 1) % sp.length];
+  $('plSpeed').textContent = player.speed + '×';
+  if (player.playing) plSpeak();
+}
 $('plPlay').addEventListener('click', plToggle);
-$('plWave').addEventListener('click', e => { if (!player.call) return; const r = $('plWave').getBoundingClientRect(); player.t = Math.round((e.clientX - r.left) / r.width * player.call.dur); plUpdate(); });
-$('plHighlights').addEventListener('click', e => { const h = e.target.closest('[data-seek]'); if (h) { player.t = +h.dataset.seek; plUpdate(); if (!player.playing) plToggle(); } });
+$('plWave').addEventListener('click', e => {
+  if (!player.call) return;
+  const r = $('plWave').getBoundingClientRect(), target = (e.clientX - r.left) / r.width * player.durs.reduce((a, b) => a + b, 0);
+  let acc = 0, i = 0; while (i < player.durs.length - 1 && acc + player.durs[i] < target) acc += player.durs[i++];
+  player.idx = i; if (player.playing) plSpeak(); else plUpdate();
+});
 
 /* ── TRANSCRIPTS: Live → Machine edited (~20 min) → Human edited final (~2 hrs) ── */
 const TR_TYPES = ['Earnings Call', 'M&A Call', 'Investor Day', 'Conference'];
