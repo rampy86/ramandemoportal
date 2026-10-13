@@ -1,6 +1,6 @@
-# Meridian Capital — Investor Portal
+# DataIntelligence — Market & M&A Intelligence Portal
 
-FastAPI backend + single-page frontend (`frontend/index.html`) for the Meridian Alts Fund Investor Portal.
+FastAPI backend + single-page frontend (`frontend/index.html`) for the DataIntelligence portal: fund & investor documents, earnings call recordings, transcripts, research reports and M&A intelligence (deal tracker, comparable transactions, regulatory filings). Earnings calls, transcripts, research, deals and filings are illustrative sample content built into the page.
 Handles email-based MFA (Brevo API or Gmail SMTP), JWT auth, document storage (local or S3), and audit logging.
 The backend serves the portal at `/`, so the whole prototype runs as one web service.
 

@@ -10,7 +10,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     # ── App ──────────────────────────────────────────────
-    APP_NAME: str = "Meridian Capital Portal"
+    APP_NAME: str = "DataIntelligence Portal"
     SECRET_KEY: str = "dev-only-insecure-key-change-me"   # ALWAYS override in any hosted environment
     ENVIRONMENT: str = "production"
     # Accepts a JSON list '["https://a.com","https://b.com"]', a comma list 'https://a.com,https://b.com', or '*'
@@ -58,7 +58,7 @@ class Settings(BaseSettings):
 
     BREVO_API_KEY: str = ""
 
-    EMAIL_FROM_NAME: str = "Meridian Capital Investor Relations"
+    EMAIL_FROM_NAME: str = "DataIntelligence Support"
     EMAIL_FROM_ADDRESS: str = ""           # Defaults to SMTP_USER if blank (must be a verified sender for Brevo)
 
     # ── Database ─────────────────────────────────────────

@@ -1,5 +1,5 @@
 """
-Meridian Capital — Investor Portal Backend
+DataIntelligence — Market & M&A Intelligence Portal Backend
 FastAPI + email OTP MFA + JWT Auth.
 Also serves the single-page frontend (frontend/index.html) at "/" so the whole
 prototype runs as ONE web service on a free host.
@@ -24,7 +24,7 @@ FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Starting Meridian Portal API...")
+    logger.info("Starting DataIntelligence Portal API...")
     await init_db()
     if settings.SEED_DEMO_DATA:
         from app.seed_data import seed_demo_data
@@ -38,9 +38,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Meridian Capital Investor Portal API",
+    title="DataIntelligence Portal API",
     version="1.1.0",
-    description="Backend for the Meridian Alts Fund Investor Portal with MFA",
+    description="Backend for the DataIntelligence market & M&A intelligence portal with MFA",
     lifespan=lifespan,
 )
 

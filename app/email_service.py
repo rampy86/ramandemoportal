@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 def _build_mfa_email(recipient_name: str, otp_code: str, expire_minutes: int) -> tuple[str, str]:
     """Returns (subject, html_body)"""
-    subject = "Your Meridian Capital Sign-In Verification Code"
+    subject = "Your DataIntelligence Sign-In Verification Code"
 
     html = f"""
 <!DOCTYPE html>
@@ -42,20 +42,20 @@ def _build_mfa_email(recipient_name: str, otp_code: str, expire_minutes: int) ->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
-<body style="margin:0;padding:0;background:#0B1628;font-family:'Helvetica Neue',Arial,sans-serif">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B1628;padding:40px 0">
+<body style="margin:0;padding:0;background:#F5F7FA;font-family:'Helvetica Neue',Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F7FA;padding:40px 0">
     <tr><td align="center">
       <table width="520" cellpadding="0" cellspacing="0"
-             style="background:#0F1E35;border-radius:14px;border:1px solid rgba(201,168,76,0.2);overflow:hidden">
+             style="background:#FFFFFF;border-radius:14px;border:1px solid #E3E8EF;overflow:hidden">
 
         <!-- Header -->
         <tr>
-          <td style="background:linear-gradient(135deg,#8B6F2E,#C9A84C);padding:28px 40px;text-align:center">
-            <span style="font-size:22px;font-weight:700;color:#0B1628;letter-spacing:0.06em">
-              MERIDIAN CAPITAL
+          <td style="background:#0A2E36;padding:28px 40px;text-align:center">
+            <span style="font-size:22px;color:#FFFFFF;letter-spacing:-0.01em">
+              <b>Data</b>Intelligence<span style="color:#19C2A8">.</span>
             </span><br>
-            <span style="font-size:11px;color:#0B1628;opacity:0.75;letter-spacing:0.14em;text-transform:uppercase">
-              Investor Portal
+            <span style="font-size:11px;color:#FFFFFF;opacity:0.7;letter-spacing:0.14em;text-transform:uppercase">
+              Market &amp; M&amp;A Intelligence
             </span>
           </td>
         </tr>
@@ -63,21 +63,21 @@ def _build_mfa_email(recipient_name: str, otp_code: str, expire_minutes: int) ->
         <!-- Body -->
         <tr>
           <td style="padding:36px 40px">
-            <p style="color:#D4CBB5;font-size:15px;margin:0 0 8px">
+            <p style="color:#0F1B2D;font-size:15px;margin:0 0 8px">
               Hello {recipient_name},
             </p>
             <p style="color:#7A8EA8;font-size:14px;line-height:1.6;margin:0 0 28px">
               Use the verification code below to complete your sign-in.
-              This code expires in <strong style="color:#C9A84C">{expire_minutes} minutes</strong>.
+              This code expires in <strong style="color:#0E8C7F">{expire_minutes} minutes</strong>.
             </p>
 
             <!-- OTP Box -->
             <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px">
               <tr>
                 <td align="center"
-                    style="background:#162B45;border:1px solid rgba(201,168,76,0.25);
+                    style="background:#E8F6F4;border:1px solid #CDEDE8;
                            border-radius:10px;padding:24px 0">
-                  <span style="font-size:40px;font-weight:700;letter-spacing:12px;color:#C9A84C;
+                  <span style="font-size:40px;font-weight:700;letter-spacing:12px;color:#0B7469;
                                font-family:'Courier New',monospace">
                     {otp_code}
                   </span>
@@ -86,21 +86,21 @@ def _build_mfa_email(recipient_name: str, otp_code: str, expire_minutes: int) ->
             </table>
 
             <p style="color:#7A8EA8;font-size:13px;line-height:1.6;margin:0 0 6px">
-              If you did not attempt to sign in, please contact Investor Relations immediately
-              at <a href="mailto:ir@meridiancapital.com"
-                    style="color:#C9A84C;text-decoration:none">ir@meridiancapital.com</a>.
+              If you did not attempt to sign in, please contact support immediately
+              at <a href="mailto:support@dataintelligence.io"
+                    style="color:#0E8C7F;text-decoration:none">support@dataintelligence.io</a>.
             </p>
             <p style="color:#4A5A6A;font-size:12px;margin:0">
-              Do not share this code with anyone, including Meridian Capital staff.
+              Do not share this code with anyone, including DataIntelligence staff.
             </p>
           </td>
         </tr>
 
         <!-- Footer -->
         <tr>
-          <td style="border-top:1px solid rgba(201,168,76,0.1);padding:20px 40px;text-align:center">
+          <td style="border-top:1px solid #EEF2F6;padding:20px 40px;text-align:center">
             <p style="color:#4A5A6A;font-size:11px;margin:0">
-              © {datetime.now().year} Meridian Capital Management LLC &nbsp;·&nbsp;
+              © {datetime.now().year} DataIntelligence &nbsp;·&nbsp;
               Confidential &amp; Privileged
             </p>
           </td>
@@ -118,11 +118,11 @@ def _build_mfa_email(recipient_name: str, otp_code: str, expire_minutes: int) ->
 def _build_plain_mfa(recipient_name: str, otp_code: str, expire_minutes: int) -> str:
     return (
         f"Hello {recipient_name},\n\n"
-        f"Your Meridian Capital sign-in verification code is:\n\n"
+        f"Your DataIntelligence sign-in verification code is:\n\n"
         f"  {otp_code}\n\n"
         f"This code expires in {expire_minutes} minutes.\n\n"
-        f"If you did not attempt to sign in, contact ir@meridiancapital.com immediately.\n\n"
-        f"— Meridian Capital Investor Relations"
+        f"If you did not attempt to sign in, contact support@dataintelligence.io immediately.\n\n"
+        f"— DataIntelligence Support"
     )
 
 
