@@ -98,11 +98,12 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .auth-feats li svg{color:var(--mint);margin-top:1px}
 .auth-side small{font-size:0.75rem;color:rgba(255,255,255,0.55);position:relative;z-index:1}
 .auth-main{flex:1 1 50%;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:var(--bg)}
-.auth-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:2.4rem 2.4rem 2rem;width:420px;max-width:100%;animation:fadeUp 0.45s ease both}
-.auth-box h1{font-size:1.45rem;font-weight:700;letter-spacing:-0.02em;color:var(--ink)}
-.auth-box .auth-sub{font-size:0.85rem;color:var(--muted);margin:4px 0 1.2rem}
+.auth-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:2.2rem 2.2rem 1.9rem;width:410px;max-width:100%;animation:fadeUp 0.45s ease both}
+.auth-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:1.4rem}
+.auth-box h1{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.2}
+.auth-box .auth-sub{font-size:0.86rem;color:var(--muted);margin-top:4px}
 
-.mode-pill{display:inline-flex;align-items:center;gap:6px;margin-bottom:1.2rem;font-size:0.72rem;font-weight:500;color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--bg)}
+.mode-pill{display:inline-flex;align-items:center;gap:6px;margin-top:4px;flex-shrink:0;white-space:nowrap;font-size:0.7rem;font-weight:500;color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--bg)}
 .mode-pill i{width:6px;height:6px;border-radius:50%;background:var(--muted);display:inline-block;flex-shrink:0}
 .mode-pill.demo{color:#9A6700;border-color:#F3D9A4;background:#FFF8EB}
 .mode-pill.demo i{background:var(--amber)}
@@ -116,13 +117,15 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .auth-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .auth-tab:hover{color:var(--ink)}
 .auth-tab.active{background:var(--surface);color:var(--brand-600);box-shadow:var(--shadow-sm)}
-.auth-lead{font-size:0.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.1rem}
+.auth-lead{font-size:0.86rem;color:var(--ink-2);line-height:1.55;margin-bottom:1.2rem}
+.trial-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.trial-head h2{font-size:1rem;font-weight:700;color:var(--ink)}
 .auth-lead strong{color:var(--ink);font-weight:600}
 .auth-step{display:none}
 .auth-step.active{display:block;animation:fadeUp 0.3s ease both}
 
-.form-group{margin-bottom:1.1rem}
-.form-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+.form-group{margin-bottom:1rem}
+.form-group label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:0.8rem;font-weight:600;color:var(--ink-2);margin-bottom:6px}
 .form-group input,.form-group select{width:100%;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:0 14px;font-family:inherit;font-size:0.9rem;color:var(--ink);outline:none;transition:border-color 0.15s,box-shadow 0.15s}
 .form-group input::placeholder{color:#A3AFC0}
 .form-group input:focus,.form-group select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(14,140,127,0.14)}
@@ -139,21 +142,25 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 
 .auth-error{display:none;font-size:0.8rem;color:var(--red);background:#FEF2F2;border:1px solid #FBCACA;border-radius:var(--radius);padding:8px 12px;margin-bottom:1rem}
 .auth-error.show{display:block;animation:fadeIn 0.2s}
-.auth-hint{font-size:0.8rem;color:var(--muted);text-align:center;margin-top:1.1rem;line-height:1.6}
+.auth-hint{font-size:0.82rem;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.6}
 .auth-hint .link,.link{color:var(--brand);cursor:pointer;background:none;border:none;font-size:inherit;font-weight:500;padding:0;font-family:inherit}
 .auth-hint .link:hover,.link:hover{text-decoration:underline}
-.demo-creds{font-size:0.75rem;color:var(--muted);text-align:center;margin-top:0.9rem;padding-top:0.9rem;border-top:1px dashed var(--line)}
-.demo-creds code{color:var(--ink-2);font-family:inherit;font-weight:600}
-.demo-creds code.mfa{color:var(--brand-600);letter-spacing:0.12em}
-.auth-note{font-size:0.75rem;color:var(--muted);margin-top:0.8rem;line-height:1.5}
-.lbl-note{font-weight:500;color:var(--muted)}
+.demo-creds{margin-top:1.2rem;padding:10px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:0.8rem;color:var(--muted)}
+.demo-creds .ttl{display:block;font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
+.demo-creds dl{display:grid;grid-template-columns:auto 1fr;gap:3px 14px}
+.demo-creds dt{color:var(--muted)}
+.demo-creds dd{color:var(--ink);font-weight:600;overflow-wrap:anywhere}
+.demo-creds dd.mfa{color:var(--brand-600);letter-spacing:0.14em}
+.demo-creds dd.wait{font-weight:400;color:var(--muted);letter-spacing:0}
+.auth-note{font-size:0.76rem;color:var(--muted);margin-top:0.9rem;line-height:1.5;text-align:center}
+.lbl-note{font-weight:400;color:var(--muted);font-size:0.74rem}
 .mfa-wrap{display:flex;gap:8px}
 .mfa-wrap input{flex:1;min-width:0;letter-spacing:0.3em;font-weight:600}
 .mfa-wrap input:placeholder-shown{letter-spacing:normal;font-weight:400}
 .mfa-wrap .btn{height:44px;flex-shrink:0}
-.mfa-help{font-size:0.75rem;color:var(--muted);margin-top:6px;line-height:1.45}
+.mfa-help{font-size:0.76rem;color:var(--muted);margin-top:6px;line-height:1.45}
 .mfa-help strong{color:var(--brand-600)}
-.trial-badge{display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--brand-600);background:var(--brand-50);border:1px solid var(--brand-100);border-radius:20px;padding:1px 8px;margin-bottom:6px}
+.trial-badge{display:inline-block;font-size:0.64rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand-600);background:var(--brand-50);border:1px solid var(--brand-100);border-radius:20px;padding:2px 8px}
 
 .otp-row{display:flex;gap:10px;justify-content:center;margin:1.2rem 0}
 .otp-row.shake{animation:shake 0.4s}
@@ -859,9 +866,10 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
   </aside>
   <main class="auth-main">
   <div class="auth-box">
-    <h1>Welcome back</h1>
-    <p class="auth-sub">Sign in to your DataIntelligence workspace</p>
-    <div class="mode-pill wait" id="modePill"><i></i><span>Connecting…</span></div>
+    <div class="auth-head">
+      <div><h1>Welcome back</h1><p class="auth-sub">Sign in to DataIntelligence</p></div>
+      <div class="mode-pill wait" id="modePill"><i></i><span>Connecting…</span></div>
+    </div>
 
     <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Sign-in method">
       <button type="button" class="auth-tab active" data-method="password" role="tab" aria-selected="true">
@@ -876,8 +884,8 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
     <form class="auth-step active" id="stepPassword" novalidate onsubmit="event.preventDefault();passwordLogin()">
       <div class="auth-error" id="loginError" role="alert"></div>
       <div class="form-group">
-        <label for="loginEmail">Work email</label>
-        <input type="email" id="loginEmail" placeholder="you@company.com" value="j.whitfield@meridian.com" autocomplete="username" required>
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@company.com" value="rampy007@gmail.com" autocomplete="username" required>
       </div>
       <div class="form-group">
         <label for="loginPass">Password</label>
@@ -887,30 +895,30 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
         </div>
       </div>
       <div class="form-group">
-        <label for="loginMfa">MFA code <span class="lbl-note">(via email)</span></label>
+        <label for="loginMfa">Verification code <span class="lbl-note">4 digits, sent by email</span></label>
         <div class="mfa-wrap">
           <input type="text" id="loginMfa" inputmode="numeric" maxlength="4" placeholder="4-digit code" autocomplete="one-time-code" aria-describedby="mfaHelp">
           <button type="button" class="btn" id="mfaSendBtn" onclick="sendPasswordMfa()">Send code</button>
         </div>
-        <p class="mfa-help" id="mfaHelp">A new 4-digit code is emailed each time you sign in.*</p>
+        <p class="mfa-help" id="mfaHelp">We email you a new code every time you sign in.</p>
       </div>
       <button class="auth-btn" type="submit" id="loginBtn">Sign in</button>
-      <p class="auth-hint">Forgot your password? <button type="button" class="link" onclick="switchToCode()">Sign in with an email code</button></p>
-      <p class="auth-note">* The code email may land in your spam or junk folder — please check there if it hasn't arrived within a minute.</p>
-      <p class="demo-creds" id="demoCreds"></p>
+      <p class="auth-hint">Forgot your password? <button type="button" class="link" onclick="switchToCode()">Use an email code</button></p>
+      <div class="demo-creds" id="demoCreds"></div>
     </form>
 
     <!-- STEP 1b: EMAIL ONE-TIME CODE -->
     <form class="auth-step" id="stepOtpEmail" novalidate onsubmit="event.preventDefault();requestCode()">
-      <p class="auth-lead"><span class="trial-badge">Free trial</span><br>Get instant access to a <strong>trial account with limited features</strong>. Enter your work email and we'll send you a <strong>6-digit sign-in code</strong>* — no password needed. Your trial account is created automatically the first time you sign in.</p>
+      <div class="trial-head"><h2>Start your free trial</h2><span class="trial-badge">Limited features</span></div>
+      <p class="auth-lead">Enter your email and we'll send you a 6-digit sign-in code.* No password needed — your trial account is created the first time you sign in.</p>
       <div class="auth-error" id="otpReqError" role="alert"></div>
       <div class="form-group">
-        <label for="otpEmail">Work email</label>
+        <label for="otpEmail">Email</label>
         <input type="email" id="otpEmail" placeholder="you@company.com" autocomplete="email" required>
       </div>
-      <button class="auth-btn" type="submit" id="sendCodeBtn">Send my code</button>
-      <p class="auth-note">* The code email may land in your spam or junk folder — please check there if it hasn't arrived within a minute.</p>
-      <p class="auth-hint">Trouble signing in? <button type="button" class="link" onclick="openModal('irModal')">Contact support</button></p>
+      <button class="auth-btn" type="submit" id="sendCodeBtn">Email me a code</button>
+      <p class="auth-note">* Can't find the email? Check your spam or junk folder.</p>
+      <p class="auth-hint">Need help? <button type="button" class="link" onclick="openModal('irModal')">Contact support</button></p>
     </form>
 
     <!-- STEP 2: MFA -->
@@ -973,7 +981,7 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
         <div id="notifList"></div>
       </div>
       <div class="dropdown user-menu" id="userMenu">
-        <div class="um-head"><div id="umName">James Whitfield</div><span id="umEmail">j.whitfield@meridian.com</span></div>
+        <div class="um-head"><div id="umName">James Whitfield</div><span id="umEmail">rampy007@gmail.com</span></div>
         <button onclick="navTo('profile');closeDropdowns()"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Account settings</button>
         <button onclick="navTo('docs-investor');closeDropdowns()"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>My documents</button>
         <button onclick="openModal('irModal');closeDropdowns()"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Contact support</button>
@@ -1288,7 +1296,7 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
           <div class="profile-field"><label>Account ID</label><span id="pfCode">MCP-LP-2847</span></div>
           <div class="profile-field"><label>Organisation</label><span id="pfEntity">Whitfield Family Office LLC</span></div>
           <div class="profile-field"><label>Account type</label><span id="pfType">Institutional LP</span></div>
-          <div class="profile-field"><label>Email</label><span id="pfEmail">j.whitfield@meridian.com</span></div>
+          <div class="profile-field"><label>Email</label><span id="pfEmail">rampy007@gmail.com</span></div>
           <div class="profile-field"><label>Customer success manager</label><span>Sarah Chen</span></div>
           <div class="profile-field"><label>Member since</label><span>March 12, 2017</span></div>
           <div class="profile-field"><label>Coverage</label><span>TMT, Industrials, Healthcare, Energy</span></div>
@@ -1613,6 +1621,7 @@ const CONFIG = {
   MAX_UPLOAD_MB: 50,
 };
 const BRAND = 'DataIntelligence';
+const DEMO_EMAIL = 'rampy007@gmail.com';     // seeded demo account (app/seed_data.py)
 
 /* ── STATE & UTILITIES ─────────────────────────────────────────────── */
 const state = {
@@ -1715,8 +1724,8 @@ function setPill(cls, text) { const p = $('modePill'); p.className = 'mode-pill 
 
 function setMode(mode, base = '', health = null, warning = null) {
   state.mode = mode; state.api = base;
-  if (mode === 'live') setPill('live', 'Live API · secure email verification');
-  else setPill('demo', 'Demo mode · sample data, no real emails');
+  if (mode === 'live') setPill('live', 'Secure sign-in');
+  else setPill('demo', 'Demo mode');
   $('demoTag').hidden = mode !== 'demo';
   renderDemoCreds();
   $('connInfo').textContent = mode === 'live'
@@ -1799,10 +1808,11 @@ function switchToCode() {
 const pwMfa = { code: null, email: '', expires: 0, cooldown: null };
 
 function renderDemoCreds() {
-  const code = pwMfa.code && Date.now() < pwMfa.expires ? `<code class="mfa">${esc(pwMfa.code)}</code>` : 'tap “Send code”';
-  $('demoCreds').innerHTML = (state.mode === 'demo'
-    ? 'Demo mode: any email and password will work.'
-    : 'Demo login: <code>j.whitfield@meridian.com</code> / <code>ChangeMe123!</code>') + `<br>MFA code: ${code}`;
+  const fresh = pwMfa.code && Date.now() < pwMfa.expires;
+  const code = fresh ? `<dd class="mfa">${esc(pwMfa.code)}</dd>` : '<dd class="wait">Select “Send code” to get one</dd>';
+  $('demoCreds').innerHTML = state.mode === 'demo'
+    ? `<span class="ttl">Demo mode</span><dl><dt>Sign-in</dt><dd class="wait">Any email and password will work</dd><dt>Code</dt>${code}</dl>`
+    : `<span class="ttl">Demo account</span><dl><dt>Email</dt><dd>${esc(DEMO_EMAIL)}</dd><dt>Password</dt><dd>ChangeMe123!</dd><dt>Code</dt>${code}</dl>`;
 }
 
 function startMfaCooldown(sec) {
@@ -1816,7 +1826,7 @@ async function sendPasswordMfa() {
   const email = $('loginEmail').value.trim().toLowerCase();
   const password = $('loginPass').value;
   if (!isEmail(email)) return showError('loginError', 'Please enter a valid email address.');
-  if (!password) return showError('loginError', 'Please enter your password first.');
+  if (!password) return showError('loginError', 'Enter your password first.');
   const btn = $('mfaSendBtn');
   setBusy(btn, true, 'Sending…');
   try {
@@ -1824,13 +1834,13 @@ async function sendPasswordMfa() {
     if (state.mode === 'demo') {
       await sleep(400);
       shown = String(Math.floor(1000 + Math.random() * 9000));
-      $('mfaHelp').innerHTML = 'Demo mode doesn\'t send email — your new 4-digit code is shown below.';
+      $('mfaHelp').innerHTML = 'Demo mode doesn\'t send email — your code is shown below.';
     } else {
       const d = await api('/api/auth/password-mfa', { method: 'POST', body: { email, password }, auth: false });
       shown = d.demo_otp || null;
       $('mfaHelp').innerHTML = d.delivery === 'email'
-        ? `We've emailed a 4-digit code to <strong>${esc(d.email_masked)}</strong> · valid 10 minutes.*`
-        : 'Your new 4-digit code is shown below · valid 10 minutes.';
+        ? `Code sent to <strong>${esc(d.email_masked)}</strong>, valid for 10 minutes. Not in your inbox? Check your spam folder.`
+        : 'Your code is shown below. It\'s valid for 10 minutes.';
     }
     Object.assign(pwMfa, { code: shown, email, expires: Date.now() + 10 * 60 * 1000 });
     $('loginMfa').value = ''; $('loginMfa').focus();
@@ -1851,15 +1861,15 @@ async function passwordLogin() {
   if (!isEmail(email)) return showError('loginError', 'Please enter a valid email address.');
   if (!password) return showError('loginError', 'Please enter your password.');
   if (!pwMfa.expires || pwMfa.email !== email) return sendPasswordMfa();   // first press emails the code
-  if (!/^\d{4}$/.test(mfa)) { $('loginMfa').focus(); return showError('loginError', 'Enter the 4-digit MFA code we emailed you.'); }
+  if (!/^\d{4}$/.test(mfa)) { $('loginMfa').focus(); return showError('loginError', 'Enter the 4-digit code we emailed you.'); }
   const btn = $('loginBtn');
   setBusy(btn, true, 'Signing in…');
   try {
     state.email = email;
     if (state.mode === 'demo') {
       await sleep(450);
-      if (Date.now() > pwMfa.expires) throw new Error('This MFA code has expired. Tap Resend for a new one.');
-      if (mfa !== pwMfa.code) throw new Error('Incorrect MFA code. Check the latest code and try again.');
+      if (Date.now() > pwMfa.expires) throw new Error('This code has expired. Select Resend to get a new one.');
+      if (mfa !== pwMfa.code) throw new Error('That code is incorrect. Check the latest code and try again.');
       state.token = 'demo'; state.user = demoUser(email);
     } else {
       const d = await api('/api/auth/login-password', { method: 'POST', body: { email, password, mfa_code: mfa }, auth: false });
@@ -1899,7 +1909,7 @@ async function sendCode(email, isResend) {
   } else {
     const d = await api('/api/auth/request-otp', { method: 'POST', body: { email }, auth: false });
     $('mfaSubText').innerHTML = d.delivery === 'email'
-      ? `We've emailed a 6-digit code to <strong>${esc(d.email_masked)}</strong>. Not in your inbox? Please check your spam or junk folder.`
+      ? `We've emailed a 6-digit code to <strong>${esc(d.email_masked)}</strong>. Not in your inbox? Check your spam or junk folder.`
       : `Use the 6-digit code below to sign in as <strong>${esc(d.email_masked)}</strong>.`;
     $('mfaCodeHint').innerHTML = d.demo_otp ? `${label}: <strong>${esc(d.demo_otp)}</strong>` : '';
   }
@@ -1911,7 +1921,7 @@ function finishLogin() {
   state.password = ''; state.demoCode = null; clearInterval(otpTimer);
   Object.assign(pwMfa, { code: null, email: '', expires: 0 }); $('loginMfa').value = '';
   clearInterval(pwMfa.cooldown); $('mfaSendBtn').disabled = false; $('mfaSendBtn').textContent = 'Send code';
-  $('mfaHelp').textContent = 'A new 4-digit code is emailed each time you sign in.*'; renderDemoCreds();
+  $('mfaHelp').textContent = 'We email you a new code every time you sign in.'; renderDemoCreds();
   $('newPass').value = ''; $('newPass2').value = '';
   saveSession();
   enterApp(true);
@@ -1930,7 +1940,7 @@ function startOtpTimer() {
   clearInterval(otpTimer);
   const tick = () => {
     const s = Math.max(0, Math.round((state.otpExpires - Date.now()) / 1000));
-    $('mfaTimer').textContent = s ? `Code expires in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : 'Code expired — tap Resend.';
+    $('mfaTimer').textContent = s ? `Code expires in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : 'Code expired — select Resend.';
     if (!s) clearInterval(otpTimer);
   };
   tick(); otpTimer = setInterval(tick, 1000);
@@ -1988,7 +1998,7 @@ async function savePassword() {
 }
 
 function demoUser(email) {
-  const known = email === 'j.whitfield@meridian.com';
+  const known = email === DEMO_EMAIL;
   const local = email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   return {
     full_name: known ? 'James R. Whitfield' : (local || 'Demo User'),
@@ -2085,7 +2095,7 @@ function startIdleWatch() { idleEvents.forEach(e => document.addEventListener(e,
 function stopIdleWatch() { clearTimeout(idleTimer); idleEvents.forEach(e => document.removeEventListener(e, resetIdle, { capture: true })); }
 
 function applyUser() {
-  const u = state.user || demoUser(state.email || 'j.whitfield@meridian.com');
+  const u = state.user || demoUser(state.email || DEMO_EMAIL);
   const parts = u.full_name.trim().split(/\s+/);
   const first = parts[0], last = parts[parts.length - 1];
   const initials = (first[0] + (parts.length > 1 ? last[0] : '')).toUpperCase();

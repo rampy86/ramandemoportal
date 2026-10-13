@@ -26,7 +26,7 @@ DEMO_INVESTORS = [
     {
         "investor_code": "MCP-LP-2847",
         "full_name": "James Whitfield",
-        "email": "j.whitfield@meridian.com",
+        "email": "rampy007@gmail.com",
         "entity_name": "Whitfield Family Office LLC",
         "investor_type": "Institutional LP",
     },
