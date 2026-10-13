@@ -85,22 +85,27 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 
 /* ── AUTH ── */
 #authWrap{position:fixed;inset:0;display:flex;z-index:1000;overflow:auto;background:var(--surface)}
-.auth-side{flex:1 1 50%;background:linear-gradient(150deg,var(--brand-ink) 0%,#0B4A4F 60%,var(--brand) 140%);color:#fff;padding:3rem 3.5rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;min-height:100%}
+.auth-side{flex:1 1 50%;background:linear-gradient(155deg,#06232A 0%,var(--brand-ink) 45%,#0B4F52 100%);color:#fff;padding:3rem 3.5rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;min-height:100%}
+.auth-side::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.045) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 30% 40%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 80% 70% at 30% 40%,#000 30%,transparent 80%);pointer-events:none}
+.auth-side>*{position:relative;z-index:1}
 .auth-side::after{content:'';position:absolute;right:-120px;bottom:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(25,194,168,0.25),transparent 70%);pointer-events:none}
 .auth-side .brand-mark{width:40px;height:40px}
 .auth-side .brand-word{font-size:1.3rem}
-.auth-pitch{max-width:440px;position:relative;z-index:1}
-.auth-pitch h2{font-size:2rem;font-weight:700;line-height:1.2;letter-spacing:-0.02em;margin-bottom:1rem}
+.auth-pitch{max-width:520px}
+.auth-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--mint);margin-bottom:1.1rem}
+.auth-eyebrow::before{content:'';width:22px;height:2px;border-radius:2px;background:var(--mint)}
+.auth-pitch h2{font-size:2.5rem;font-weight:700;line-height:1.12;letter-spacing:-0.03em;margin-bottom:1rem}
 .auth-pitch h2 em{font-style:normal;color:var(--mint)}
-.auth-pitch p{font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.78);margin-bottom:1.6rem}
-.auth-feats{list-style:none;display:grid;gap:12px}
-.auth-feats li{display:flex;gap:10px;align-items:flex-start;font-size:0.88rem;color:rgba(255,255,255,0.88)}
-.auth-feats li svg{color:var(--mint);margin-top:1px}
-.auth-side small{font-size:0.75rem;color:rgba(255,255,255,0.55);position:relative;z-index:1}
-.auth-main{flex:1 1 50%;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:var(--bg)}
-.auth-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:2.2rem 2.2rem 1.9rem;width:410px;max-width:100%;animation:fadeUp 0.45s ease both}
-.auth-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:1.4rem}
-.auth-box h1{font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.2}
+.auth-pitch p{font-size:0.98rem;line-height:1.6;color:rgba(255,255,255,0.72);margin-bottom:2rem;max-width:440px}
+.auth-feats{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.auth-feats li{display:flex;gap:12px;align-items:center;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:0.84rem;font-weight:500;line-height:1.4;color:#fff;backdrop-filter:blur(4px)}
+.auth-feats li span.fi{width:34px;height:34px;border-radius:9px;background:rgba(25,194,168,0.16);color:var(--mint);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.auth-feats li span.fi svg{width:17px;height:17px}
+.auth-side small{font-size:0.74rem;color:rgba(255,255,255,0.5)}
+.auth-main{flex:1 1 50%;min-width:0;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:var(--bg)}
+.auth-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:2rem 2rem 1.7rem;width:380px;max-width:100%;animation:fadeUp 0.45s ease both}
+.auth-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:1.2rem}
+.auth-box h1{font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.2}
 .auth-box .auth-sub{font-size:0.86rem;color:var(--muted);margin-top:4px}
 
 .mode-pill{display:inline-flex;align-items:center;gap:6px;margin-top:4px;flex-shrink:0;white-space:nowrap;font-size:0.7rem;font-weight:500;color:var(--muted);padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--bg)}
@@ -111,22 +116,18 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .mode-pill.live i{background:var(--brand)}
 .mode-pill.wait i{animation:pulse 1.2s infinite;background:var(--brand)}
 
-.auth-tabs{display:flex;gap:4px;padding:4px;margin-bottom:1.3rem;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.auth-tabs{display:flex;gap:4px;padding:3px;margin-bottom:1.2rem;background:var(--bg);border:1px solid var(--line);border-radius:10px}
 .auth-tabs.hidden{display:none}
-.auth-tab{flex:1;height:36px;border:none;background:none;border-radius:7px;color:var(--muted);font-size:0.84rem;font-weight:500;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.auth-tab{flex:1;height:32px;border:none;background:none;border-radius:7px;color:var(--muted);font-size:0.8rem;font-weight:500;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .auth-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .auth-tab:hover{color:var(--ink)}
 .auth-tab.active{background:var(--surface);color:var(--brand-600);box-shadow:var(--shadow-sm)}
-.auth-lead{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:1.1rem}
-.trial-head{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.trial-head h2{font-size:0.86rem;font-weight:600;color:var(--ink)}
-.auth-lead strong{color:var(--ink);font-weight:600}
 .auth-step{display:none}
 .auth-step.active{display:block;animation:fadeUp 0.3s ease both}
 
-.form-group{margin-bottom:1rem}
-.form-group label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:0.8rem;font-weight:600;color:var(--ink-2);margin-bottom:6px}
-.form-group input,.form-group select{width:100%;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:0 14px;font-family:inherit;font-size:0.9rem;color:var(--ink);outline:none;transition:border-color 0.15s,box-shadow 0.15s}
+.form-group{margin-bottom:0.9rem}
+.form-group label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:0.76rem;font-weight:600;color:var(--ink-2);margin-bottom:6px}
+.form-group input,.form-group select{width:100%;height:42px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:0 14px;font-family:inherit;font-size:0.9rem;color:var(--ink);outline:none;transition:border-color 0.15s,box-shadow 0.15s}
 .form-group input::placeholder{color:#A3AFC0}
 .form-group input:focus,.form-group select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(14,140,127,0.14)}
 .pass-wrap{position:relative}
@@ -134,7 +135,7 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .pass-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:600;cursor:pointer;padding:6px;letter-spacing:0.04em}
 .pass-toggle:hover{color:var(--brand)}
 
-.auth-btn{width:100%;height:46px;background:var(--brand);border:none;border-radius:var(--radius);font-family:inherit;font-size:0.92rem;font-weight:600;color:#fff;cursor:pointer;transition:background 0.15s,transform 0.15s;margin-top:0.3rem;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.auth-btn{width:100%;height:44px;background:var(--brand);border:none;border-radius:var(--radius);font-family:inherit;font-size:0.92rem;font-weight:600;color:#fff;cursor:pointer;transition:background 0.15s,transform 0.15s;margin-top:0.3rem;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .auth-btn:hover{background:var(--brand-600)}
 .auth-btn:active{transform:translateY(1px)}
 .auth-btn[disabled]{opacity:0.65;cursor:wait}
@@ -145,20 +146,25 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .auth-hint{font-size:0.82rem;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.6}
 .auth-hint .link,.link{color:var(--brand);cursor:pointer;background:none;border:none;font-size:inherit;font-weight:500;padding:0;font-family:inherit}
 .auth-hint .link:hover,.link:hover{text-decoration:underline}
-.demo-creds{margin-top:1.2rem;padding:10px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:0.8rem;color:var(--muted)}
-.demo-creds .ttl{display:block;font-size:0.64rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
-.demo-creds dl{display:grid;grid-template-columns:auto 1fr;gap:3px 14px}
+.demo-creds{margin-top:1.1rem;padding:9px 12px;border-radius:10px;background:var(--bg);border:1px dashed var(--line);font-size:0.74rem;color:var(--muted)}
+.demo-creds .ttl{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:4px}
+.demo-creds dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px}
 .demo-creds dt{color:var(--muted)}
 .demo-creds dd{color:var(--ink);font-weight:600;overflow-wrap:anywhere}
 .demo-creds dd.mfa{color:var(--brand-600);letter-spacing:0.14em}
 .demo-creds dd.wait{font-weight:400;color:var(--muted);letter-spacing:0}
-.auth-note{font-size:0.76rem;color:var(--muted);margin-top:0.9rem;line-height:1.5;text-align:center}
+.auth-note{font-size:0.72rem;color:var(--muted);margin-top:0.8rem;line-height:1.5;text-align:center}
+.auth-note .link{font-size:inherit}
+.trial-line{display:flex;align-items:center;gap:8px;margin-bottom:1rem;font-size:0.76rem;color:var(--muted)}
 .lbl-note{font-weight:400;color:var(--muted);font-size:0.74rem}
 .mfa-wrap{display:flex;gap:8px}
 .mfa-wrap input{flex:1;min-width:0;letter-spacing:0.3em;font-weight:600}
 .mfa-wrap input:placeholder-shown{letter-spacing:normal;font-weight:400}
-.mfa-wrap .btn{height:44px;flex-shrink:0}
-.mfa-help{font-size:0.76rem;color:var(--muted);margin-top:6px;line-height:1.45}
+.mfa-wrap .btn{height:42px;flex-shrink:0;font-size:0.8rem}
+.mfa-help{font-size:0.74rem;color:var(--muted);margin-top:6px;line-height:1.45}
+.mfa-help:empty{display:none}
+.lbl-link{font-size:0.74rem;font-weight:500;color:var(--brand);background:none;border:none;cursor:pointer;font-family:inherit;padding:0}
+.lbl-link:hover{text-decoration:underline}
 .mfa-help strong{color:var(--brand-600)}
 .trial-badge{display:inline-block;font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--brand-600);background:var(--brand-50);border:1px solid var(--brand-100);border-radius:20px;padding:1px 7px}
 
@@ -853,13 +859,14 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
       <span class="brand-word"><b>Data</b><span>Intelligence</span><i>.</i></span>
     </div>
     <div class="auth-pitch">
+      <span class="auth-eyebrow">Market &amp; M&amp;A intelligence</span>
       <h2>Find the signal in every <em>deal</em>, call and filing.</h2>
-      <p>One workspace for fund documents, earnings calls, transcripts, broker research and M&amp;A intelligence — searchable in seconds.</p>
+      <p>Earnings calls, transcripts, expert interviews, research and fund documents — in one searchable workspace.</p>
       <ul class="auth-feats">
-        <li><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Search across transcripts, research and filings at once</li>
-        <li><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Track live M&amp;A deals from rumour to close</li>
-        <li><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Smart summaries and sentiment on every earnings call</li>
-        <li><svg class="i" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Secure fund and investor document vault with MFA</li>
+        <li><span class="fi"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>Search transcripts, research and filings at once</li>
+        <li><span class="fi"><svg class="i" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Track live M&amp;A deals from rumour to close</li>
+        <li><span class="fi"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg></span>Smart summaries and sentiment on every call</li>
+        <li><span class="fi"><svg class="i" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>Secure Fund and Investor Documents vault with MFA</li>
       </ul>
     </div>
     <small>© 2026 DataIntelligence · Prototype with illustrative sample data</small>
@@ -888,37 +895,34 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
         <input type="email" id="loginEmail" placeholder="you@company.com" value="rampy007@gmail.com" autocomplete="username" required>
       </div>
       <div class="form-group">
-        <label for="loginPass">Password</label>
+        <label for="loginPass">Password <button type="button" class="lbl-link" onclick="switchToCode()">Forgot password?</button></label>
         <div class="pass-wrap">
           <input type="password" id="loginPass" placeholder="••••••••••" value="ChangeMe123!" autocomplete="current-password" required>
           <button type="button" class="pass-toggle" onclick="togglePass(this)">SHOW</button>
         </div>
       </div>
       <div class="form-group">
-        <label for="loginMfa">Verification code <span class="lbl-note">4 digits, sent by email</span></label>
+        <label for="loginMfa">Verification code <span class="lbl-note">sent by email</span></label>
         <div class="mfa-wrap">
           <input type="text" id="loginMfa" inputmode="numeric" maxlength="4" placeholder="4-digit code" autocomplete="one-time-code" aria-describedby="mfaHelp">
           <button type="button" class="btn" id="mfaSendBtn" onclick="sendPasswordMfa()">Send code</button>
         </div>
-        <p class="mfa-help" id="mfaHelp">We email you a new code every time you sign in.</p>
+        <p class="mfa-help" id="mfaHelp"></p>
       </div>
       <button class="auth-btn" type="submit" id="loginBtn">Sign in</button>
-      <p class="auth-hint">Forgot your password? <button type="button" class="link" onclick="switchToCode()">Use an email code</button></p>
       <div class="demo-creds" id="demoCreds"></div>
     </form>
 
     <!-- STEP 1b: EMAIL ONE-TIME CODE -->
     <form class="auth-step" id="stepOtpEmail" novalidate onsubmit="event.preventDefault();requestCode()">
-      <div class="trial-head"><h2>Start your free trial</h2><span class="trial-badge">Limited features</span></div>
-      <p class="auth-lead">Enter your email and we'll send you a 6-digit sign-in code.* No password needed — your trial account is created the first time you sign in.</p>
+      <div class="trial-line"><span class="trial-badge">Free trial</span>Limited features · no password needed</div>
       <div class="auth-error" id="otpReqError" role="alert"></div>
       <div class="form-group">
         <label for="otpEmail">Email</label>
         <input type="email" id="otpEmail" placeholder="you@company.com" autocomplete="email" required>
       </div>
-      <button class="auth-btn" type="submit" id="sendCodeBtn">Email me a code</button>
-      <p class="auth-note">* Can't find the email? Check your spam or junk folder.</p>
-      <p class="auth-hint">Need help? <button type="button" class="link" onclick="openModal('irModal')">Contact support</button></p>
+      <button class="auth-btn" type="submit" id="sendCodeBtn">Email me a 6-digit code*</button>
+      <p class="auth-note">* Not in your inbox? Check spam or junk. · <button type="button" class="link" onclick="openModal('irModal')">Need help?</button></p>
     </form>
 
     <!-- STEP 2: MFA -->
@@ -1809,9 +1813,9 @@ const pwMfa = { code: null, email: '', expires: 0, cooldown: null };
 
 function renderDemoCreds() {
   const fresh = pwMfa.code && Date.now() < pwMfa.expires;
-  const code = fresh ? `<dd class="mfa">${esc(pwMfa.code)}</dd>` : '<dd class="wait">Select “Send code” to get one</dd>';
+  const code = fresh ? `<dd class="mfa">${esc(pwMfa.code)}</dd>` : '<dd class="wait">Select “Send code”</dd>';
   $('demoCreds').innerHTML = state.mode === 'demo'
-    ? `<span class="ttl">Demo mode</span><dl><dt>Sign-in</dt><dd class="wait">Any email and password will work</dd><dt>Code</dt>${code}</dl>`
+    ? `<span class="ttl">Demo mode</span><dl><dt>Sign-in</dt><dd class="wait">Any email and password</dd><dt>Code</dt>${code}</dl>`
     : `<span class="ttl">Demo account</span><dl><dt>Email</dt><dd>${esc(DEMO_EMAIL)}</dd><dt>Password</dt><dd>ChangeMe123!</dd><dt>Code</dt>${code}</dl>`;
 }
 
@@ -1834,13 +1838,13 @@ async function sendPasswordMfa() {
     if (state.mode === 'demo') {
       await sleep(400);
       shown = String(Math.floor(1000 + Math.random() * 9000));
-      $('mfaHelp').innerHTML = 'Demo mode doesn\'t send email — your code is shown below.';
+      $('mfaHelp').innerHTML = 'Demo mode: code shown below · valid 10 min.';
     } else {
       const d = await api('/api/auth/password-mfa', { method: 'POST', body: { email, password }, auth: false });
       shown = d.demo_otp || null;
       $('mfaHelp').innerHTML = d.delivery === 'email'
-        ? `Code sent to <strong>${esc(d.email_masked)}</strong>, valid for 10 minutes. Not in your inbox? Check your spam folder.`
-        : 'Your code is shown below. It\'s valid for 10 minutes.';
+        ? `Sent to <strong>${esc(d.email_masked)}</strong> · valid 10 min · check spam if it's not there.`
+        : 'Code shown below · valid 10 min.';
     }
     Object.assign(pwMfa, { code: shown, email, expires: Date.now() + 10 * 60 * 1000 });
     $('loginMfa').value = ''; $('loginMfa').focus();
@@ -1921,7 +1925,7 @@ function finishLogin() {
   state.password = ''; state.demoCode = null; clearInterval(otpTimer);
   Object.assign(pwMfa, { code: null, email: '', expires: 0 }); $('loginMfa').value = '';
   clearInterval(pwMfa.cooldown); $('mfaSendBtn').disabled = false; $('mfaSendBtn').textContent = 'Send code';
-  $('mfaHelp').textContent = 'We email you a new code every time you sign in.'; renderDemoCreds();
+  $('mfaHelp').textContent = ''; renderDemoCreds();
   $('newPass').value = ''; $('newPass2').value = '';
   saveSession();
   enterApp(true);
