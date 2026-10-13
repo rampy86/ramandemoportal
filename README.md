@@ -77,8 +77,10 @@ Portal: [http://localhost:8000](http://localhost:8000) · API docs: [http://loca
 ### Authentication — two ways to sign in
 
 ```
-A) Email + password
-POST /api/auth/login-password   { "email": "...", "password": "..." }
+A) Email + password + 4-digit MFA code (emailed fresh for every sign-in)
+POST /api/auth/password-mfa     { "email": "...", "password": "..." }
+  ← { "message": "...", "email_masked": "j.***@x.com", "delivery": "email|console", "demo_otp": null }
+POST /api/auth/login-password   { "email": "...", "password": "...", "mfa_code": "4821" }
   ← { "access_token": "...", "refresh_token": "...", "expires_in": 3600 }
 
 B) Email one-time code (passwordless; new emails self-register if ALLOW_OTP_SIGNUP=true)

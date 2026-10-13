@@ -20,6 +20,11 @@ class LoginRequest(BaseModel):
     _norm = field_validator("email", mode="after")(_lower)
 
 
+class PasswordLoginRequest(LoginRequest):
+    """Password sign-in with the 4-digit MFA code emailed by /password-mfa."""
+    mfa_code: str = Field(pattern=r"^\d{4}$")
+
+
 class OTPRequest(BaseModel):
     email: EmailStr
 
