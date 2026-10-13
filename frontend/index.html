@@ -279,18 +279,165 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 .chart-box.sm{height:200px}
 .chart-box.lg{height:260px}
 
-/* HERO SEARCH (dashboard) */
-.hero{background:linear-gradient(120deg,#FFFFFF 0%,#F0FAF8 100%);border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.8rem;margin-bottom:1.4rem;box-shadow:var(--shadow-sm);display:grid;grid-template-columns:1fr auto;gap:1rem 2rem;align-items:center;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(25,194,168,0.14),transparent 70%);pointer-events:none}
-.hero>*{min-width:0}
-.hero h2{font-size:1.45rem;font-weight:700;letter-spacing:-0.02em}
-.hero p{font-size:0.86rem;color:var(--muted);margin-top:3px}
-.hero-search{grid-column:1 / -1;display:flex;align-items:center;gap:10px;height:52px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:0 8px 0 16px;box-shadow:var(--shadow);transition:border-color 0.15s,box-shadow 0.15s;position:relative;z-index:1}
-.hero-search:focus-within{border-color:var(--brand);box-shadow:0 0 0 4px rgba(14,140,127,0.12)}
-.hero-search svg{color:var(--muted)}
-.hero-search input{flex:1;min-width:0;border:none;outline:none;font-family:inherit;font-size:0.98rem;color:var(--ink);background:none}
-.hero-search input::placeholder{color:#A3AFC0}
-.hero-chips{grid-column:1 / -1;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:0.78rem;color:var(--muted);position:relative;z-index:1}
+/* DASHBOARD */
+.dash{display:flex;flex-direction:column;gap:12px;width:100%}
+.dash-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.dash-top h2{font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;line-height:1.25}
+.dash-top p{font-size:0.8rem;color:var(--muted);margin-top:1px}
+.dash-actions{display:flex;gap:6px}
+.icon-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.icon-btn.primary:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:0.75rem 0.85rem;display:flex;gap:10px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;min-width:0}
+.kpi:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-1px)}
+.kpi .metric-icon{width:34px;height:34px;border-radius:9px}
+.kpi .metric-icon svg.i{width:17px;height:17px}
+.kpi-body{min-width:0;flex:1}
+.kpi-label{font-size:0.72rem;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:12px}
+.kpi-val{font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2}
+.kpi-sub{font-size:0.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-sub b{color:var(--brand-600);font-weight:600}
+.kpi-sub b.red{color:var(--rose)}
+.kpi .go{position:absolute;right:9px;top:9px;color:#C2CBD7;width:13px;height:13px;transition:color .15s}
+.kpi:hover .go{color:var(--brand)}
+.metric-icon.rose{background:#FDECEF;color:var(--rose)}
+.metric-icon.green{background:#E8F7EE;color:var(--green)}
+.dash-row{display:grid;gap:12px;min-height:0}
+.dash-row.r1{grid-template-columns:1.05fr 1.25fr 1fr}
+.dash-row.r2{grid-template-columns:2fr 1fr}
+.dash .card{display:flex;flex-direction:column;min-height:0;padding:0.95rem 1.1rem}
+.dash .card-title{margin-bottom:0.55rem}
+.scroll-y{flex:1;min-height:0;overflow-y:auto;margin-right:-6px;padding-right:6px}
+.scroll-y::-webkit-scrollbar{width:6px}
+.scroll-y::-webkit-scrollbar-thumb{background:#D5DCE5;border-radius:3px}
+.dash .feed-item{padding:8px 0}
+.dash .chart-box{flex:1;min-height:150px;height:auto}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;margin-top:8px;border-top:1px solid var(--line-2);font-size:0.76rem;color:var(--muted)}
+.card-foot .link{font-size:0.78rem}
+
+/* Upcoming earnings (prominent) */
+.ue-card{border-top:3px solid var(--brand)}
+.ue-live{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;background:#FEF2F3;border:1px solid #F9CDD3;margin-bottom:6px;cursor:pointer;transition:border-color .15s}
+.ue-live:hover{border-color:var(--rose)}
+.ue-live svg{color:var(--rose)}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0;animation:pulse 1.2s infinite;display:inline-block}
+.live-pill{display:inline-flex;align-items:center;gap:5px;font-size:0.64rem;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--rose);border-radius:4px;padding:2px 7px;flex-shrink:0}
+.live-pill i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
+.ue-item{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line-2)}
+.ue-item:last-child{border-bottom:none}
+.ue-date{width:46px;flex-shrink:0;border-radius:9px;border:1px solid var(--brand-100);overflow:hidden;text-align:center;background:#fff}
+.ue-date span{display:block;background:var(--brand);color:#fff;font-size:0.58rem;font-weight:700;letter-spacing:.08em;padding:2px 0}
+.ue-date b{display:block;font-size:1.05rem;color:var(--ink);padding:1px 0 2px;line-height:1.2}
+.ue-body{flex:1;min-width:0;cursor:pointer}
+.ue-body:hover .ue-co{color:var(--brand-600)}
+.ue-co{font-size:0.84rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ue-meta{font-size:0.72rem;color:var(--muted);margin-top:1px}
+.ue-meta b{color:var(--brand-600);font-weight:600}
+.remind-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s}
+.remind-btn:hover,.remind-btn.on{border-color:var(--brand);color:var(--brand);background:var(--brand-50)}
+.remind-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.remind-btn.on svg{fill:currentColor}
+
+/* Smart summary actions */
+.ai-acts{list-style:none;display:flex;flex-direction:column;gap:4px}
+.ai-acts button{width:100%;display:flex;gap:9px;align-items:flex-start;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:6px 8px;font-family:inherit;font-size:0.8rem;line-height:1.45;color:var(--ink-2);cursor:pointer;transition:all .15s}
+.ai-acts button:hover{background:#fff;border-color:var(--brand-100);box-shadow:var(--shadow-sm)}
+.ai-acts button b{color:var(--ink)}
+.ai-acts .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);margin-top:7px;flex-shrink:0}
+.ai-acts .txt{flex:1;min-width:0}
+.ai-acts .act{display:block;font-size:0.7rem;font-weight:600;color:var(--brand-600);margin-top:2px;opacity:.7;transition:opacity .15s}
+.ai-acts button:hover .act{opacity:1}
+
+/* Watchlist */
+.wl-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.wl-chip{font-size:0.68rem;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--brand-50);color:var(--brand-600)}
+.wl-chip.kw{background:#FEF5E4;color:#9A6200}
+.wl-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:0.4rem}
+.wl-opt{display:flex;align-items:center;gap:8px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:0.82rem;color:var(--ink-2);transition:all .15s}
+.wl-opt:has(input:checked){border-color:var(--brand);background:var(--brand-50);color:var(--ink)}
+.wl-opt input{accent-color:var(--brand)}
+.wl-opt small{color:var(--muted);margin-left:auto;font-size:0.7rem}
+.kw-row{display:flex;gap:8px;margin-bottom:8px}
+.kw-row input{flex:1;height:36px;border:1px solid var(--line);border-radius:8px;padding:0 12px;font-family:inherit;font-size:0.84rem;outline:none;color:var(--ink)}
+.kw-row input:focus{border-color:var(--brand)}
+.kw-list{display:flex;gap:6px;flex-wrap:wrap;min-height:24px}
+.kw-list button{font-size:0.76rem;padding:3px 10px;border-radius:20px;border:1px solid #F3D9A4;background:#FFF8EB;color:#9A6200;cursor:pointer;font-family:inherit}
+.kw-list button:hover{border-color:var(--rose);color:var(--rose)}
+
+/* EXPERT INTERVIEWS */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.ex-head{display:flex;gap:12px;align-items:center}
+.ex-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.76rem;color:#fff;flex-shrink:0;letter-spacing:.02em}
+.ex-av.sm{width:36px;height:36px;font-size:0.68rem}
+.ex-role{font-size:0.86rem;font-weight:600;color:var(--ink);line-height:1.35}
+.ex-sub{font-size:0.74rem;color:var(--muted);margin-top:2px}
+.ex-topic{font-size:0.96rem;font-weight:600;color:var(--ink);line-height:1.4}
+.ex-quote{font-size:0.82rem;color:var(--ink-2);line-height:1.55;border-left:3px solid var(--mint);padding-left:10px;font-style:italic}
+.cleared{display:inline-flex;align-items:center;gap:4px;font-size:0.7rem;font-weight:600;color:var(--green)}
+.qa{margin-bottom:0.9rem}
+.qa .q{font-size:0.84rem;font-weight:600;color:var(--brand-600);margin-bottom:3px}
+.qa .a{font-size:0.87rem;color:var(--ink-2);line-height:1.65}
+
+/* TRANSCRIPT STAGES & VERSIONS */
+.seg small{font-size:0.7rem;color:var(--muted);font-weight:500}
+.ver-note{font-size:0.8rem;color:var(--muted);margin:-0.5rem 0 1rem;max-width:860px}
+.stage{display:inline-flex;align-items:center;gap:4px;font-size:0.64rem;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.03em;white-space:nowrap}
+.stage.live{background:var(--rose);color:#fff}
+.stage.live i{width:5px;height:5px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
+.stage.machine{background:#FEF5E4;color:#9A6200}
+.stage.final{background:#E8F7EE;color:#137A3A}
+.ver-tabs{display:inline-flex;gap:2px;padding:3px;background:#EAEEF3;border-radius:8px}
+.ver-tabs button{height:28px;padding:0 10px;border:none;background:none;border-radius:6px;font-family:inherit;font-size:0.76rem;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap}
+.ver-tabs button.active{background:#fff;color:var(--ink);font-weight:600;box-shadow:var(--shadow-sm)}
+.ver-tabs button:disabled{opacity:.4;cursor:not-allowed}
+.ver-banner{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;font-size:0.8rem;line-height:1.5;margin-bottom:1rem}
+.ver-banner.live{background:#FEF2F3;border:1px solid #F9CDD3;color:#9F1D33}
+.ver-banner.machine{background:#FFF8EB;border:1px solid #F3D9A4;color:#7A4E00}
+.ver-banner.final{background:#F0FAF4;border:1px solid #CDEBD8;color:#137A3A}
+.t-ts{font-size:0.7rem;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:500}
+.t-turn.raw p{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.82rem;color:#4A5568}
+.t-turn.new{animation:fadeUp .4s ease both}
+.lowconf{text-decoration:underline wavy #E89B0C;text-underline-offset:3px;cursor:help}
+.typing{display:inline-flex;gap:4px;padding:4px 0;align-items:center;font-size:0.74rem;color:var(--rose);font-weight:500}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:pulse 1s infinite}
+.typing i:nth-child(2){animation-delay:.2s}
+.typing i:nth-child(3){animation-delay:.4s}
+.tm-sep{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:10px 12px 2px;border-top:1px solid var(--line-2);margin-top:4px}
+.tab-menu button.sub{padding-left:22px}
+
+/* FUND CARDS WITH DOCUMENTS */
+.section-title{font-size:0.98rem;font-weight:700;color:var(--ink);margin:0 0 0.8rem}
+.fdocs{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.fdocs-hdr{display:flex;justify-content:space-between;align-items:center;font-size:0.76rem;color:var(--muted);margin-bottom:4px;gap:8px;flex-wrap:wrap}
+.fdocs-hdr span{display:flex;gap:6px}
+.fdoc{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:0.8rem;color:var(--ink-2);cursor:pointer;width:100%;background:none;border:none;text-align:left;font-family:inherit}
+.fdoc:hover{color:var(--brand-600)}
+.fdoc .doc-type-icon{width:24px;height:28px;font-size:0.48rem;padding-bottom:3px}
+.fdoc .doc-type-icon::before{width:7px;height:7px}
+.fdoc span.t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fdoc span.d{font-size:0.72rem;color:var(--muted);white-space:nowrap}
+.doc-link{font-size:0.72rem;font-weight:600;color:var(--brand-600);background:var(--brand-50);border:none;border-radius:20px;padding:3px 9px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.doc-link:hover{background:var(--brand-100)}
+.doc-link.zero{color:var(--muted);background:#EEF2F6}
+
+/* Dashboard fits the viewport on desktop; slim footer there */
+body.on-dash .foot-inner{display:none}
+body.on-dash .foot-bottom{margin-top:0;padding-top:0;border-top:none}
+body.on-dash .app-footer{padding:9px 24px}
+@media(min-width:961px) and (min-height:640px){
+  body.on-dash .content-inner{padding:14px 24px;display:flex;flex-direction:column;min-height:0}
+  body.on-dash #page-dashboard.active{flex:1;min-height:0;display:flex}
+  .dash-row{flex:1 1 0;min-height:190px}
+}
+@media(max-width:1280px){ .kpi-row{grid-template-columns:repeat(3,1fr)} }
+@media(max-width:960px){
+  .dash-row.r1,.dash-row.r2{grid-template-columns:1fr}
+  .scroll-y{max-height:360px}
+  .dash .chart-box{height:230px;flex:none}
+  .ex-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){ .kpi-row{grid-template-columns:1fr 1fr} .kpi .metric-icon{display:none} .kpi-label,.kpi-sub{white-space:normal} .wl-grid{grid-template-columns:1fr} }
+
 .chip{height:28px;padding:0 12px;border-radius:20px;font-size:0.78rem;font-family:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .chip:hover{border-color:var(--brand);color:var(--brand-600)}
 .chip.active{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -638,7 +785,6 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
   .page-hdr-right .search-bar{flex:1 1 100%}
   .modal{padding:1.3rem}
   .toast-stack{right:16px;bottom:16px}
-  .hero{padding:1.2rem;grid-template-columns:minmax(0,1fr)}
   .call-grid,.rs-grid{grid-template-columns:1fr}
   .brand-word{font-size:1rem}
 }
@@ -800,7 +946,6 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
       </button>
       <div class="user-info">
         <div class="name" id="uiName">J. Whitfield</div>
-        <div class="role" id="uiRole">Analyst</div>
       </div>
       <button class="avatar" id="uiAvatar" aria-label="Account menu" onclick="toggleDropdown('userMenu',event)">JW</button>
 
@@ -822,29 +967,26 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
   <div class="tabbar">
     <nav class="tabs" id="topNav" aria-label="Main">
       <button class="tab" data-page="dashboard"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard</button>
-      <button class="tab" data-menu="menuDocs" aria-haspopup="true" aria-expanded="false"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Documents<svg class="i caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
       <button class="tab" data-page="earnings"><svg class="i" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>Earnings Calls</button>
       <button class="tab" data-page="transcripts"><svg class="i" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>Transcripts</button>
+      <button class="tab" data-page="experts"><svg class="i" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Expert Interviews</button>
       <button class="tab" data-page="research"><svg class="i" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Research Reports</button>
       <button class="tab" data-menu="menuMA" aria-haspopup="true" aria-expanded="false"><svg class="i" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>M&amp;A Intelligence<svg class="i caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <button class="tab" data-menu="menuPortfolio" aria-haspopup="true" aria-expanded="false"><svg class="i" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Portfolio<svg class="i caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <button class="tab" data-menu="menuFunds" aria-haspopup="true" aria-expanded="false"><svg class="i" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>Funds<svg class="i caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
     </nav>
   </div>
 
   <!-- Tab dropdown menus (positioned with JS so they aren't clipped by the scrolling tab row) -->
-  <div class="tab-menu" id="menuDocs" role="menu">
-    <button data-page="docs-fund" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span><span><b>Fund Documents</b><small>Quarterly reports, LPAs, presentations</small></span></button>
-    <button data-page="docs-investor" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span><b>Investor Documents</b><small>Capital notices, tax packages, agreements</small></span></button>
-  </div>
   <div class="tab-menu" id="menuMA" role="menu">
     <button data-page="deals" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span><b>Deal Tracker</b><small>Live pipeline from rumour to close</small></span></button>
     <button data-page="comps" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span><span><b>Comparable Transactions</b><small>Precedent multiples &amp; premiums</small></span></button>
     <button data-page="filings" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span><b>Regulatory Filings</b><small>8-K, S-4, proxy, tender &amp; HSR filings</small></span></button>
   </div>
-  <div class="tab-menu" id="menuPortfolio" role="menu">
-    <button data-page="funds" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span><span><b>Fund Overview</b><small>Positions, NAV and allocation</small></span></button>
-    <button data-page="capital" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span><span><b>Capital Account</b><small>Commitments, calls and distributions</small></span></button>
-    <button data-page="reports" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span><span><b>Performance Analytics</b><small>J-curve, vintages and reports</small></span></button>
+  <div class="tab-menu" id="menuFunds" role="menu">
+    <button data-page="funds" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></span><span><b>Funds Overview</b><small>Positions, capital accounts &amp; documents on file</small></span></button>
+    <div class="tm-sep">Documents</div>
+    <button data-page="docs-fund" class="sub" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></span><span><b>Fund Documents</b><small>Quarterly reports, LPAs, presentations</small></span></button>
+    <button data-page="docs-investor" class="sub" role="menuitem"><span class="mi"><svg class="i" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span><b>Investor Documents</b><small>Capital notices, tax packages, agreements</small></span></button>
   </div>
 
   <!-- CONTENT -->
@@ -853,86 +995,46 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
 
     <!-- ─── DASHBOARD ─── -->
     <section class="page active" id="page-dashboard">
-      <div class="hero">
-        <div>
-          <h2 id="greeting">Good morning, James.</h2>
-          <p>Here's what moved across your watchlist · data as of Oct 13, 2026</p>
+      <div class="dash">
+        <div class="dash-top">
+          <div>
+            <h2 id="greeting">Good morning, James.</h2>
+            <p>Here's what moved across your coverage · as of <span id="asOf">Oct 13, 2026</span></p>
+          </div>
+          <div class="dash-actions">
+            <button class="icon-btn" title="Export dashboard as PDF" aria-label="Export PDF" onclick="printReport('summary','Q3 2026')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            <button class="icon-btn primary" title="Upload document" aria-label="Upload document" onclick="openUpload()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
+          </div>
         </div>
-        <div class="page-hdr-right" style="position:relative;z-index:1">
-          <button class="btn" onclick="printReport('summary','Q3 2026')"><svg class="i" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export PDF</button>
-          <button class="btn btn-primary" onclick="openUpload()"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Upload</button>
-        </div>
-        <form class="hero-search" onsubmit="event.preventDefault();runSearch($('heroSearch').value)">
-          <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-          <input id="heroSearch" placeholder="Ask about a company, deal or theme — e.g. “synergies Northwind”" aria-label="Search research">
-          <button class="btn btn-primary" type="submit">Search</button>
-        </form>
-        <div class="hero-chips">Trending:
-          <button class="chip" data-q="synergies">synergies</button>
-          <button class="chip" data-q="antitrust">antitrust</button>
-          <button class="chip" data-q="Apex TechCo">Apex TechCo</button>
-          <button class="chip" data-q="guidance">guidance</button>
-          <button class="chip" data-q="EV/EBITDA">EV/EBITDA</button>
-        </div>
-      </div>
 
-      <div class="notice">
-        <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p><strong>Capital call notice:</strong> Real Assets Fund IV — $2.4M due by <strong>October 31, 2026</strong><span id="callCountdown"></span>. <button class="link" onclick="openModal('callModal')">View details →</button></p>
-      </div>
+        <div class="kpi-row" id="kpiRow"></div>
 
-      <div class="metrics-grid">
-        <div class="metric-card"><div class="metric-icon"><svg class="i" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><div class="metric-label">Tracked M&amp;A deals</div><div class="metric-val" id="kpiDeals">—</div><div class="metric-sub"><span class="metric-change up">+3</span><span class="metric-period">this month</span></div></div></div>
-        <div class="metric-card"><div class="metric-icon blue"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="metric-label">New documents</div><div class="metric-val">148</div><div class="metric-sub"><span class="metric-change up">+22%</span><span class="metric-period">vs last week</span></div></div></div>
-        <div class="metric-card"><div class="metric-icon violet"><svg class="i" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div><div><div class="metric-label">Upcoming earnings calls</div><div class="metric-val" id="kpiCalls">—</div><div class="metric-sub"><span class="metric-period">next 14 days</span></div></div></div>
-        <div class="metric-card"><div class="metric-icon amber"><svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div><div class="metric-label">Watchlist alerts</div><div class="metric-val">17</div><div class="metric-sub"><span class="metric-change down">5 high priority</span></div></div></div>
-      </div>
+        <div class="dash-row r1">
+          <div class="card ue-card">
+            <div class="card-title">Upcoming earnings calls <button class="link" onclick="setCallFilter('all');navTo('earnings')">Full calendar →</button></div>
+            <div class="scroll-y" id="upcomingList"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">M&amp;A deal pipeline by stage <small>Click a bar to drill in</small></div>
+            <div class="chart-box"><canvas id="dealStageChart" aria-label="Deal value by stage"></canvas></div>
+            <div class="card-foot"><span id="pipeTotal"></span><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Open deal tracker →</button></div>
+          </div>
+          <div class="card ai-card">
+            <div class="card-title">Smart summary <span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI generated</span></div>
+            <ul class="ai-acts scroll-y" id="aiList"></ul>
+          </div>
+        </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">Keyword trends <small>Mentions across transcripts &amp; research, last 8 quarters</small></div>
-          <div class="chart-box"><canvas id="trendChart"></canvas></div>
-        </div>
-        <div class="card ai-card">
-          <div class="card-title">Smart summary <span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI generated</span></div>
-          <ul class="ai-list">
-            <li><b>Northwind × Crestline</b> cleared HSR waiting period; management reiterated <b>$310M run-rate synergies</b> by 2028.</li>
-            <li>Mentions of <b>“antitrust”</b> rose 38% QoQ, driven by the Orion–Vantage semiconductor review.</li>
-            <li><b>Apex TechCo</b> guided Q4 revenue above consensus; three brokers raised price targets.</li>
-            <li>Sponsor-backed take-privates now <b>41%</b> of announced deal value YTD, up from 29%.</li>
-          </ul>
-          <p class="ai-foot">Summarised from 64 documents · <button class="link" onclick="runSearch('synergies')">See sources</button></p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-title">Latest from your watchlist <button class="link" onclick="runSearch('')">View all</button></div>
-          <div id="feedList"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Upcoming earnings calls <button class="link" onclick="navTo('earnings')">Calendar</button></div>
-          <div id="upcomingList"></div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom:1.4rem">
-        <div class="card-title">M&amp;A deal pipeline <button class="link" onclick="navTo('deals')">Open deal tracker →</button></div>
-        <div class="table-wrap">
-          <table class="dtable">
-            <thead><tr><th>Target</th><th>Acquirer</th><th>Sector</th><th class="num">Value</th><th class="num">EV/EBITDA</th><th>Stage</th><th>Expected close</th></tr></thead>
-            <tbody id="dashDealBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Active fund positions <button class="link" onclick="navTo('funds')">View all funds →</button></div>
-        <div class="table-wrap">
-          <table class="dtable">
-            <thead><tr><th>Fund</th><th>Vintage</th><th class="num">Commitment</th><th class="num">Called</th><th class="num">Distributed</th><th class="num">NAV</th><th class="num">TVPI</th><th class="num">IRR</th><th>Status</th></tr></thead>
-            <tbody id="dashFundBody"></tbody>
-          </table>
+        <div class="dash-row r2">
+          <div class="card">
+            <div class="card-title">Latest from your watchlist <button class="btn btn-sm" onclick="openWatchlist()"><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Manage watchlist</button></div>
+            <div class="wl-chips" id="wlChips"></div>
+            <div class="scroll-y" id="feedList"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Latest expert interviews <button class="link" onclick="navTo('experts')">View all →</button></div>
+            <div class="scroll-y" id="dashExperts"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -946,9 +1048,9 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
       <div class="docs-list" id="srList"></div>
     </section>
 
-    <!-- ─── DOCUMENTS (Fund / Investor) ─── -->
+    <!-- ─── DOCUMENTS (Fund / Investor) — under the Funds tab ─── -->
     <section class="page" id="page-documents">
-      <div class="crumbs">Documents <span>›</span> <b id="docCrumb">Fund Documents</b></div>
+      <div class="crumbs">Funds <span>›</span> Documents <span>›</span> <b id="docCrumb">Fund Documents</b></div>
       <div class="page-hdr">
         <div class="page-hdr-left"><h2 id="docTitle">Fund Documents</h2><p id="docSub">Quarterly reports, fund agreements and investor presentations</p></div>
         <div class="page-hdr-right">
@@ -956,6 +1058,7 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input placeholder="Search documents…" id="docSearch" oninput="renderDocs()" aria-label="Search documents">
           </div>
+          <select class="btn" id="docFund" aria-label="Filter by fund"></select>
           <button class="btn btn-primary" onclick="openUpload()"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Upload</button>
         </div>
       </div>
@@ -971,7 +1074,7 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
     <!-- ─── EARNINGS CALLS ─── -->
     <section class="page" id="page-earnings">
       <div class="page-hdr">
-        <div class="page-hdr-left"><h2>Earnings Call Recordings</h2><p>Listen to calls with AI highlights, sentiment and key topics</p></div>
+        <div class="page-hdr-left"><h2>Earnings Call Recordings</h2><p>Live and recorded calls with AI highlights, sentiment and key topics</p></div>
         <div class="page-hdr-right">
           <div class="search-bar">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -980,18 +1083,14 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
           <select class="btn" id="callSector" onchange="renderCalls()" aria-label="Filter by sector"><option value="">All sectors</option></select>
         </div>
       </div>
-      <div class="filter-bar" id="callFilters">
-        <button class="chip active" data-f="all">All calls</button>
-        <button class="chip" data-f="recorded">Recorded</button>
-        <button class="chip" data-f="upcoming">Upcoming</button>
-      </div>
+      <div class="filter-bar" id="callFilters"></div>
       <div class="call-grid" id="callGrid"></div>
     </section>
 
     <!-- ─── TRANSCRIPTS ─── -->
     <section class="page" id="page-transcripts">
       <div class="page-hdr">
-        <div class="page-hdr-left"><h2>Transcripts</h2><p>Earnings calls, expert calls, investor days and M&amp;A conference calls</p></div>
+        <div class="page-hdr-left"><h2>Transcripts</h2><p>Every call is published in three stages: live, machine edited (~20 min) and human-edited final (~2 hrs)</p></div>
         <div class="page-hdr-right">
           <div class="search-bar">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -999,11 +1098,30 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
           </div>
         </div>
       </div>
+      <div class="seg" id="trStages"></div>
+      <p class="ver-note" id="trStageNote"></p>
       <div class="filter-bar" id="trFilters"></div>
       <div class="reader">
         <div class="t-list" id="trList"></div>
         <article class="t-doc" id="trDoc"></article>
       </div>
+    </section>
+
+    <!-- ─── EXPERT INTERVIEWS ─── -->
+    <section class="page" id="page-experts">
+      <div class="page-hdr">
+        <div class="page-hdr-left"><h2>Expert Interviews</h2><p>Compliance-cleared interviews with former executives, customers, competitors and industry specialists</p></div>
+        <div class="page-hdr-right">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="Search interviews…" id="exSearch" oninput="renderExperts()" aria-label="Search expert interviews">
+          </div>
+          <select class="btn" id="exSector" onchange="renderExperts()" aria-label="Filter by sector"><option value="">All sectors</option></select>
+          <button class="btn btn-primary" onclick="openModal('expertReqModal')"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Request an expert call</button>
+        </div>
+      </div>
+      <div class="filter-bar" id="exFilters"></div>
+      <div class="ex-grid" id="exGrid"></div>
     </section>
 
     <!-- ─── RESEARCH REPORTS ─── -->
@@ -1090,11 +1208,11 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
       <div class="docs-list" id="filList"></div>
     </section>
 
-    <!-- ─── FUND OVERVIEW ─── -->
+    <!-- ─── FUNDS OVERVIEW ─── -->
     <section class="page" id="page-funds">
-      <div class="crumbs">Portfolio <span>›</span> <b>Fund Overview</b></div>
+      <div class="crumbs">Funds <span>›</span> <b>Funds Overview</b></div>
       <div class="page-hdr">
-        <div class="page-hdr-left"><h2>Fund Overview</h2><p>All fund positions and performance metrics · Q3 2026</p></div>
+        <div class="page-hdr-left"><h2>Funds Overview</h2><p>Positions, capital accounts and the documents on file for each fund · Q3 2026</p></div>
         <div class="page-hdr-right">
           <div class="search-bar">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1108,23 +1226,27 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
             <option value="">All statuses</option>
             <option>Investing</option><option>Harvest</option><option>Open</option><option>Wound Down</option>
           </select>
+          <button class="btn" onclick="downloadStatementCSV()"><svg class="i" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Statement (CSV)</button>
+          <button class="btn btn-primary" onclick="openModal('reportModal')">Generate report</button>
         </div>
       </div>
       <div class="metrics-grid">
-        <div class="metric-card"><div class="metric-icon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div><div class="metric-label">Total committed</div><div class="metric-val">$48.5M</div><div class="metric-sub"><span class="metric-change up">+$3.2M</span><span class="metric-period">since last quarter</span></div></div></div>
+        <div class="metric-card"><div class="metric-icon"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><div><div class="metric-label">Total committed</div><div class="metric-val">$48.5M</div><div class="metric-sub"><span class="metric-change up">$42.2M</span><span class="metric-period">called · $6.3M uncalled</span></div></div></div>
         <div class="metric-card"><div class="metric-icon blue"><svg class="i" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg></div><div><div class="metric-label">Net asset value</div><div class="metric-val">$61.2M</div><div class="metric-sub"><span class="metric-change up">+8.4%</span><span class="metric-period">YTD</span></div></div></div>
-        <div class="metric-card"><div class="metric-icon violet"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="metric-label">Distributions received</div><div class="metric-val">$7.8M</div><div class="metric-sub"><span class="metric-change up">+$1.1M</span><span class="metric-period">this year</span></div></div></div>
-        <div class="metric-card"><div class="metric-icon amber"><svg class="i" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg></div><div><div class="metric-label">TVPI</div><div class="metric-val">1.74×</div><div class="metric-sub"><span class="metric-change up">+0.12×</span><span class="metric-period">vs prior year</span></div></div></div>
+        <div class="metric-card"><div class="metric-icon violet"><svg class="i" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="metric-label">Distributions received</div><div class="metric-val">$7.8M</div><div class="metric-sub"><span class="metric-change up">+$1.1M</span><span class="metric-period">this year · TVPI 1.74×</span></div></div></div>
+        <button class="metric-card kpi" style="padding:1.1rem 1.2rem" onclick="navTo('docs-fund')"><div class="metric-icon amber"><svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="metric-label">Documents on file</div><div class="metric-val" id="fundDocTotal">0</div><div class="metric-sub"><span class="metric-period" id="fundDocSplit"></span></div></div></button>
       </div>
       <div class="card" style="margin-bottom:1.4rem">
         <div class="card-title">Fund performance matrix <span class="count" id="fundCount"></span></div>
         <div class="table-wrap">
           <table class="dtable">
-            <thead><tr><th>Fund Name</th><th>Strategy</th><th>Vintage</th><th class="num">Fund Size</th><th class="num">Commitment</th><th class="num">% Called</th><th class="num">Distributions</th><th class="num">NAV</th><th class="num">MOIC</th><th class="num">Net IRR</th><th class="num">DPI</th><th>Status</th></tr></thead>
+            <thead><tr><th>Fund Name</th><th>Strategy</th><th>Vintage</th><th class="num">Fund Size</th><th class="num">Commitment</th><th class="num">% Called</th><th class="num">Distributions</th><th class="num">NAV</th><th class="num">MOIC</th><th class="num">Net IRR</th><th>Status</th><th>Documents</th></tr></thead>
             <tbody id="fundMatrixBody"></tbody>
           </table>
         </div>
       </div>
+      <h3 class="section-title">Capital accounts &amp; documents by fund</h3>
+      <div class="account-grid" id="accountGrid"></div>
       <div class="grid-2">
         <div class="card"><div class="card-title">Portfolio NAV over time ($M)</div><div class="chart-box"><canvas id="navChart"></canvas></div></div>
         <div class="card"><div class="card-title">Allocation by strategy</div><div class="chart-box"><canvas id="allocChart"></canvas></div></div>
@@ -1132,42 +1254,6 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
       <div class="grid-2 even">
         <div class="card"><div class="card-title">Net IRR by fund (%)</div><div class="chart-box sm"><canvas id="irrChart"></canvas></div></div>
         <div class="card"><div class="card-title">Capital call schedule ($M)</div><div class="chart-box sm"><canvas id="callChart"></canvas></div></div>
-      </div>
-    </section>
-
-    <!-- ─── CAPITAL ACCOUNT ─── -->
-    <section class="page" id="page-capital">
-      <div class="crumbs">Portfolio <span>›</span> <b>Capital Account</b></div>
-      <div class="page-hdr">
-        <div class="page-hdr-left"><h2>Capital Account</h2><p>Your detailed commitment and cash flow history</p></div>
-        <div class="page-hdr-right">
-          <button class="btn" onclick="downloadStatementCSV()">Download statement (CSV)</button>
-          <button class="btn" onclick="printReport('capital','Q3 2026')">Print / PDF</button>
-        </div>
-      </div>
-      <div class="metrics-grid">
-        <div class="metric-card"><div><div class="metric-label">Total committed</div><div class="metric-val">$48.5M</div></div></div>
-        <div class="metric-card"><div><div class="metric-label">Total called</div><div class="metric-val">$42.2M</div></div></div>
-        <div class="metric-card"><div><div class="metric-label">Uncalled capital</div><div class="metric-val">$6.3M</div></div></div>
-        <div class="metric-card"><div><div class="metric-label">Total distributions</div><div class="metric-val">$7.8M</div></div></div>
-      </div>
-      <div class="account-grid" id="accountGrid"></div>
-    </section>
-
-    <!-- ─── PERFORMANCE ANALYTICS ─── -->
-    <section class="page" id="page-reports">
-      <div class="crumbs">Portfolio <span>›</span> <b>Performance Analytics</b></div>
-      <div class="page-hdr">
-        <div class="page-hdr-left"><h2>Performance Analytics</h2><p>Performance analytics and portfolio reporting</p></div>
-        <div class="page-hdr-right"><button class="btn btn-primary" onclick="openModal('reportModal')">Generate report</button></div>
-      </div>
-      <div class="grid-2 even">
-        <div class="card"><div class="card-title">Cash flow J-curve (cumulative, $M)</div><div class="chart-box lg"><canvas id="jcurveChart"></canvas></div></div>
-        <div class="card"><div class="card-title">Vintage year diversification ($M)</div><div class="chart-box lg"><canvas id="vintageChart"></canvas></div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Recent activity</div>
-        <div id="activityList"></div>
       </div>
     </section>
 
@@ -1241,16 +1327,16 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
     <div class="foot-inner">
       <div>
         <div class="brand"><svg class="brand-mark"><use href="#di-logo"/></svg><span class="brand-word"><b>Data</b><span>Intelligence</span><i>.</i></span></div>
-        <p>Market and M&amp;A intelligence for investment teams — documents, calls, research and deals in one secure workspace.</p>
+        <p>Market and M&amp;A intelligence for investment teams — calls, transcripts, experts, research, deals and fund documents in one secure workspace.</p>
       </div>
       <div class="foot-col"><h6>Research</h6>
-        <button onclick="navTo('earnings')">Earnings Calls</button><button onclick="navTo('transcripts')">Transcripts</button><button onclick="navTo('research')">Research Reports</button>
+        <button onclick="navTo('earnings')">Earnings Calls</button><button onclick="navTo('transcripts')">Transcripts</button><button onclick="navTo('experts')">Expert Interviews</button><button onclick="navTo('research')">Research Reports</button>
       </div>
       <div class="foot-col"><h6>M&amp;A</h6>
         <button onclick="navTo('deals')">Deal Tracker</button><button onclick="navTo('comps')">Comparable Transactions</button><button onclick="navTo('filings')">Regulatory Filings</button>
       </div>
-      <div class="foot-col"><h6>Support</h6>
-        <button onclick="openModal('irModal')">Contact support</button><button onclick="navTo('profile')">Security settings</button><button onclick="navTo('docs-investor')">My documents</button>
+      <div class="foot-col"><h6>Funds</h6>
+        <button onclick="navTo('funds')">Funds Overview</button><button onclick="navTo('docs-fund')">Fund Documents</button><button onclick="navTo('docs-investor')">Investor Documents</button><button onclick="openModal('irModal')">Contact support</button>
       </div>
     </div>
     <div class="foot-bottom"><span>© 2026 DataIntelligence. All rights reserved.</span><span>Prototype · illustrative sample data only · not investment advice</span></div>
@@ -1417,6 +1503,66 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
   </div>
 </div>
 
+<!-- Watchlist -->
+<div class="modal-overlay" id="watchModal" role="dialog" aria-modal="true" aria-labelledby="wlTitle">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div><h3 id="wlTitle">Manage watchlist</h3><p>Pick companies and keywords — your dashboard feed follows this list.</p></div>
+      <button class="modal-close" onclick="closeModal('watchModal')" aria-label="Close">×</button>
+    </div>
+    <h4 style="margin-top:0">Companies</h4>
+    <div class="wl-grid" id="wlCompanies"></div>
+    <h4>Keywords</h4>
+    <form class="kw-row" onsubmit="event.preventDefault();addKeyword()">
+      <input id="kwInput" placeholder="e.g. divestiture, HSR, take-private" aria-label="New keyword">
+      <button class="btn" type="submit">Add</button>
+    </form>
+    <div class="kw-list" id="kwList"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('watchModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveWatchlist()">Save watchlist</button>
+    </div>
+  </div>
+</div>
+
+<!-- Expert interview -->
+<div class="modal-overlay" id="expertModal" role="dialog" aria-modal="true" aria-labelledby="exTitle">
+  <div class="modal wide">
+    <div class="modal-hdr">
+      <div><h3 id="exTitle">Expert interview</h3><p id="exSub"></p></div>
+      <button class="modal-close" onclick="closeModal('expertModal')" aria-label="Close">×</button>
+    </div>
+    <div class="stat-row" id="exStats"></div>
+    <h4>Key insights</h4>
+    <ul class="ai-list" id="exInsights"></ul>
+    <h4>Interview transcript</h4>
+    <div id="exQA"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('expertModal');openModal('expertReqModal')">Request follow-up call</button>
+      <button class="btn" id="exDownload">Download PDF</button>
+      <button class="btn btn-primary" onclick="closeModal('expertModal')">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Request expert call -->
+<div class="modal-overlay" id="expertReqModal" role="dialog" aria-modal="true" aria-labelledby="erTitle">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div><h3 id="erTitle">Request an expert call</h3><p>We'll source a compliance-cleared expert and schedule within 48 hours.</p></div>
+      <button class="modal-close" onclick="closeModal('expertReqModal')" aria-label="Close">×</button>
+    </div>
+    <div class="modal-fields">
+      <div class="form-group"><label for="erCompany">Company</label><select id="erCompany"></select></div>
+      <div class="form-group"><label for="erType">Expert profile</label>
+        <select id="erType"><option>Former Executive</option><option>Customer</option><option>Competitor</option><option>Industry Specialist</option><option>Channel Partner</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label for="erTopic">What do you want to learn?</label><input id="erTopic" placeholder="e.g. Integration risks and customer churn after the merger"></div>
+    <button class="auth-btn" style="margin-top:0" onclick="submitExpertRequest()">Send request</button>
+  </div>
+</div>
+
 <!-- Support -->
 <div class="modal-overlay" id="irModal" role="dialog" aria-modal="true" aria-labelledby="irTitle">
   <div class="modal" style="width:440px">
@@ -1453,8 +1599,9 @@ const BRAND = 'DataIntelligence';
 const state = {
   mode: 'demo', api: '', token: null, refresh: null, user: null,
   email: '', password: '', demoCode: null, otpExpires: 0,
-  docs: [], docSection: 'fund', docFilter: 'all', chartsReady: false,
-  callFilter: 'all', trFilter: 'all', trActive: null, rsFilter: 'all', dealStage: '', filFilter: 'all',
+  docs: [], docSection: 'fund', docFilter: 'all', docFund: '', chartsReady: false,
+  callFilter: 'all', trFilter: 'all', trActive: null, trStage: 'final', trVer: null, liveN: 3, exFilter: 'all',
+  rsFilter: 'all', dealStage: '', filFilter: 'all',
   query: '', srFilter: 'all',
 };
 const $ = id => document.getElementById(id);
@@ -1875,7 +2022,6 @@ function applyUser() {
   const h = new Date().getHours();
   $('greeting').textContent = `Good ${h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening'}, ${first}.`;
   $('uiName').textContent = parts.length > 1 ? `${first[0]}. ${last}` : first;
-  $('uiRole').textContent = u.entity_name || 'Analyst';
   $('uiAvatar').textContent = initials;
   $('umName').textContent = u.full_name; $('umEmail').textContent = u.email;
   $('pfName').textContent = u.full_name; $('pfEmail').textContent = u.email;
@@ -1887,12 +2033,11 @@ function applyUser() {
 // route → section id. Fund and investor documents share one section.
 const ROUTES = {
   dashboard: 'dashboard', search: 'search', 'docs-fund': 'documents', 'docs-investor': 'documents',
-  earnings: 'earnings', transcripts: 'transcripts', research: 'research',
-  deals: 'deals', comps: 'comps', filings: 'filings',
-  funds: 'funds', capital: 'capital', reports: 'reports', profile: 'profile',
+  earnings: 'earnings', transcripts: 'transcripts', experts: 'experts', research: 'research',
+  deals: 'deals', comps: 'comps', filings: 'filings', funds: 'funds', profile: 'profile',
 };
-const ALIASES = { documents: 'docs-fund' };
-const MENU_OF = { 'docs-fund': 'menuDocs', 'docs-investor': 'menuDocs', deals: 'menuMA', comps: 'menuMA', filings: 'menuMA', funds: 'menuPortfolio', capital: 'menuPortfolio', reports: 'menuPortfolio' };
+const ALIASES = { documents: 'docs-fund', capital: 'funds', reports: 'funds', portfolio: 'funds' };
+const MENU_OF = { 'docs-fund': 'menuFunds', 'docs-investor': 'menuFunds', funds: 'menuFunds', deals: 'menuMA', comps: 'menuMA', filings: 'menuMA' };
 
 function navTo(page, push = true) {
   page = ALIASES[page] || page;
@@ -1900,6 +2045,7 @@ function navTo(page, push = true) {
   closeTabMenus();
   if (page === 'docs-fund' || page === 'docs-investor') setDocSection(page === 'docs-fund' ? 'fund' : 'investor');
   if (page === 'search' && !state.query && $('srList').innerHTML === '') renderSearch();
+  document.body.classList.toggle('on-dash', page === 'dashboard');
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + ROUTES[page]));
   document.querySelectorAll('#topNav .tab').forEach(t => t.classList.toggle('active', t.dataset.page === page || (!!t.dataset.menu && t.dataset.menu === MENU_OF[page])));
   document.querySelectorAll('.tab-menu button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
@@ -1913,6 +2059,7 @@ function closeTabMenus() {
   document.querySelectorAll('.tab-menu.open').forEach(m => m.classList.remove('open'));
   document.querySelectorAll('#topNav .tab[aria-expanded="true"]').forEach(t => t.setAttribute('aria-expanded', 'false'));
 }
+let menuOpenedAt = 0;
 function openTabMenu(tab) {
   const menu = $(tab.dataset.menu);
   const wasOpen = menu.classList.contains('open');
@@ -1924,6 +2071,7 @@ function openTabMenu(tab) {
   menu.style.top = (r.bottom + 6) + 'px';
   menu.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + 'px';
   tab.setAttribute('aria-expanded', 'true');
+  menuOpenedAt = Date.now();
   const first = menu.querySelector('button'); first && first.focus({ preventScroll: true });
 }
 $('topNav').addEventListener('click', e => {
@@ -1932,7 +2080,11 @@ $('topNav').addEventListener('click', e => {
   if (t.dataset.menu) openTabMenu(t); else navTo(t.dataset.page);
 });
 document.querySelectorAll('.tab-menu').forEach(m => {
-  m.addEventListener('click', e => { const b = e.target.closest('button[data-page]'); if (b) navTo(b.dataset.page); });
+  m.addEventListener('click', e => {
+    const b = e.target.closest('button[data-page]'); if (!b) return;
+    if (b.dataset.page.startsWith('docs-')) { state.docFund = ''; $('docFund').value = ''; }   // menu opens the unfiltered list
+    navTo(b.dataset.page);
+  });
   m.addEventListener('keydown', e => {
     const items = [...m.querySelectorAll('button')]; const i = items.indexOf(document.activeElement);
     if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
@@ -1941,7 +2093,8 @@ document.querySelectorAll('.tab-menu').forEach(m => {
 });
 document.addEventListener('click', e => { if (!e.target.closest('.tab-menu') && !e.target.closest('#topNav')) closeTabMenus(); });
 window.addEventListener('resize', closeTabMenus);
-$('topNav').addEventListener('scroll', closeTabMenus, { passive: true });
+// Ignore the scroll that tapping a half-hidden tab causes on small screens
+$('topNav').addEventListener('scroll', () => { if (Date.now() - menuOpenedAt > 400) closeTabMenus(); }, { passive: true });
 
 /* ── DROPDOWNS & MODALS ────────────────────────────────────────────── */
 function toggleDropdown(id, ev) {
@@ -1965,19 +2118,19 @@ $('irEmailLink').href = 'mailto:' + CONFIG.IR_EMAIL + '?subject=' + encodeURICom
 
 /* ── DATA: PORTFOLIO ───────────────────────────────────────────────── */
 const FUNDS = [
-  { name: 'Private Equity Fund VI', short: 'PE VI', strategy: 'Private Equity', cls: 'pe', vintage: 2021, size: '$2.4B', commit: 12.0, called: 9.6, dist: 1.2, nav: 14.8, tvpi: 1.67, irr: 18.4, dpi: 0.10, status: 'Investing', st: 'open', active: true },
-  { name: 'Real Assets Fund IV', short: 'RE IV', strategy: 'Real Estate', cls: 're', vintage: 2020, size: '$1.8B', commit: 10.0, called: 7.0, dist: 2.1, nav: 9.7, tvpi: 1.69, irr: 14.2, dpi: 0.30, status: 'Investing', st: 'open', active: true },
-  { name: 'Infrastructure Fund II', short: 'Infra II', strategy: 'Infrastructure', cls: 'infra', vintage: 2019, size: '$3.1B', commit: 15.0, called: 14.1, dist: 3.8, nav: 22.4, tvpi: 1.85, irr: 16.9, dpi: 0.27, status: 'Harvest', st: 'harvest', active: true },
-  { name: 'Absolute Return HF', short: 'HF', strategy: 'Hedge Fund', cls: 'hf', vintage: 2022, size: '$890M', commit: 8.0, called: 8.0, dist: 0.5, nav: 9.1, tvpi: 1.20, irr: 9.8, dpi: 0.06, status: 'Open', st: 'open', active: true },
-  { name: 'Credit Opportunities I', short: 'Credit I', strategy: 'Private Credit', cls: 'pe', vintage: 2018, size: '$620M', commit: 3.5, called: 3.5, dist: 0.2, nav: 5.2, tvpi: 0.98, irr: -0.6, dpi: 0.06, status: 'Wound Down', st: 'closed', active: true },
-  { name: 'Private Equity Fund V', short: 'PE V', strategy: 'Private Equity', cls: 'pe', vintage: 2017, size: '$1.9B', commit: 8.0, called: 8.0, dist: 9.4, nav: 3.6, tvpi: 1.63, irr: 14.1, dpi: 1.18, status: 'Harvest', st: 'harvest', active: false },
+  { name: 'Private Equity Fund VI', short: 'PE VI', docKey: 'PE Fund VI', strategy: 'Private Equity', cls: 'pe', vintage: 2021, size: '$2.4B', commit: 12.0, called: 9.6, dist: 1.2, nav: 14.8, tvpi: 1.67, irr: 18.4, dpi: 0.10, status: 'Investing', st: 'open', active: true },
+  { name: 'Real Assets Fund IV', short: 'RE IV', docKey: 'Real Assets IV', strategy: 'Real Estate', cls: 're', vintage: 2020, size: '$1.8B', commit: 10.0, called: 7.0, dist: 2.1, nav: 9.7, tvpi: 1.69, irr: 14.2, dpi: 0.30, status: 'Investing', st: 'open', active: true },
+  { name: 'Infrastructure Fund II', short: 'Infra II', docKey: 'Infra II', strategy: 'Infrastructure', cls: 'infra', vintage: 2019, size: '$3.1B', commit: 15.0, called: 14.1, dist: 3.8, nav: 22.4, tvpi: 1.85, irr: 16.9, dpi: 0.27, status: 'Harvest', st: 'harvest', active: true },
+  { name: 'Absolute Return HF', short: 'HF', docKey: 'Absolute Return HF', strategy: 'Hedge Fund', cls: 'hf', vintage: 2022, size: '$890M', commit: 8.0, called: 8.0, dist: 0.5, nav: 9.1, tvpi: 1.20, irr: 9.8, dpi: 0.06, status: 'Open', st: 'open', active: true },
+  { name: 'Credit Opportunities I', short: 'Credit I', docKey: 'Credit Opportunities I', strategy: 'Private Credit', cls: 'pe', vintage: 2018, size: '$620M', commit: 3.5, called: 3.5, dist: 0.2, nav: 5.2, tvpi: 0.98, irr: -0.6, dpi: 0.06, status: 'Wound Down', st: 'closed', active: true },
+  { name: 'Private Equity Fund V', short: 'PE V', docKey: 'PE Fund V', strategy: 'Private Equity', cls: 'pe', vintage: 2017, size: '$1.9B', commit: 8.0, called: 8.0, dist: 9.4, nav: 3.6, tvpi: 1.63, irr: 14.1, dpi: 1.18, status: 'Harvest', st: 'harvest', active: false },
 ];
 
 const CAPITAL = [
-  { fund: 'Private Equity Fund VI', commit: 12000000, contrib: 9600000, dist: 1200000, nav: 14820000, ugl: 6420000 },
-  { fund: 'Real Assets Fund IV', commit: 10000000, contrib: 7000000, dist: 2100000, nav: 9710000, ugl: 4810000 },
-  { fund: 'Infrastructure Fund II', commit: 15000000, contrib: 14100000, dist: 3800000, nav: 22380000, ugl: 12080000 },
-  { fund: 'Absolute Return HF', commit: 8000000, contrib: 8000000, dist: 500000, nav: 9090000, ugl: 1590000 },
+  { fund: 'Private Equity Fund VI', docKey: 'PE Fund VI', commit: 12000000, contrib: 9600000, dist: 1200000, nav: 14820000, ugl: 6420000 },
+  { fund: 'Real Assets Fund IV', docKey: 'Real Assets IV', commit: 10000000, contrib: 7000000, dist: 2100000, nav: 9710000, ugl: 4810000 },
+  { fund: 'Infrastructure Fund II', docKey: 'Infra II', commit: 15000000, contrib: 14100000, dist: 3800000, nav: 22380000, ugl: 12080000 },
+  { fund: 'Absolute Return HF', docKey: 'Absolute Return HF', commit: 8000000, contrib: 8000000, dist: 500000, nav: 9090000, ugl: 1590000 },
 ];
 
 /* ── DATA: MARKET & M&A INTELLIGENCE (illustrative, fictional companies) ── */
@@ -1992,6 +2145,13 @@ const COMPANIES = {
   BWF:  { name: 'Bluewater Foods', sector: 'Consumer', color: '#0EA5E9' },
   KEST: { name: 'Kestrel Energy', sector: 'Energy', color: '#B45309' },
   LMNA: { name: 'Lumina Software', sector: 'Technology', color: '#2563EB' },
+  PLRS: { name: 'Polaris Aerospace', sector: 'Industrials', color: '#475569' },
+  GRNC: { name: 'Granite Cloud', sector: 'Technology', color: '#0891B2' },
+  IRCL: { name: 'Ironclad Insurance', sector: 'Financials', color: '#9333EA' },
+  MDBR: { name: 'Meadowbrook Retail', sector: 'Consumer', color: '#DB2777' },
+  CBLT: { name: 'Cobalt Mining', sector: 'Materials', color: '#4F46E5' },
+  ZNTH: { name: 'Zenith Telecom', sector: 'Communication', color: '#C2410C' },
+  AURP: { name: 'Aurora Pharma', sector: 'Healthcare', color: '#059669' },
 };
 const coLogo = tk => { const c = COMPANIES[tk] || { color: '#6B7A90' }; return `<div class="feed-logo" style="background:${c.color}">${esc(tk.slice(0, 4))}</div>`; };
 const coName = tk => (COMPANIES[tk] || {}).name || tk;
@@ -2008,10 +2168,21 @@ const EARNINGS = [
     hl: [[180, 'CEO', 'Phase III readout for HLX-204 expected in <b>H1 2027</b>.'], [1350, 'CFO', 'Cash runway extended into 2029 after partnering upfront.']] },
   { id: 'e5', tk: 'BWF', q: 'Q3 2026', date: '2026-09-24', dur: 3060, status: 'recorded', senti: -0.07, topics: ['Pricing', 'Divestiture', 'Volumes'], tr: null,
     hl: [[300, 'CEO', 'Exploring <b>strategic alternatives</b> for the frozen foods division.'], [1720, 'CFO', 'Price/mix +4%, volumes −2% as elasticity returns.']] },
-  { id: 'e6', tk: 'VPAY', q: 'Q3 2026', date: '2026-10-20', dur: 0, status: 'upcoming', senti: 0, topics: ['Orion merger', 'TPV growth'], tr: null, hl: [] },
-  { id: 'e7', tk: 'LMNA', q: 'Q3 2026', date: '2026-10-22', dur: 0, status: 'upcoming', senti: 0, topics: ['Take-private', 'ARR'], tr: null, hl: [] },
-  { id: 'e8', tk: 'KEST', q: 'Q3 2026', date: '2026-10-24', dur: 0, status: 'upcoming', senti: 0, topics: ['Asset sales', 'Capex'], tr: null, hl: [] },
-  { id: 'e9', tk: 'SHR', q: 'Q3 2026', date: '2026-10-27', dur: 0, status: 'upcoming', senti: 0, topics: ['Occupancy', 'Recapitalisation'], tr: null, hl: [] },
+  { id: 'e6', tk: 'VPAY', q: 'Q3 2026', date: '2026-10-20', time: '16:30 ET', dur: 0, status: 'upcoming', senti: 0, topics: ['Orion merger', 'TPV growth'], tr: null, hl: [] },
+  { id: 'e7', tk: 'LMNA', q: 'Q3 2026', date: '2026-10-22', time: '08:00 ET', dur: 0, status: 'upcoming', senti: 0, topics: ['Take-private', 'ARR'], tr: null, hl: [] },
+  { id: 'e8', tk: 'KEST', q: 'Q3 2026', date: '2026-10-24', time: '09:00 ET', dur: 0, status: 'upcoming', senti: 0, topics: ['Asset sales', 'Capex'], tr: null, hl: [] },
+  { id: 'e9', tk: 'SHR', q: 'Q3 2026', date: '2026-10-27', time: '17:00 ET', dur: 0, status: 'upcoming', senti: 0, topics: ['Occupancy', 'Recapitalisation'], tr: null, hl: [] },
+  { id: 'e10', tk: 'ZNTH', q: 'Q3 2026', date: '2026-10-13', time: '10:00 ET', dur: 3600, status: 'live', senti: 0.18, topics: ['Tower sale', 'Fibre growth', 'Leverage'], tr: 't7', hl: [] },
+  { id: 'e11', tk: 'PLRS', q: 'Q3 2026', date: '2026-10-13', time: '08:30 ET', dur: 3330, status: 'recorded', senti: 0.38, topics: ['Backlog', 'Defense', 'Bolt-on M&A'], tr: 't8',
+    hl: [[140, 'CEO', 'Record backlog of <b>$18.6B</b>, up 14% YoY.'], [930, 'CFO', 'Free cash flow guidance raised to <b>$1.1–1.2B</b>.'], [2240, 'Q&A', 'Pipeline of <b>bolt-on targets</b> in avionics software, $200–800M each.']] },
+  { id: 'e12', tk: 'GRNC', q: 'Q3 2026', date: '2026-10-13', time: '07:00 ET', dur: 2940, status: 'recorded', senti: -0.22, topics: ['Net retention', 'Restructuring', 'Strategic options'], tr: 't9',
+    hl: [[160, 'CEO', 'Net revenue retention slipped to <b>108%</b> from 114%.'], [1100, 'CFO', 'Announcing a <b>9% workforce reduction</b>.'], [2050, 'Q&A', 'Board is <b>“open to all options”</b> to maximise value.']] },
+  { id: 'e13', tk: 'IRCL', q: 'Q3 2026', date: '2026-10-09', time: '16:30 ET', dur: 3180, status: 'recorded', senti: 0.09, topics: ['Cat losses', 'Pricing', 'Buybacks'], tr: null,
+    hl: [[220, 'CEO', 'Combined ratio of <b>94.1%</b> despite elevated catastrophe losses.'], [1480, 'CFO', 'New <b>$750M</b> buyback authorisation.']] },
+  { id: 'e14', tk: 'MDBR', q: 'Q3 2026', date: '2026-10-07', time: '08:00 ET', dur: 2760, status: 'recorded', senti: -0.31, topics: ['Comparable sales', 'Store closures', 'Inventory'], tr: null,
+    hl: [[190, 'CEO', 'Comparable sales down <b>4.2%</b>; closing 38 stores.'], [1320, 'CFO', 'Inventory down 11% YoY; gross margin <b>−150bps</b>.']] },
+  { id: 'e15', tk: 'AURP', q: 'Q3 2026', date: '2026-10-15', time: '08:00 ET', dur: 0, status: 'upcoming', senti: 0, topics: ['Biosimilars', 'Pipeline'], tr: null, hl: [] },
+  { id: 'e16', tk: 'CBLT', q: 'Q3 2026', date: '2026-10-16', time: '17:00 ET', dur: 0, status: 'upcoming', senti: 0, topics: ['Cobalt prices', 'Offtake deals'], tr: null, hl: [] },
 ];
 
 const TRANSCRIPTS = [
@@ -2035,12 +2206,6 @@ const TRANSCRIPTS = [
       ['Tom Becker', 'Chief Financial Officer', 'Revenue declined 6% sequentially and gross margin compressed 220 basis points as customers normalised inventory. We expect the trough in Q4 with recovery in the first half of next year.'],
       ['Analyst', 'Granite Peak Research', 'What remedies would you be willing to offer, and how does that affect the timeline?'],
       ['Elena Petrov', 'Chief Executive Officer', 'We are open to targeted remedies, including licensing commitments. Realistically, we now expect closing to extend by approximately two quarters versus our original timeline.']] },
-  { id: 't4', tk: 'CRST', type: 'Expert Call', title: 'Former Crestline VP Operations — Integration Risks in Freight M&A', date: '2026-09-27', senti: 0.08,
-    summary: ['Expert sees cost synergies as achievable; revenue synergies harder.', 'Key risk: driver retention during systems migration.', 'Customer churn historically 3–5% in comparable freight deals.'],
-    body: [['Interviewer', 'DataIntelligence Expert Network', 'From your experience at Crestline, how realistic is the $310 million synergy target?'],
-      ['Expert', 'Former VP Operations, Crestline Freight', 'The cost side is achievable — terminal consolidation alone is worth well over $100 million. Revenue synergies are harder; mid-market shippers are sticky but price sensitive.'],
-      ['Interviewer', 'DataIntelligence Expert Network', 'What would you watch most closely during integration?'],
-      ['Expert', 'Former VP Operations, Crestline Freight', 'Driver retention during the systems migration. In comparable freight deals, customer churn has typically run three to five percent in the first year, mostly from service disruption.']] },
   { id: 't5', tk: 'LMNA', type: 'Investor Day', title: 'Lumina Software — 2026 Investor Day', date: '2026-09-18', senti: 0.22,
     summary: ['Mid-term ARR growth target of 18–20%.', 'Board confirms review of strategic alternatives including sponsor interest.', 'Rule of 40 achieved for the first time.'],
     body: [['Sophie Laurent', 'Chief Executive Officer', 'Today we are introducing a mid-term target of 18 to 20 percent ARR growth with expanding free cash flow margins. For the first time, we exceeded the Rule of 40.'],
@@ -2051,7 +2216,98 @@ const TRANSCRIPTS = [
     body: [['Ryan Mitchell', 'Chief Executive Officer', 'We plan to divest approximately $1.2 billion of non-core assets over the next 18 months, sharpening our focus on the highest-return Permian acreage.'],
       ['Moderator', 'Conference host', 'Would you consider being on the other side — acquiring?'],
       ['Ryan Mitchell', 'Chief Executive Officer', 'Bolt-ons below $500 million that are contiguous to our acreage, yes. Large corporate M&A is not on our agenda.']] },
+  { id: 't7', tk: 'ZNTH', type: 'Earnings Call', stage: 'live', startedMin: 18, title: 'Zenith Telecom — Q3 2026 Earnings Call', date: '2026-10-13', senti: 0.18,
+    summary: ['Agreement to sell 4,100 towers to Beacon Infrastructure for $3.2B (~24× tower cash flow).', 'Record 212K fibre net adds; postpaid churn improved to 0.86%.', 'Proceeds to cut net leverage from 3.3× to ~2.8× by end-2027.'],
+    body: [['Operator', 'Conference operator', 'Good morning and welcome to Zenith Telecom’s third quarter 2026 earnings call. All participants are in listen-only mode.'],
+      ['Hannah Cole', 'Chief Executive Officer', 'Thank you. We added 212,000 fibre subscribers in the quarter, our best quarter on record, and postpaid churn improved to 0.86 percent.'],
+      ['Hannah Cole', 'Chief Executive Officer', 'We are also announcing today a definitive agreement to sell 4,100 towers to Beacon Infrastructure for 3.2 billion dollars, a multiple of roughly 24 times tower cash flow.'],
+      ['Marcus Hill', 'Chief Financial Officer', 'Proceeds from the tower sale will be used to reduce net leverage from 3.3 times to approximately 2.8 times by the end of 2027.'],
+      ['Marcus Hill', 'Chief Financial Officer', 'We are reaffirming full-year adjusted EBITDA guidance of 6.4 to 6.5 billion dollars and capital expenditure of around 4 billion dollars.'],
+      ['Analyst', 'Northbridge Securities', 'Can you talk about the rationale for selling the towers now, and whether further asset sales are on the table?'],
+      ['Hannah Cole', 'Chief Executive Officer', 'Tower valuations remain strong and we would rather redeploy capital into fibre where returns are higher. We will keep reviewing the portfolio, including our data centre assets.'],
+      ['Analyst', 'Harbor Point Capital Markets', 'On fibre, how should we think about penetration in the newer cohorts?'],
+      ['Marcus Hill', 'Chief Financial Officer', 'Our 2024 cohort reached 31 percent penetration at the 24-month mark, ahead of the 28 percent we underwrote.']] },
+  { id: 't8', tk: 'PLRS', type: 'Earnings Call', stage: 'machine', endedMin: 35, title: 'Polaris Aerospace — Q3 2026 Earnings Call', date: '2026-10-13', senti: 0.38,
+    summary: ['Record backlog of $18.6B, up 14% YoY; defense orders +20%.', 'FY26 free cash flow guidance raised to $1.1–1.2B.', 'Pipeline of bolt-on targets in avionics software ($200–800M).'],
+    body: [['Daniel Reyes', 'Chief Executive Officer', 'Good morning. Polaris delivered record backlog of 18.6 billion dollars, up 14 percent year over year, with defense orders growing more than 20 percent.'],
+      ['Laura Whitman', 'Chief Financial Officer', 'Supply chain constraints eased during the quarter, allowing us to raise full-year free cash flow guidance to 1.1 to 1.2 billion dollars.'],
+      ['Analyst', 'Granite Peak Research', 'How are you thinking about capital deployment now that leverage is below two times?'],
+      ['Daniel Reyes', 'Chief Executive Officer', 'Our priority is bolt-on acquisitions in avionics software and sensors. We have a pipeline of targets in the 200 to 800 million dollar range.'],
+      ['Laura Whitman', 'Chief Financial Officer', 'We will remain disciplined. Any deal needs to clear our cost of capital by year three.']] },
+  { id: 't9', tk: 'GRNC', type: 'Earnings Call', stage: 'machine', endedMin: 70, title: 'Granite Cloud — Q3 2026 Earnings Call', date: '2026-10-13', senti: -0.22,
+    summary: ['Revenue +11% to $412M, below plan; net revenue retention 108% (from 114%).', '9% workforce reduction, ~$85M annualised savings.', 'Board “open to all options” — read by analysts as openness to a sale.'],
+    body: [['Owen Park', 'Chief Executive Officer', 'Q3 revenue grew 11 percent to 412 million dollars, below our expectations, as customers optimised spend. Net revenue retention was 108 percent.'],
+      ['Rachel Stein', 'Chief Financial Officer', 'To realign our cost base we are reducing our workforce by approximately 9 percent, generating 85 million dollars of annualised savings.'],
+      ['Analyst', 'Northbridge Securities', 'There has been speculation about strategic interest in Granite Cloud. Is the board open to a sale?'],
+      ['Owen Park', 'Chief Executive Officer', 'The board is open to all options to maximise shareholder value. Beyond that, we will not comment on speculation.'],
+      ['Rachel Stein', 'Chief Financial Officer', 'We are lowering full-year revenue guidance to 1.63 to 1.65 billion dollars.']] },
 ];
+
+
+// Expert network interviews (fictional experts, compliance-cleared sample content)
+const EXPERTS = [
+  { id: 'x1', type: 'Former Executive', role: 'Former VP Operations, Crestline Freight', tks: ['CRST', 'NWL'], sector: 'Industrials', date: '2026-09-27', dur: 58, senti: 0.08,
+    title: 'Integration risks in the Northwind–Crestline merger', quote: 'Terminal consolidation alone is worth well over $100 million — revenue synergies are the harder part.',
+    insights: ['Cost synergies look achievable; terminal consolidation worth >$100M.', 'Biggest risk is driver retention during the systems migration.', 'Customer churn ran 3–5% in year one of comparable freight deals.'],
+    qa: [['How realistic is the $310 million synergy target?', 'The cost side is achievable — terminal consolidation alone is worth well over $100 million. Revenue synergies are harder; mid-market shippers are sticky but price sensitive.'],
+      ['What would you watch most closely during integration?', 'Driver retention during the systems migration. If dispatch tools change mid-peak season, you lose drivers to competitors within weeks.'],
+      ['What churn should investors expect?', 'In comparable freight deals customer churn has typically run three to five percent in the first year, mostly from service disruption rather than pricing.']] },
+  { id: 'x2', type: 'Former Executive', role: 'Former CFO, Orion Semiconductor', tks: ['ORSM', 'VPAY'], sector: 'Technology', date: '2026-10-08', dur: 62, senti: -0.12,
+    title: 'How Orion is likely to approach antitrust remedies', quote: 'Licensing commitments are the most likely remedy — a divestiture would undermine the whole thesis.',
+    insights: ['Licensing commitments are the most probable remedy package.', 'A forced divestiture of the secure-element unit would cut synergies by ~40%.', 'Expects closing to slip two to three quarters, not a deal break.'],
+    qa: [['What remedies do you expect Orion to offer?', 'Licensing commitments on the secure-element IP. That keeps competitors supplied without breaking up the combined roadmap.'],
+      ['What if regulators insist on a divestiture?', 'If they demand the secure-element unit be sold, I would estimate synergies fall by roughly 40 percent. At that point the board would have to revisit the price.'],
+      ['Does the second request put the deal at risk?', 'It extends the timeline by two or three quarters. I do not think it breaks the deal — both boards are committed and the break fee is meaningful.']] },
+  { id: 'x3', type: 'Customer', role: 'Head of Logistics Procurement, Fortune 500 retailer', tks: ['NWL', 'CRST'], sector: 'Industrials', date: '2026-10-10', dur: 45, senti: 0.21,
+    title: 'Shipper view: will customers stay after the Crestline deal?', quote: 'We will stay if on-time performance holds above 95% — we have already run a backup carrier RFP.',
+    insights: ['Large shippers will tolerate the merger if service stays above 95% on time.', 'Many customers have quietly run backup carrier RFPs.', 'Combined network could win share in mid-market less-than-truckload.'],
+    qa: [['How are you planning around the merger?', 'We have run a backup carrier RFP as insurance. We will not switch unless on-time performance drops below 95 percent for two consecutive months.'],
+      ['Do you expect price increases?', 'Modest ones, two to three percent. With fewer national carriers they have more leverage, but we can still dual-source most lanes.'],
+      ['Any upside for customers?', 'Yes — a denser combined network in the mid-market could shorten transit times by a day on many routes.']] },
+  { id: 'x4', type: 'Former Executive', role: 'Former Head of Corporate Development, Vantage Payments', tks: ['VPAY'], sector: 'Financials', date: '2026-10-02', dur: 50, senti: 0.15,
+    title: 'Revenue synergies in chip-to-payments convergence', quote: 'Embedding tokenisation in silicon is a real moat — but the revenue takes three years to show up.',
+    insights: ['Revenue synergies are real but back-end loaded (years 3–5).', 'Bank partners are cautiously supportive of embedded tokenisation.', 'Integration of the two sales forces is the underestimated risk.'],
+    qa: [['Is the strategic logic sound?', 'Embedding tokenisation directly in silicon is a genuine moat. The problem is timing — design cycles mean revenue takes about three years to show up.'],
+      ['How are bank partners reacting?', 'Cautiously supportive. They like the security story but worry about concentration with one supplier.'],
+      ['What is the underestimated risk?', 'Merging a semiconductor sales force with a payments sales force. They sell to different buyers on very different cycles.']] },
+  { id: 'x5', type: 'Industry Specialist', role: 'Former official, national competition authority', tks: ['ORSM', 'VPAY', 'NWL'], sector: 'Technology', date: '2026-10-05', dur: 55, senti: -0.05,
+    title: 'What a second request really means for deal timelines', quote: 'A second request adds six to nine months on average — compliance alone can take four.',
+    insights: ['Second requests add 6–9 months on average.', 'Licensing remedies are increasingly accepted in technology deals.', 'Freight mergers with low overlap rarely face a second request.'],
+    qa: [['How long does a second request typically add?', 'Six to nine months on average. Substantial compliance — producing the documents and data — can take four months by itself.'],
+      ['Are behavioural remedies like licensing acceptable today?', 'More than they were. In technology deals with interoperability concerns, licensing commitments have been accepted in several recent cases.'],
+      ['Why did Northwind–Crestline avoid one?', 'Network overlap was low and the parties prepared a strong economic analysis up front. That combination usually ends at the initial waiting period.']] },
+  { id: 'x6', type: 'Former Executive', role: 'Former SVP Sales, Lumina Software', tks: ['LMNA'], sector: 'Technology', date: '2026-09-30', dur: 48, senti: 0.27,
+    title: 'Is Lumina ready for a take-private?', quote: 'There is easily 400 basis points of margin left in sales and marketing — a sponsor would find it fast.',
+    insights: ['~400bps of margin upside in sales & marketing efficiency.', 'Gross retention is strong (~94%); expansion is the weaker metric.', 'Pricing power under-used — list prices unchanged for two years.'],
+    qa: [['Where would a private equity owner find value?', 'Sales and marketing efficiency. There is easily 400 basis points of margin left there — too many overlapping territories.'],
+      ['How healthy is the customer base?', 'Gross retention is strong at around 94 percent. Expansion is weaker because packaging makes upsell awkward.'],
+      ['Any pricing upside?', 'Yes. List prices have not changed in two years. A sponsor would raise them on renewal almost immediately.']] },
+  { id: 'x7', type: 'Channel Partner', role: 'Managing Partner, Apex TechCo reseller (EMEA)', tks: ['APXT'], sector: 'Technology', date: '2026-10-11', dur: 40, senti: 0.42,
+    title: 'Channel checks: enterprise AI demand into Q4', quote: 'Our Q4 pipeline for Apex AI modules is up roughly 70% year on year — deals are getting bigger, not just more numerous.',
+    insights: ['EMEA reseller pipeline for Apex AI modules up ~70% YoY.', 'Average deal size rising as customers move from pilots to production.', 'Competitive discounting has eased since mid-year.'],
+    qa: [['What are you seeing in the Q4 pipeline?', 'Our pipeline for Apex AI modules is up roughly 70 percent year on year, and deals are larger as customers move from pilots into production.'],
+      ['Any change in competitive intensity?', 'Discounting has eased since mid-year. Customers care more about deployment speed than a few points on price.'],
+      ['Any risks to flag?', 'Implementation capacity. Partners are short of certified engineers, which could push some revenue into Q1.']] },
+  { id: 'x8', type: 'Former Executive', role: 'Former Plant Manager, Bluewater Foods', tks: ['BWF'], sector: 'Consumer', date: '2026-09-29', dur: 52, senti: -0.14,
+    title: 'Carve-out complexity of the frozen foods division', quote: 'Two of the three frozen plants share utilities and IT with the ambient business — separation is not trivial.',
+    insights: ['Two of three frozen plants share utilities and IT with ambient lines.', 'Transition services likely needed for 18–24 months.', 'Strategic buyers with existing cold chains would extract the most value.'],
+    qa: [['How separable is the frozen division?', 'Not easily. Two of the three frozen plants share utilities, warehousing and IT with the ambient business.'],
+      ['What would a buyer need?', 'A transition services agreement for 18 to 24 months, plus capital to duplicate the shared systems.'],
+      ['Who is the natural owner?', 'A strategic buyer that already runs a cold chain. They could plug the plants into their network and take out freight costs.']] },
+  { id: 'x9', type: 'Competitor', role: 'VP Strategy, competing payments processor', tks: ['VPAY', 'ORSM'], sector: 'Financials', date: '2026-10-12', dur: 44, senti: -0.09,
+    title: 'Competitive response if Orion–Vantage closes', quote: 'We are already approaching their bank clients — uncertainty during a long review is our opportunity.',
+    insights: ['Competitors are actively targeting Vantage bank clients during the review.', 'Expect price competition on processing fees of 5–10 bps.', 'Hardware-plus-software bundles will be matched within 18 months.'],
+    qa: [['How is your firm responding to the deal?', 'We are already approaching their bank clients. A long regulatory review creates uncertainty, and that is our opportunity.'],
+      ['Will you compete on price?', 'Selectively. Expect five to ten basis points of fee pressure on the largest accounts.'],
+      ['Can competitors replicate the combined offer?', 'Within 18 months, through partnerships rather than mergers. The bundle is attractive but not unique.']] },
+  { id: 'x10', type: 'Industry Specialist', role: 'Tower & fibre infrastructure consultant', tks: ['ZNTH'], sector: 'Communication', date: '2026-10-12', dur: 47, senti: 0.1,
+    title: 'Are tower sale multiples peaking?', quote: 'Mid-20s multiples for towers are near the top of the range — sellers are right to move now.',
+    insights: ['Tower multiples in the mid-20s are near cyclical highs.', 'Buyers are pricing in colocation growth from 5G densification.', 'Fibre returns justify redeploying tower proceeds.'],
+    qa: [['Are current tower multiples sustainable?', 'Mid-20s multiples are near the top of the range. Higher rates have not yet fully fed through to infrastructure valuations.'],
+      ['What are buyers underwriting?', 'Colocation growth from 5G densification, plus escalators in the anchor tenant lease.'],
+      ['Is selling towers to fund fibre sensible?', 'Yes. Fibre returns in well-penetrated cohorts are higher than the implied yield buyers are paying for towers.']] },
+];
+
 
 const RESEARCH = [
   { id: 'r1', tk: 'APXT', broker: 'Northbridge Securities', analyst: 'L. Chen', type: 'Earnings Review', rating: 'Buy', pt: 245, prevPt: 220, price: 198.4, date: '2026-10-09', pages: 14,
@@ -2166,64 +2422,185 @@ function chipsHTML(items, active, attr = 'f') {
 function bindChips(id, fn) { $(id).addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) fn(b.dataset.f); }); }
 
 /* ── DASHBOARD ─────────────────────────────────────────────────────── */
-function fundRowDash(f) {
-  const pc = f.tvpi >= 1 ? 'perf-up' : 'perf-down';
-  return `<tr><td><div class="cell-main">${esc(f.name)}</div><span class="fund-strategy ${f.cls}">${esc(f.strategy)}</span></td>
-    <td>${f.vintage}</td><td class="num">${mm(f.commit)}</td><td class="num">${mm(f.called)}</td><td class="num">${mm(f.dist)}</td><td class="num">${mm(f.nav)}</td>
-    <td class="num ${pc}">${f.tvpi.toFixed(2)}×</td><td class="num ${f.irr >= 0 ? 'perf-up' : 'perf-down'}">${f.irr.toFixed(1)}%</td>
-    <td><span class="status ${f.st}">${esc(f.status)}</span></td></tr>`;
+const DEMO_TODAY = '2026-10-13';          // the sample data is dated around this day
+const SVG = {
+  mic: '<svg class="i" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>',
+  users: '<svg class="i" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  book: '<svg class="i" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  pulse: '<svg class="i" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+  file: '<svg class="i" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  bell: '<svg class="i" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+  go: '<svg class="i go" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>',
+  chev: '<svg class="i" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>',
+  remind: '<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+};
+const openDeals = () => DEALS.filter(d => d.stage !== 'Closed');
+
+function renderKpis() {
+  const live = EARNINGS.filter(e => e.status === 'live').length, up = EARNINGS.filter(e => e.status === 'upcoming').length;
+  const deals = openDeals(), dealVal = deals.reduce((a, d) => a + d.value, 0);
+  const read = store.get('read') || [], unread = ACTIVITY.filter(a => !read.includes(a.id)).length;
+  const fundN = state.docs.filter(d => docSection(d) === 'fund').length;
+  const cards = [
+    ['earnings', 'violet', SVG.mic, 'Earnings calls', live + up, live ? `<b class="red">● ${live} live now</b> · ${up} upcoming` : `${up} upcoming`],
+    ['experts', 'green', SVG.users, 'Expert interviews', EXPERTS.length, `<b>${EXPERTS.filter(x => x.date >= '2026-10-01').length} new</b> this month`],
+    ['research', 'amber', SVG.book, 'Research reports', RESEARCH.length, `<b>${RESEARCH.filter(r => r.date >= '2026-10-01').length} new</b> since Oct 1`],
+    ['deals', '', SVG.pulse, 'Tracked M&A deals', deals.length, `<b>${bn(dealVal)}</b> in pipeline`],
+    ['docs', 'blue', SVG.file, 'Fund & investor docs', state.docs.length, `<b>${fundN}</b> fund · <b>${state.docs.length - fundN}</b> investor`],
+    ['alerts', 'rose', SVG.bell, 'Watchlist alerts', unread, unread ? `<b class="red">${unread} unread</b>` : 'All caught up'],
+  ];
+  $('kpiRow').innerHTML = cards.map(([k, c, ic, l, v, s]) => `<button class="kpi" data-kpi="${k}" aria-label="${esc(l)}"><div class="metric-icon ${c}">${ic}</div>
+    <div class="kpi-body"><div class="kpi-label">${esc(l)}</div><div class="kpi-val">${v}</div><div class="kpi-sub">${s}</div></div>${SVG.go}</button>`).join('');
 }
+$('kpiRow').addEventListener('click', e => {
+  const k = e.target.closest('[data-kpi]'); if (!k) return;
+  ({ earnings: () => { setCallFilter('all'); navTo('earnings'); },
+     experts: () => navTo('experts'),
+     research: () => navTo('research'),
+     deals: () => { state.dealStage = ''; navTo('deals'); renderDeals(); },
+     docs: () => { state.docFund = ''; $('docFund').value = ''; navTo('docs-fund'); },
+     alerts: () => toggleDropdown('notifPanel', e) })[k.dataset.kpi]();
+});
+
+function renderUpcoming() {
+  const today = day(DEMO_TODAY), rem = store.get('reminders') || [];
+  const live = EARNINGS.filter(e => e.status === 'live');
+  const up = EARNINGS.filter(e => e.status === 'upcoming').sort((a, b) => a.date.localeCompare(b.date));
+  $('upcomingList').innerHTML = live.map(e => {
+    const t = TRANSCRIPTS.find(x => x.id === e.tr);
+    return `<div class="ue-live" data-tr="${e.tr}" title="Open live transcript"><span class="live-pill"><i></i>LIVE</span>
+      <div class="ue-body"><div class="ue-co">${esc(coName(e.tk))} · ${esc(e.q)}</div><div class="ue-meta">Started ${t ? t.startedMin : 0} min ago · follow the live transcript</div></div>${SVG.chev}</div>`;
+  }).join('') + up.map(e => {
+    const d = day(e.date), n = Math.round((d - today) / 86400000);
+    return `<div class="ue-item"><div class="ue-date"><span>${d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</span><b>${d.getDate()}</b></div>
+      <div class="ue-body" data-call="${e.id}"><div class="ue-co">${esc(coName(e.tk))} <span style="color:var(--muted);font-weight:500">${esc(e.tk)}</span></div>
+      <div class="ue-meta">${esc(e.q)} · ${esc(e.time || '08:30 ET')} · <b>${n <= 0 ? 'today' : 'in ' + n + ' day' + (n === 1 ? '' : 's')}</b></div></div>
+      <button class="remind-btn ${rem.includes(e.id) ? 'on' : ''}" data-remind="${e.id}" title="${rem.includes(e.id) ? 'Reminder set' : 'Remind me'}" aria-label="Remind me about ${esc(coName(e.tk))}">${SVG.remind}</button></div>`;
+  }).join('');
+}
+function toggleReminder(id) {
+  const rem = store.get('reminders') || [], c = EARNINGS.find(x => x.id === id); if (!c) return;
+  const i = rem.indexOf(id);
+  if (i >= 0) { rem.splice(i, 1); showToast(`Reminder removed for ${coName(c.tk)}.`); }
+  else { rem.push(id); showToast(`Reminder set — ${coName(c.tk)} on ${fmtDate(day(c.date))} at ${c.time || '08:30 ET'}.`); }
+  store.set('reminders', rem); renderUpcoming(); renderCalls();
+}
+document.addEventListener('click', e => { const r = e.target.closest('[data-remind]'); if (r) toggleReminder(r.dataset.remind); });
+
+// Smart summary — every bullet opens the screen behind it
+const AI_ITEMS = [
+  { html: '<b>Zenith Telecom</b> is live now — announced a <b>$3.2B tower sale</b> at ~24× tower cash flow.', act: 'Follow live transcript', go: () => openTranscript('t7') },
+  { html: '<b>Northwind × Crestline</b> cleared HSR; management reiterated <b>$310M run-rate synergies</b>.', act: 'Open deal', go: () => openDeal('m1') },
+  { html: '<b>Orion Semiconductor</b> received a second request — remedies may add <b>two quarters</b>.', act: 'Read transcript', go: () => openTranscript('t3') },
+  { html: 'Experts see <b>licensing remedies</b> as the likeliest path for Orion–Vantage.', act: 'Read expert interview', go: () => openExpert('x2') },
+  { html: '<b>Granite Cloud</b> board “open to all options” after net retention fell to <b>108%</b>.', act: 'Machine-edited transcript', go: () => openTranscript('t9') },
+  { html: '<b>Apex TechCo</b> beat and raised; Northbridge lifts its price target to <b>$245</b>.', act: 'Read research', go: () => openResearch('r1') },
+];
+function renderAi() {
+  $('aiList').innerHTML = AI_ITEMS.map((a, i) => `<li><button data-ai="${i}"><span class="dot"></span><span class="txt">${a.html}<span class="act">${esc(a.act)} →</span></span></button></li>`).join('');
+}
+$('aiList').addEventListener('click', e => { const b = e.target.closest('[data-ai]'); if (b) AI_ITEMS[+b.dataset.ai].go(); });
+
+// Watchlist
+const WL_DEFAULT = { companies: ['NWL', 'CRST', 'ORSM', 'APXT', 'LMNA', 'ZNTH'], keywords: ['synergies', 'antitrust'] };
+let watchlist = store.get('watchlist') || WL_DEFAULT;
+let wlDraft = null;
+const EX_TYPES = { 'Former Executive': ['FE', '#0E8C7F'], 'Customer': ['CU', '#3B82F6'], 'Competitor': ['CO', '#E0435A'], 'Industry Specialist': ['IS', '#7C5CE0'], 'Channel Partner': ['CP', '#E89B0C'] };
+const exAvatar = (x, sm) => { const [ab, c] = EX_TYPES[x.type] || ['EX', '#6B7A90']; return `<div class="ex-av ${sm ? 'sm' : ''}" style="background:${c}" title="${esc(x.type)}">${ab}</div>`; };
+
+function feedItems() {
+  const badge = t => t.type === 'Expert Call' ? 'expert' : 'transcript';
+  return [
+    ...RESEARCH.map(r => ({ d: r.date, tks: [r.tk], text: r.title + ' ' + r.summary, html: `<div class="feed-item" data-rs="${r.id}">${coLogo(r.tk)}<div class="feed-body"><div class="feed-title">${esc(r.title)}</div><div class="feed-meta"><span class="tbadge research">Research</span><span>${esc(r.broker)}</span><span>${fmtDate(day(r.date))}</span></div></div></div>` })),
+    ...TRANSCRIPTS.map(t => ({ d: t.date, tks: [t.tk], text: t.title + ' ' + t.summary.join(' '), html: `<div class="feed-item" data-tr="${t.id}">${coLogo(t.tk)}<div class="feed-body"><div class="feed-title">${esc(t.title)}</div><div class="feed-meta">${stagePill(t)}<span class="tbadge ${badge(t)}">${esc(t.type)}</span>${sentiHTML(t.senti)}<span>${fmtDate(day(t.date))}</span></div></div></div>` })),
+    ...FILINGS.map(f => ({ d: f.date, tks: [f.tk], text: f.title, html: `<div class="feed-item" data-fil="${f.id}">${coLogo(f.tk)}<div class="feed-body"><div class="feed-title">${esc(coName(f.tk))}: ${esc(f.title)}</div><div class="feed-meta"><span class="tbadge filing">${esc(f.form)}</span><span>${fmtDate(day(f.date))}</span></div></div></div>` })),
+    ...EXPERTS.map(x => ({ d: x.date, tks: x.tks, text: x.title + ' ' + x.quote, html: `<div class="feed-item" data-exp="${x.id}">${coLogo(x.tks[0])}<div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span class="tbadge expert">Expert interview</span><span>${esc(x.role)}</span><span>${fmtDate(day(x.date))}</span></div></div></div>` })),
+  ];
+}
+function renderWatchFeed() {
+  const kws = watchlist.keywords.map(k => k.toLowerCase());
+  $('wlChips').innerHTML = watchlist.companies.map(tk => `<span class="wl-chip">${esc(tk)}</span>`).join('') + watchlist.keywords.map(k => `<span class="wl-chip kw">“${esc(k)}”</span>`).join('');
+  if (!watchlist.companies.length && !watchlist.keywords.length) {
+    $('feedList').innerHTML = '<div class="empty-state">Your watchlist is empty.<br><br><button class="btn btn-primary btn-sm" onclick="openWatchlist()">Set up a watchlist</button></div>';
+    return;
+  }
+  const list = feedItems().filter(it => it.tks.some(t => watchlist.companies.includes(t)) || kws.some(k => it.text.toLowerCase().includes(k)))
+    .sort((a, b) => b.d.localeCompare(a.d)).slice(0, 14);
+  $('feedList').innerHTML = list.map(x => x.html).join('') || '<p class="empty-state">Nothing new for your watchlist yet. <button class="link" onclick="openWatchlist()">Add companies or keywords</button></p>';
+}
+function openWatchlist() { wlDraft = { companies: [...watchlist.companies], keywords: [...watchlist.keywords] }; renderWlModal(); openModal('watchModal'); }
+function renderWlModal() {
+  $('wlCompanies').innerHTML = Object.entries(COMPANIES).sort((a, b) => a[1].name.localeCompare(b[1].name))
+    .map(([tk, c]) => `<label class="wl-opt"><input type="checkbox" value="${tk}" ${wlDraft.companies.includes(tk) ? 'checked' : ''}>${esc(c.name)}<small>${tk}</small></label>`).join('');
+  $('kwList').innerHTML = wlDraft.keywords.map((k, i) => `<button type="button" data-kw="${i}" title="Remove keyword">${esc(k)} ×</button>`).join('') || '<span class="metric-period">No keywords yet</span>';
+}
+$('wlCompanies').addEventListener('change', e => {
+  const v = e.target.value;
+  wlDraft.companies = e.target.checked ? [...wlDraft.companies, v] : wlDraft.companies.filter(x => x !== v);
+});
+$('kwList').addEventListener('click', e => { const b = e.target.closest('[data-kw]'); if (b) { wlDraft.keywords.splice(+b.dataset.kw, 1); renderWlModal(); } });
+function addKeyword() {
+  const v = $('kwInput').value.trim();
+  if (v && !wlDraft.keywords.some(k => k.toLowerCase() === v.toLowerCase())) wlDraft.keywords.push(v);
+  $('kwInput').value = ''; renderWlModal(); $('kwInput').focus();
+}
+function saveWatchlist() {
+  watchlist = wlDraft; store.set('watchlist', watchlist);
+  closeModal('watchModal'); renderWatchFeed();
+  showToast(`Watchlist saved — ${watchlist.companies.length} companies, ${watchlist.keywords.length} keywords.`);
+}
+
+function renderDashExperts() {
+  $('dashExperts').innerHTML = [...EXPERTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6).map(x => `<div class="feed-item" data-exp="${x.id}">${exAvatar(x, true)}
+    <div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span>${esc(x.role)}</span><span>${fmtDate(day(x.date))}</span></div></div></div>`).join('');
+}
+
 function renderDashboard() {
-  $('dashFundBody').innerHTML = FUNDS.filter(f => f.active).map(fundRowDash).join('');
-  $('dashDealBody').innerHTML = DEALS.filter(d => d.stage !== 'Closed').map(d => `<tr class="clickable" data-deal="${d.id}">
-    <td><div class="cell-main">${esc(dealTarget(d))}</div></td><td>${esc(d.acqName)}</td><td>${esc(coSector(d.target))}</td>
-    <td class="num">${bn(d.value)}</td><td class="num">${d.evEbitda ? d.evEbitda.toFixed(1) + '×' : 'n.m.'}</td>
-    <td><span class="status ${d.st}">${esc(d.stage)}</span></td><td>${esc(d.close)}</td></tr>`).join('');
-  const up = EARNINGS.filter(e => e.status === 'upcoming');
-  $('kpiDeals').textContent = DEALS.filter(d => d.stage !== 'Closed').length;
-  $('kpiCalls').textContent = up.length;
-  $('upcomingList').innerHTML = up.map(e => `<div class="feed-item" data-call="${e.id}">${coLogo(e.tk)}<div class="feed-body">
-    <div class="feed-title">${esc(coName(e.tk))} · ${esc(e.q)}</div>
-    <div class="feed-meta"><span>${fmtDate(day(e.date))}</span><span class="upcoming-pill">Upcoming</span></div></div></div>`).join('');
-  const feed = [
-    ...RESEARCH.slice(0, 3).map(r => ({ d: r.date, html: `<div class="feed-item" data-rs="${r.id}">${coLogo(r.tk)}<div class="feed-body"><div class="feed-title">${esc(r.title)}</div><div class="feed-meta"><span class="tbadge research">Research</span><span>${esc(r.broker)}</span><span>${fmtDate(day(r.date))}</span></div></div></div>` })),
-    ...TRANSCRIPTS.slice(0, 3).map(t => ({ d: t.date, html: `<div class="feed-item" data-tr="${t.id}">${coLogo(t.tk)}<div class="feed-body"><div class="feed-title">${esc(t.title)}</div><div class="feed-meta"><span class="tbadge ${t.type === 'Expert Call' ? 'expert' : 'transcript'}">${esc(t.type)}</span>${sentiHTML(t.senti)}<span>${fmtDate(day(t.date))}</span></div></div></div>` })),
-    ...FILINGS.slice(0, 3).map(f => ({ d: f.date, html: `<div class="feed-item" data-fil="${f.id}">${coLogo(f.tk)}<div class="feed-body"><div class="feed-title">${esc(coName(f.tk))}: ${esc(f.title)}</div><div class="feed-meta"><span class="tbadge filing">${esc(f.form)}</span><span>${fmtDate(day(f.date))}</span></div></div></div>` })),
-  ].sort((a, b) => b.d.localeCompare(a.d)).slice(0, 6);
-  $('feedList').innerHTML = feed.map(x => x.html).join('');
+  const deals = openDeals();
+  $('pipeTotal').textContent = `${deals.length} open deals · ${bn(deals.reduce((a, d) => a + d.value, 0))}`;
+  renderKpis(); renderUpcoming(); renderAi(); renderWatchFeed(); renderDashExperts();
 }
-document.querySelector('.hero-chips').addEventListener('click', e => { const c = e.target.closest('[data-q]'); if (c) runSearch(c.dataset.q); });
 
 // One delegated handler for clickable cards/rows anywhere in the app
 document.addEventListener('click', e => {
   const t = e.target;
-  if (t.closest('[data-dl],[data-play],[data-rsdl],[data-fildl]')) return;   // buttons with their own handlers
-  const el = t.closest('[data-deal],[data-call],[data-rs],[data-tr],[data-fil],[data-sr]');
+  if (t.closest('[data-dl],[data-play],[data-fildl],[data-remind],[data-trdl],[data-fdl],[data-fdocs],[data-fup]')) return;   // buttons with their own handlers
+  const el = t.closest('[data-deal],[data-call],[data-rs],[data-tr],[data-fil],[data-exp]');
   if (!el || !$('app').classList.contains('visible')) return;
   if (el.dataset.deal) openDeal(el.dataset.deal);
   else if (el.dataset.call) openCall(el.dataset.call);
   else if (el.dataset.rs) openResearch(el.dataset.rs);
   else if (el.dataset.tr) openTranscript(el.dataset.tr);
   else if (el.dataset.fil) downloadFiling(el.dataset.fil);
+  else if (el.dataset.exp) openExpert(el.dataset.exp);
 });
 
-/* ── PORTFOLIO PAGES ───────────────────────────────────────────────── */
+/* ── FUNDS OVERVIEW (tied to the documents on file) ────────────────── */
+const fundDocs = key => state.docs.filter(d => d.fund === key);
 function renderFundMatrix() {
   const q = $('fundSearch').value.trim().toLowerCase();
   const strat = $('fundStrategyFilter').value, stat = $('fundStatusFilter').value;
   const rows = FUNDS.filter(f => (!q || (f.name + ' ' + f.strategy + ' ' + f.vintage).toLowerCase().includes(q)) && (!strat || f.strategy === strat) && (!stat || f.status === stat));
   $('fundCount').textContent = `${rows.length} of ${FUNDS.length}`;
-  $('fundMatrixBody').innerHTML = rows.map(f => `<tr>
+  $('fundMatrixBody').innerHTML = rows.map(f => {
+    const n = fundDocs(f.docKey).length;
+    return `<tr>
     <td><div class="cell-main">${esc(f.name)}</div></td><td><span class="fund-strategy ${f.cls}">${esc(f.strategy)}</span></td>
     <td>${f.vintage}</td><td class="num">${f.size}</td><td class="num">${mm(f.commit)}</td><td class="num">${Math.round(f.called / f.commit * 100)}%</td><td class="num">${mm(f.dist)}</td><td class="num">${mm(f.nav)}</td>
     <td class="num ${f.tvpi >= 1 ? 'perf-up' : 'perf-down'}">${f.tvpi.toFixed(2)}×</td><td class="num ${f.irr >= 0 ? 'perf-up' : 'perf-down'}">${f.irr.toFixed(1)}%</td>
-    <td class="num">${f.dpi.toFixed(2)}×</td><td><span class="status ${f.st}">${esc(f.status)}</span></td></tr>`).join('')
-    || '<tr class="empty"><td colspan="12">No funds match your filters.</td></tr>';
+    <td><span class="status ${f.st}">${esc(f.status)}</span></td>
+    <td><button class="doc-link ${n ? '' : 'zero'}" data-fdocs="${esc(f.docKey)}" title="Open documents for ${esc(f.name)}">${n} doc${n === 1 ? '' : 's'} →</button></td></tr>`;
+  }).join('') || '<tr class="empty"><td colspan="12">No funds match your filters.</td></tr>';
+  const fundN = state.docs.filter(d => docSection(d) === 'fund').length;
+  $('fundDocTotal').textContent = state.docs.length;
+  $('fundDocSplit').textContent = `${fundN} fund · ${state.docs.length - fundN} investor documents`;
 }
 
 function renderCapital() {
   $('accountGrid').innerHTML = CAPITAL.map(c => {
-    const pct = Math.round(c.contrib / c.commit * 100); const unc = c.commit - c.contrib;
+    const pct = Math.round(c.contrib / c.commit * 100), unc = c.commit - c.contrib;
+    const ds = fundDocs(c.docKey).sort((a, b) => b.date - a.date);
+    const nf = ds.filter(d => docSection(d) === 'fund').length, ni = ds.length - nf;
     return `<div class="account-card"><h4>${esc(c.fund)}</h4>
       <div class="account-row"><span class="lbl">Commitment</span><span class="val">${money(c.commit)}</span></div>
       <div class="account-row"><span class="lbl">Contributed capital</span><span class="val">${money(c.contrib)}</span></div>
@@ -2231,18 +2608,36 @@ function renderCapital() {
       <div class="account-row"><span class="lbl">NAV</span><span class="val">${money(c.nav)}</span></div>
       <div class="account-row"><span class="lbl">Unrealized G/L</span><span class="val ${c.ugl >= 0 ? 'pos' : 'neg'}">${c.ugl >= 0 ? '+' : '−'}${money(Math.abs(c.ugl))}</span></div>
       <div class="commitment-bar"><div class="bar-label"><span>Called: ${pct}%</span><span>${unc > 0 ? 'Uncalled: ' + mm(unc / 1e6) : 'Fully called'}</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div></div>`;
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div>
+      <div class="fdocs">
+        <div class="fdocs-hdr">Documents on file<span>
+          <button class="doc-link ${nf ? '' : 'zero'}" data-fdocs="${esc(c.docKey)}" data-sec="fund">Fund (${nf})</button>
+          <button class="doc-link ${ni ? '' : 'zero'}" data-fdocs="${esc(c.docKey)}" data-sec="investor">Investor (${ni})</button></span></div>
+        ${ds.slice(0, 3).map(d => `<button class="fdoc" data-fdl="${esc(d.id)}" title="Download ${esc(d.title)}"><span class="doc-type-icon ${esc(d.type)}">${esc((d.type || 'file').toUpperCase().slice(0, 4))}</span><span class="t">${esc(d.title)}</span><span class="d">${fmtDate(d.date)}</span></button>`).join('')
+          || '<p class="metric-period" style="padding:4px 0">No documents uploaded for this fund yet.</p>'}
+        <button class="link" style="font-size:0.78rem;margin-top:4px" data-fup="${esc(c.docKey)}">+ Upload to this fund</button>
+      </div></div>`;
   }).join('');
 }
+function openFundDocs(key, sec) {
+  state.docFund = key; $('docFund').value = key; state.docFilter = 'all';
+  if (!sec) sec = fundDocs(key).some(d => docSection(d) === 'fund') || !fundDocs(key).length ? 'fund' : 'investor';
+  navTo('docs-' + sec);
+}
+document.addEventListener('click', e => {
+  const f = e.target.closest('[data-fdocs]'); if (f) return openFundDocs(f.dataset.fdocs, f.dataset.sec);
+  const d = e.target.closest('[data-fdl]'); if (d) return downloadDoc(d.dataset.fdl);
+  const u = e.target.closest('[data-fup]'); if (u) { openUpload(); $('upFund').value = u.dataset.fup; }
+});
 
 function activityHTML(a, unread) {
   return `<div class="activity-item ${unread ? 'notif-item unread' : ''}" data-act="${a.id}" style="cursor:pointer"><div class="activity-dot ${a.dot}"></div><div><div class="activity-text"><strong>${esc(a.title)}</strong> — ${esc(a.text)}</div><div class="activity-time">${esc(a.time)}</div></div></div>`;
 }
 function renderActivity() {
-  $('activityList').innerHTML = ACTIVITY.map(a => activityHTML(a, false)).join('');
   const read = store.get('read') || [];
-  $('notifList').innerHTML = ACTIVITY.slice(0, 5).map(a => activityHTML(a, !read.includes(a.id)).replace('activity-item', 'activity-item notif-item')).join('');
-  $('notifDot').classList.toggle('hidden', ACTIVITY.slice(0, 5).every(a => read.includes(a.id)));
+  $('notifList').innerHTML = ACTIVITY.slice(0, 6).map(a => activityHTML(a, !read.includes(a.id)).replace('activity-item', 'activity-item notif-item')).join('');
+  $('notifDot').classList.toggle('hidden', ACTIVITY.slice(0, 6).every(a => read.includes(a.id)));
+  renderKpis();
 }
 function markAllRead() { store.set('read', ACTIVITY.map(a => a.id)); renderActivity(); }
 document.addEventListener('click', e => {
@@ -2252,12 +2647,7 @@ document.addEventListener('click', e => {
   closeDropdowns(); renderActivity(); a.action();
 });
 
-function renderCountdown() {
-  const days = Math.ceil((new Date('2026-10-31T23:59:59') - new Date()) / 86400000);
-  $('callCountdown').textContent = days > 0 ? ` (${days} day${days === 1 ? '' : 's'} left)` : days === 0 ? ' (due today)' : '';
-}
-
-/* ── DOCUMENTS (Fund / Investor) ───────────────────────────────────── */
+/* ── DOCUMENTS (Funds › Fund / Investor) ───────────────────────────── */
 const DOC_SECTIONS = {
   fund: { title: 'Fund Documents', sub: 'Quarterly reports, fund agreements and investor presentations',
     cats: [['report', 'Quarterly & Annual Reports'], ['legal', 'Fund Agreements'], ['presentation', 'Presentations']], upload: 'report' },
@@ -2298,21 +2688,25 @@ function setDocSection(sec) {
   renderDocs();
 }
 $('docSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) navTo(b.dataset.page); });
+$('docFund').addEventListener('change', () => { state.docFund = $('docFund').value; renderDocs(); });
 
 function setDocFilter(cat) { state.docFilter = cat; renderDocs(); }
 $('docFilters').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) setDocFilter(b.dataset.f); });
 
 function renderDocs() {
   const sec = state.docSection, s = DOC_SECTIONS[sec];
-  const inSec = state.docs.filter(d => docSection(d) === sec);
-  $('segFundN').textContent = state.docs.filter(d => docSection(d) === 'fund').length;
-  $('segInvN').textContent = state.docs.filter(d => docSection(d) === 'investor').length;
+  const byFund = d => !state.docFund || d.fund === state.docFund;
+  const scoped = state.docs.filter(byFund);
+  const inSec = scoped.filter(d => docSection(d) === sec);
+  $('segFundN').textContent = scoped.filter(d => docSection(d) === 'fund').length;
+  $('segInvN').textContent = scoped.filter(d => docSection(d) === 'investor').length;
   $('docFilters').innerHTML = chipsHTML([['all', 'All', inSec.length], ...s.cats.map(([c, l]) => [c, l, inSec.filter(d => d.cat === c).length])], state.docFilter);
   const q = $('docSearch').value.trim().toLowerCase();
   const list = inSec
     .filter(d => (state.docFilter === 'all' || d.cat === state.docFilter) && (!q || (d.title + ' ' + d.fund).toLowerCase().includes(q)))
     .sort((a, b) => b.date - a.date);
-  $('docCount').textContent = `${list.length} document${list.length === 1 ? '' : 's'}`;
+  const fundName = (FUNDS.find(f => f.docKey === state.docFund) || {}).name || state.docFund;
+  $('docCount').innerHTML = `${list.length} document${list.length === 1 ? '' : 's'}${state.docFund ? ` for <b>${esc(fundName)}</b> · <button class="link" onclick="state.docFund='';$('docFund').value='';renderDocs()">show all funds</button>` : ''}`;
   const catLabel = c => (s.cats.find(x => x[0] === c) || [, c])[1];
   $('docsList').innerHTML = list.map(d => `
     <div class="doc-row">
@@ -2327,6 +2721,8 @@ function renderDocs() {
         <button class="icon-btn" title="Download" aria-label="Download ${esc(d.title)}" data-dl="${esc(d.id)}" ${d.lost ? 'disabled' : ''}>${ICON.dl}</button>
       </div>
     </div>`).join('') || '<p class="empty-state">No documents found.</p>';
+  // Funds overview and dashboard counts follow the documents on file
+  renderFundMatrix(); renderCapital(); renderKpis();
 }
 $('docsList').addEventListener('click', e => { const b = e.target.closest('[data-dl]'); if (b) downloadDoc(b.dataset.dl, b); });
 
@@ -2377,33 +2773,40 @@ function makeSamplePdf(title, details) {
 }
 
 /* ── EARNINGS CALLS ────────────────────────────────────────────────── */
+function setCallFilter(f) { state.callFilter = f; renderCalls(); }
 function renderCalls() {
   const q = $('callSearch').value.trim().toLowerCase(), sec = $('callSector').value;
-  const list = EARNINGS.filter(e => (state.callFilter === 'all' || e.status === state.callFilter) && (!sec || coSector(e.tk) === sec)
-    && (!q || (e.tk + ' ' + coName(e.tk) + ' ' + e.topics.join(' ')).toLowerCase().includes(q)));
+  const base = EARNINGS.filter(e => (!sec || coSector(e.tk) === sec) && (!q || (e.tk + ' ' + coName(e.tk) + ' ' + e.topics.join(' ')).toLowerCase().includes(q)));
+  $('callFilters').innerHTML = chipsHTML([['all', 'All calls', base.length], ['live', 'Live now', base.filter(e => e.status === 'live').length],
+    ['recorded', 'Recorded', base.filter(e => e.status === 'recorded').length], ['upcoming', 'Upcoming', base.filter(e => e.status === 'upcoming').length]], state.callFilter);
+  const order = { live: 0, upcoming: 1, recorded: 2 };
+  const rem = store.get('reminders') || [];
+  const list = base.filter(e => state.callFilter === 'all' || e.status === state.callFilter)
+    .sort((a, b) => order[a.status] - order[b.status] || (a.status === 'upcoming' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date)));
   $('callGrid').innerHTML = list.map(e => {
-    const up = e.status === 'upcoming';
-    return `<div class="call-card">
-      <div class="call-head">${coLogo(e.tk)}<div style="flex:1;min-width:0"><div class="call-co">${esc(coName(e.tk))} <span style="color:var(--muted);font-weight:500">${esc(e.tk)}</span></div>
-        <div class="call-sub">${esc(e.q)} earnings call · ${fmtDate(day(e.date))}${up ? '' : ' · ' + fmtDur(e.dur)}</div></div>
-        ${up ? '<span class="upcoming-pill">Upcoming</span>' : `<button class="play-btn" data-play="${e.id}" aria-label="Play ${esc(coName(e.tk))} call">${ICON.play}</button>`}</div>
-      ${up ? '<div class="wave">' + waveBars(e.id.charCodeAt(1), 60).map(() => '<i style="height:12%"></i>').join('') + '</div>'
-           : '<div class="wave">' + waveBars(e.id.charCodeAt(1), 60).map(h => `<i style="height:${h}%"></i>`).join('') + '</div>'}
-      <div class="call-foot"><div class="topic-row">${e.topics.map(t => `<span class="topic">${esc(t)}</span>`).join('')}</div>${up ? `<button class="btn btn-sm" data-remind="${e.id}">Set reminder</button>` : sentiHTML(e.senti)}</div>
-    </div>`;
+    const bars = waveBars(e.id.charCodeAt(1) + e.id.length * 7, 60);
+    const head = `<div class="call-head">${coLogo(e.tk)}<div style="flex:1;min-width:0"><div class="call-co">${esc(coName(e.tk))} <span style="color:var(--muted);font-weight:500">${esc(e.tk)}</span></div>
+        <div class="call-sub">${esc(e.q)} earnings call · ${fmtDate(day(e.date))} · ${e.status === 'recorded' ? fmtDur(e.dur) : esc(e.time || '08:30 ET')}</div></div>`;
+    if (e.status === 'live') return `<div class="call-card" style="border-color:#F9CDD3">${head}<span class="live-pill"><i></i>LIVE</span></div>
+      <div class="wave on">${bars.map((h, i) => `<i class="${i < 40 ? 'p' : ''}" style="height:${h}%;${i < 40 ? 'background:var(--rose)' : ''}"></i>`).join('')}</div>
+      <div class="call-foot"><div class="topic-row">${e.topics.map(t => `<span class="topic">${esc(t)}</span>`).join('')}</div><button class="btn btn-sm btn-primary" data-tr="${e.tr}">Follow live transcript</button></div></div>`;
+    if (e.status === 'upcoming') return `<div class="call-card">${head}<span class="upcoming-pill">Upcoming</span></div>
+      <div class="wave">${bars.map(() => '<i style="height:12%"></i>').join('')}</div>
+      <div class="call-foot"><div class="topic-row">${e.topics.map(t => `<span class="topic">${esc(t)}</span>`).join('')}</div><button class="btn btn-sm" data-remind="${e.id}">${rem.includes(e.id) ? '✓ Reminder set' : 'Set reminder'}</button></div></div>`;
+    return `<div class="call-card">${head}<button class="play-btn" data-play="${e.id}" aria-label="Play ${esc(coName(e.tk))} call">${ICON.play}</button></div>
+      <div class="wave">${bars.map(h => `<i style="height:${h}%"></i>`).join('')}</div>
+      <div class="call-foot"><div class="topic-row">${e.topics.map(t => `<span class="topic">${esc(t)}</span>`).join('')}</div>${sentiHTML(e.senti)}</div></div>`;
   }).join('') || '<p class="empty-state">No calls match your filters.</p>';
 }
-bindChips('callFilters', f => { state.callFilter = f; document.querySelectorAll('#callFilters .chip').forEach(c => c.classList.toggle('active', c.dataset.f === f)); renderCalls(); });
-$('callGrid').addEventListener('click', e => {
-  const p = e.target.closest('[data-play]'); if (p) return openCall(p.dataset.play);
-  const r = e.target.closest('[data-remind]'); if (r) { const c = EARNINGS.find(x => x.id === r.dataset.remind); showToast(`Reminder set for ${coName(c.tk)} on ${fmtDate(day(c.date))}.`); }
-});
+bindChips('callFilters', setCallFilter);
+$('callGrid').addEventListener('click', e => { const p = e.target.closest('[data-play]'); if (p) openCall(p.dataset.play); });
 
 // Simulated player
 const player = { call: null, t: 0, playing: false, speed: 1, timer: null };
 function openCall(id) {
   const e = EARNINGS.find(x => x.id === id); if (!e) return;
-  if (e.status === 'upcoming') { navTo('earnings'); return showToast(`${coName(e.tk)} reports on ${fmtDate(day(e.date))}.`); }
+  if (e.status === 'live') return openTranscript(e.tr);
+  if (e.status === 'upcoming') { setCallFilter('upcoming'); navTo('earnings'); return showToast(`${coName(e.tk)} reports on ${fmtDate(day(e.date))} at ${e.time || '08:30 ET'}.`); }
   plStop(); Object.assign(player, { call: e, t: 0, speed: 1 });
   $('plTitle').textContent = `${coName(e.tk)} — ${e.q} Earnings Call`;
   $('plSub').textContent = `${e.tk} · ${coSector(e.tk)} · ${fmtDate(day(e.date))}`;
@@ -2444,47 +2847,145 @@ $('plPlay').addEventListener('click', plToggle);
 $('plWave').addEventListener('click', e => { if (!player.call) return; const r = $('plWave').getBoundingClientRect(); player.t = Math.round((e.clientX - r.left) / r.width * player.call.dur); plUpdate(); });
 $('plHighlights').addEventListener('click', e => { const h = e.target.closest('[data-seek]'); if (h) { player.t = +h.dataset.seek; plUpdate(); if (!player.playing) plToggle(); } });
 
-/* ── TRANSCRIPTS ───────────────────────────────────────────────────── */
-const TR_TYPES = ['Earnings Call', 'M&A Call', 'Expert Call', 'Investor Day', 'Conference'];
+/* ── TRANSCRIPTS: Live → Machine edited (~20 min) → Human edited final (~2 hrs) ── */
+const TR_TYPES = ['Earnings Call', 'M&A Call', 'Investor Day', 'Conference'];
+const STAGE_ORDER = ['live', 'machine', 'final'];
+const STAGE_INFO = {
+  live: { label: 'Live', sla: 'real time', pill: '<span class="stage live"><i></i>LIVE</span>',
+    note: 'Live: streaming speech-to-text while the call is in progress. Unedited, generic speaker labels, no punctuation clean-up — for following a call as it happens.' },
+  machine: { label: 'Machine edited', sla: '~20 min', pill: '<span class="stage machine">MACHINE EDITED</span>',
+    note: 'Machine edited: published ~20 minutes after the call ends. Auto-punctuated with speakers identified and timestamps; low-confidence terms are underlined until a human editor reviews them.' },
+  final: { label: 'Human edited final', sla: '~2 hrs', pill: '<span class="stage final">✓ FINAL</span>',
+    note: 'Human edited final: reviewed against the audio by an editor ~2 hours after the call. Speaker names and titles, figures and terminology verified — the version of record.' },
+};
+const tStage = t => t.stage || 'final';
+const stagePill = t => STAGE_INFO[tStage(t)].pill;
+const tsAt = i => { const s = 14 + i * 83; return [s / 3600 | 0, (s / 60 | 0) % 60, s % 60].map(n => String(n).padStart(2, '0')).join(':'); };
+// Simulated raw ASR output for the live version
+const rawify = (text, seed) => { const fill = ['uh', 'um', 'you know', 'so']; return text.toLowerCase().replace(/[,;:"“”]|\.(?!\d)/g, '').replace(/’/g, "'").split(' ').map((w, i) => (i > 0 && (i + seed) % 11 === 0) ? fill[(i + seed) % 4] + ' ' + w : w).join(' '); };
+// Machine version: flag the first figure in each turn as low confidence
+const machineText = (text, q) => hl(text, q).replace(/\b\d[\d.,]*\b/, m => `<span class="lowconf" title="Low confidence — pending human review">${m}</span>`);
+
+function stageMeta(t) {
+  const s = tStage(t);
+  if (s === 'live') return `<span>Started ${t.startedMin} min ago</span>`;
+  if (s === 'machine') return `<span>Ended ${t.endedMin} min ago</span><span>Final in ~${Math.max(5, 120 - t.endedMin)} min</span>`;
+  return `<span>${fmtDate(day(t.date))}</span>`;
+}
+
 function renderTranscripts() {
-  const q = $('trSearch').value.trim();
-  const ql = q.toLowerCase();
-  const match = t => !ql || (t.title + ' ' + coName(t.tk) + ' ' + t.body.map(b => b[2]).join(' ')).toLowerCase().includes(ql);
-  const base = TRANSCRIPTS.filter(match);
-  $('trFilters').innerHTML = chipsHTML([['all', 'All types', base.length], ...TR_TYPES.map(t => [t, t, base.filter(x => x.type === t).length])], state.trFilter);
+  const q = $('trSearch').value.trim(), ql = q.toLowerCase();
+  const match = t => !ql || (t.title + ' ' + coName(t.tk) + ' ' + t.summary.join(' ') + ' ' + t.body.map(b => b[2]).join(' ')).toLowerCase().includes(ql);
+  $('trStages').innerHTML = STAGE_ORDER.map(s => {
+    const n = TRANSCRIPTS.filter(t => tStage(t) === s && match(t)).length;
+    return `<button data-stage="${s}" class="${state.trStage === s ? 'active' : ''}">${s === 'live' ? '<span class="live-dot"></span>' : ''}${STAGE_INFO[s].label} <small>${STAGE_INFO[s].sla}</small><span class="n">${n}</span></button>`;
+  }).join('');
+  $('trStageNote').textContent = STAGE_INFO[state.trStage].note;
+  const base = TRANSCRIPTS.filter(t => tStage(t) === state.trStage && match(t));
+  $('trFilters').innerHTML = chipsHTML([['all', 'All types', base.length], ...TR_TYPES.map(t => [t, t, base.filter(x => x.type === t).length]).filter(x => x[2])], state.trFilter);
   const list = base.filter(t => state.trFilter === 'all' || t.type === state.trFilter);
-  if (!list.find(t => t.id === state.trActive)) state.trActive = list[0] ? list[0].id : null;
+  if (!list.find(t => t.id === state.trActive)) { state.trActive = list[0] ? list[0].id : null; state.trVer = null; }
   $('trList').innerHTML = list.map(t => {
     const hits = ql ? t.body.reduce((n, b) => n + (b[2].toLowerCase().split(ql).length - 1), 0) : 0;
     return `<div class="t-item ${t.id === state.trActive ? 'active' : ''}" data-tsel="${t.id}">
       <div class="feed-title">${hl(t.title, q)}</div>
-      <div class="feed-meta"><span class="tbadge ${t.type === 'Expert Call' ? 'expert' : 'transcript'}">${esc(t.type)}</span><span>${fmtDate(day(t.date))}</span>${hits ? `<span style="color:var(--brand-600);font-weight:600">${hits} hit${hits > 1 ? 's' : ''}</span>` : ''}</div></div>`;
-  }).join('') || '<p class="empty-state">No transcripts match.</p>';
+      <div class="feed-meta">${stagePill(t)}<span class="tbadge transcript">${esc(t.type)}</span>${stageMeta(t)}${hits ? `<span style="color:var(--brand-600);font-weight:600">${hits} hit${hits > 1 ? 's' : ''}</span>` : ''}</div></div>`;
+  }).join('') || `<p class="empty-state">No ${STAGE_INFO[state.trStage].label.toLowerCase()} transcripts${q ? ' match' : ' right now'}.</p>`;
+  renderTranscriptDoc();
+}
+
+function renderTranscriptDoc() {
+  const q = $('trSearch').value.trim();
   const t = TRANSCRIPTS.find(x => x.id === state.trActive);
-  $('trDoc').innerHTML = !t ? '<p class="empty-state">Select a transcript to read.</p>' : `
-    <div class="t-doc-hdr"><div style="display:flex;gap:12px;align-items:center">${coLogo(t.tk)}<div><h3>${esc(t.title)}</h3>
-      <div class="feed-meta"><span class="tbadge ${t.type === 'Expert Call' ? 'expert' : 'transcript'}">${esc(t.type)}</span><span>${esc(coSector(t.tk))}</span><span>${fmtDate(day(t.date))}</span>${sentiHTML(t.senti)}</div></div></div>
-      <div class="page-hdr-right"><button class="btn btn-sm" data-trdl="${t.id}">${ICON.dl.replace('<svg', '<svg class="i"')}Download</button></div></div>
+  if (!t) { $('trDoc').innerHTML = '<p class="empty-state">Select a transcript to read.</p>'; return; }
+  const stage = tStage(t), avail = STAGE_ORDER.slice(0, STAGE_ORDER.indexOf(stage) + 1);
+  const ver = state.trVer && avail.includes(state.trVer) ? state.trVer : stage;
+  const streaming = ver === 'live' && stage === 'live';
+  const turns = streaming ? t.body.slice(0, state.liveN) : t.body;
+  const spk = {}; t.body.forEach(([sp]) => { if (!(sp in spk)) spk[sp] = Object.keys(spk).length + 1; });
+  const banner = {
+    live: stage === 'live' ? `<span class="live-pill"><i></i>LIVE</span><span>Started ${t.startedMin} min ago · text appears as it is spoken. Unedited machine output.</span>`
+                           : '<span>Archived live feed as it streamed during the call — unedited.</span>',
+    machine: `<span><b>Machine edited</b> · published ~20 min after the call. ${stage === 'machine' ? `Human-edited final expected in ~${Math.max(5, 120 - t.endedMin)} min.` : 'Superseded by the human-edited final.'} Underlined figures are low confidence.</span>`,
+    final: '<span><b>✓ Human edited final</b> · reviewed against the audio ~2 hours after the call. Speakers, figures and terminology verified.</span>',
+  }[ver];
+  const sumTitle = { live: 'Live key moments', machine: 'Preliminary summary', final: 'Smart summary' }[ver];
+  const body = turns.map(([sp, role, text], i) => {
+    const isNew = streaming && i === turns.length - 1 ? ' new' : '';
+    if (ver === 'live') return `<div class="t-turn raw${isNew}"><div class="t-sp">Speaker ${spk[sp]} <span class="t-ts">${tsAt(i)}</span></div><p>${hl(rawify(text, i), q)}</p></div>`;
+    if (ver === 'machine') return `<div class="t-turn"><div class="t-sp">${esc(sp)} <span class="t-ts">${tsAt(i)}</span></div><p>${machineText(text, q)}</p></div>`;
+    return `<div class="t-turn"><div class="t-sp">${esc(sp)} <span>${esc(role)}</span> <span class="t-ts">${tsAt(i)}</span></div><p>${hl(text, q)}</p></div>`;
+  }).join('');
+  const sum = streaming ? t.summary.slice(0, Math.max(1, Math.min(t.summary.length, state.liveN - 2))) : t.summary;
+  $('trDoc').innerHTML = `
+    <div class="t-doc-hdr"><div style="display:flex;gap:12px;align-items:center;min-width:0">${coLogo(t.tk)}<div style="min-width:0"><h3>${esc(t.title)}</h3>
+      <div class="feed-meta">${stagePill(t)}<span class="tbadge transcript">${esc(t.type)}</span><span>${esc(coSector(t.tk))}</span>${stageMeta(t)}${ver === 'final' ? sentiHTML(t.senti) : ''}</div></div></div>
+      <div class="page-hdr-right"><div class="ver-tabs" role="tablist" aria-label="Transcript version">${STAGE_ORDER.map(v => `<button data-ver="${v}" class="${v === ver ? 'active' : ''}" ${avail.includes(v) ? '' : 'disabled title="Not available yet"'}>${STAGE_INFO[v].label}</button>`).join('')}</div>
+      <button class="btn btn-sm" data-trdl="${t.id}">${ICON.dl.replace('<svg', '<svg class="i"')}Download</button></div></div>
     <div class="t-doc-body">
-      <div class="card ai-card" style="margin-bottom:1.2rem;box-shadow:none"><div class="card-title" style="margin-bottom:0.7rem">Smart summary <span class="ai-badge">AI generated</span></div>
-        <ul class="ai-list">${t.summary.map(s => `<li>${hl(s, q)}</li>`).join('')}</ul></div>
-      ${t.body.map(([sp, role, text]) => `<div class="t-turn"><div class="t-sp">${esc(sp)} <span>${esc(role)}</span></div><p>${hl(text, q)}</p></div>`).join('')}
+      <div class="ver-banner ${ver}">${banner}</div>
+      <div class="card ai-card" style="margin-bottom:1.2rem;box-shadow:none"><div class="card-title" style="margin-bottom:0.7rem">${sumTitle} <span class="ai-badge">AI generated${ver === 'final' ? ' · verified' : ''}</span></div>
+        <ul class="ai-list">${sum.map(s => `<li>${hl(s, q)}</li>`).join('')}</ul></div>
+      ${body}
+      ${streaming ? `<div class="typing"><i></i><i></i><i></i>&nbsp;${state.liveN < t.body.length ? 'Transcribing…' : 'Waiting for next speaker…'}</div>` : ''}
     </div>`;
 }
 function openTranscript(id) {
   const t = TRANSCRIPTS.find(x => x.id === id); if (!t) return;
-  state.trFilter = 'all'; state.trActive = id;
-  if (state.query && t.body.some(b => b[2].toLowerCase().includes(state.query.toLowerCase()))) $('trSearch').value = state.query; else $('trSearch').value = '';
+  state.trStage = tStage(t); state.trFilter = 'all'; state.trActive = id; state.trVer = null;
+  $('trSearch').value = state.query && t.body.some(b => b[2].toLowerCase().includes(state.query.toLowerCase())) ? state.query : '';
   navTo('transcripts'); renderTranscripts();
 }
+$('trStages').addEventListener('click', e => { const b = e.target.closest('[data-stage]'); if (b) { state.trStage = b.dataset.stage; state.trActive = null; state.trFilter = 'all'; renderTranscripts(); } });
 bindChips('trFilters', f => { state.trFilter = f; renderTranscripts(); });
-$('trList').addEventListener('click', e => { const i = e.target.closest('[data-tsel]'); if (i) { state.trActive = i.dataset.tsel; renderTranscripts(); if (window.innerWidth < 960) $('trDoc').scrollIntoView({ behavior: 'smooth' }); } });
+$('trList').addEventListener('click', e => { const i = e.target.closest('[data-tsel]'); if (i) { state.trActive = i.dataset.tsel; state.trVer = null; renderTranscripts(); if (window.innerWidth < 960) $('trDoc').scrollIntoView({ behavior: 'smooth' }); } });
 $('trDoc').addEventListener('click', e => {
+  const v = e.target.closest('[data-ver]'); if (v && !v.disabled) { state.trVer = v.dataset.ver; return renderTranscriptDoc(); }
   const b = e.target.closest('[data-trdl]'); if (!b) return;
-  const t = TRANSCRIPTS.find(x => x.id === b.dataset.trdl);
-  downloadBlob(makeSamplePdf(t.title, ['Type: ' + t.type, 'Company: ' + coName(t.tk), 'Date: ' + fmtDate(day(t.date))]), safeName(t.title) + '.pdf');
-  showToast('Transcript downloaded.');
+  const t = TRANSCRIPTS.find(x => x.id === b.dataset.trdl), ver = state.trVer || tStage(t);
+  downloadBlob(makeSamplePdf(t.title, ['Version: ' + STAGE_INFO[ver].label, 'Type: ' + t.type, 'Company: ' + coName(t.tk), 'Date: ' + fmtDate(day(t.date))]), safeName(`${t.title} (${STAGE_INFO[ver].label})`) + '.pdf');
+  showToast(`Transcript downloaded (${STAGE_INFO[ver].label}).`);
 });
+// Live call: a new line arrives every few seconds
+setInterval(() => {
+  const t = TRANSCRIPTS.find(x => tStage(x) === 'live');
+  if (!t || state.liveN >= t.body.length) return;
+  state.liveN++;
+  if ($('page-transcripts').classList.contains('active') && state.trActive === t.id && (state.trVer || 'live') === 'live') renderTranscriptDoc();
+}, 6000);
+
+/* ── EXPERT INTERVIEWS ─────────────────────────────────────────────── */
+function renderExperts() {
+  const q = $('exSearch').value.trim().toLowerCase(), sec = $('exSector').value;
+  const base = EXPERTS.filter(x => (!sec || x.sector === sec) && (!q || (x.title + ' ' + x.role + ' ' + x.quote + ' ' + x.tks.map(coName).join(' ') + ' ' + x.tks.join(' ') + ' ' + x.qa.flat().join(' ')).toLowerCase().includes(q)));
+  $('exFilters').innerHTML = chipsHTML([['all', 'All experts', base.length], ...Object.keys(EX_TYPES).map(t => [t, t, base.filter(x => x.type === t).length])], state.exFilter);
+  const list = base.filter(x => state.exFilter === 'all' || x.type === state.exFilter).sort((a, b) => b.date.localeCompare(a.date));
+  $('exGrid').innerHTML = list.map(x => `<div class="rs-card" data-exp="${x.id}">
+      <div class="ex-head">${exAvatar(x)}<div style="min-width:0"><div class="ex-role">${esc(x.role)}</div><div class="ex-sub">${esc(x.type)} · ${fmtDate(day(x.date))} · ${x.dur} min</div></div></div>
+      <div class="ex-topic">${esc(x.title)}</div>
+      <div class="ex-quote">“${esc(x.quote)}”</div>
+      <div class="rs-foot"><span class="topic-row">${x.tks.map(tk => `<span class="topic" title="${esc(coName(tk))}">${esc(tk)}</span>`).join('')}</span>${sentiHTML(x.senti)}<span class="cleared">✓ Compliance cleared</span></div>
+    </div>`).join('') || '<p class="empty-state">No interviews match your filters.</p>';
+}
+bindChips('exFilters', f => { state.exFilter = f; renderExperts(); });
+function openExpert(id) {
+  const x = EXPERTS.find(e => e.id === id); if (!x) return;
+  $('exTitle').textContent = x.title;
+  $('exSub').textContent = `${x.role} · ${x.type} · ${fmtDate(day(x.date))} · ${x.dur} min`;
+  $('exStats').innerHTML = `<div class="stat"><span>Companies discussed</span><b style="font-size:0.85rem">${esc(x.tks.map(coName).join(', '))}</b></div>
+    <div class="stat"><span>Expert sentiment</span><b>${sentiHTML(x.senti)}</b></div><div class="stat"><span>Compliance</span><b class="cleared" style="font-size:0.9rem">✓ Cleared</b></div>`;
+  $('exInsights').innerHTML = x.insights.map(s => `<li>${esc(s)}</li>`).join('');
+  $('exQA').innerHTML = x.qa.map(([q, a]) => `<div class="qa"><div class="q">Q: ${esc(q)}</div><div class="a">${esc(a)}</div></div>`).join('');
+  $('exDownload').onclick = () => { downloadBlob(makeSamplePdf(x.title, ['Expert: ' + x.role, 'Type: ' + x.type, 'Date: ' + fmtDate(day(x.date))]), safeName(x.title) + '.pdf'); showToast('Interview downloaded.'); };
+  $('erCompany').value = x.tks[0]; $('erType').value = x.type;
+  openModal('expertModal');
+}
+function submitExpertRequest() {
+  const tk = $('erCompany').value, topic = $('erTopic').value.trim();
+  if (!topic) { $('erTopic').focus(); return showToast('Please describe what you want to learn.', 'error'); }
+  closeModal('expertReqModal'); $('erTopic').value = '';
+  showToast(`Request sent — we'll schedule a ${$('erType').value.toLowerCase()} on ${coName(tk)} within 48 hours.`);
+}
 
 /* ── RESEARCH ──────────────────────────────────────────────────────── */
 const RS_TYPES = ['Earnings Review', 'M&A Analysis', 'Initiation', 'Sector Deep Dive'];
@@ -2611,7 +3112,7 @@ function downloadFiling(id) {
 }
 
 /* ── GLOBAL SEARCH ─────────────────────────────────────────────────── */
-const SR_TYPES = [['all', 'All'], ['doc', 'Documents'], ['earnings', 'Earnings Calls'], ['transcript', 'Transcripts'], ['research', 'Research'], ['deal', 'Deals'], ['filing', 'Filings']];
+const SR_TYPES = [['all', 'All'], ['earnings', 'Earnings Calls'], ['transcript', 'Transcripts'], ['expert', 'Expert Interviews'], ['research', 'Research'], ['deal', 'Deals'], ['filing', 'Filings'], ['doc', 'Fund Documents']];
 function snippet(text, q, n = 160) {
   if (!q) return esc(text.slice(0, n)) + (text.length > n ? '…' : '');
   const i = text.toLowerCase().indexOf(q.toLowerCase());
@@ -2621,9 +3122,11 @@ function snippet(text, q, n = 160) {
 }
 function searchAll(q) {
   const ql = q.toLowerCase(), has = s => !ql || s.toLowerCase().includes(ql), out = [];
-  state.docs.forEach(d => { const s = d.title + ' ' + d.fund + ' ' + d.cat; if (has(s)) out.push({ type: 'doc', label: 'Document', date: d.date.toISOString().slice(0, 10), title: d.title, snip: `${d.fund} · ${fmtSize(d.size)}`, tk: null, attr: `data-srdoc="${esc(d.id)}"` }); });
-  EARNINGS.forEach(e => { const s = coName(e.tk) + ' ' + e.tk + ' ' + e.topics.join(' ') + ' ' + e.hl.map(h => h[2].replace(/<[^>]+>/g, '')).join(' '); if (has(s)) out.push({ type: 'earnings', label: 'Earnings Call', date: e.date, title: `${coName(e.tk)} — ${e.q} Earnings Call`, snip: snippet(e.hl.map(h => h[2].replace(/<[^>]+>/g, '')).join(' ') || 'Upcoming · ' + e.topics.join(', '), q), tk: e.tk, attr: `data-call="${e.id}"` }); });
-  TRANSCRIPTS.forEach(t => { const full = t.summary.join(' ') + ' ' + t.body.map(b => b[2]).join(' '); if (has(t.title + ' ' + coName(t.tk) + ' ' + full)) out.push({ type: 'transcript', label: t.type, date: t.date, title: t.title, snip: snippet(full, q), tk: t.tk, attr: `data-tr="${t.id}"`, badge: t.type === 'Expert Call' ? 'expert' : 'transcript' }); });
+  const strip = s => s.replace(/<[^>]+>/g, '');
+  state.docs.forEach(d => { const s = d.title + ' ' + d.fund + ' ' + d.cat; if (has(s)) out.push({ type: 'doc', label: docSection(d) === 'fund' ? 'Fund Document' : 'Investor Document', date: d.date.toISOString().slice(0, 10), title: d.title, snip: `${d.fund} · ${fmtSize(d.size)}`, tk: null, attr: `data-srdoc="${esc(d.id)}"` }); });
+  EARNINGS.forEach(e => { const txt = e.hl.map(h => strip(h[2])).join(' '); if (has(coName(e.tk) + ' ' + e.tk + ' ' + e.topics.join(' ') + ' ' + txt)) out.push({ type: 'earnings', label: e.status === 'live' ? 'Earnings Call · LIVE' : 'Earnings Call', date: e.date, title: `${coName(e.tk)} — ${e.q} Earnings Call`, snip: snippet(txt || (e.status === 'upcoming' ? 'Upcoming · ' : '') + e.topics.join(', '), q), tk: e.tk, attr: `data-call="${e.id}"` }); });
+  TRANSCRIPTS.forEach(t => { const full = t.summary.join(' ') + ' ' + t.body.map(b => b[2]).join(' '); if (has(t.title + ' ' + coName(t.tk) + ' ' + full)) out.push({ type: 'transcript', label: `${t.type} · ${STAGE_INFO[tStage(t)].label}`, date: t.date, title: t.title, snip: snippet(full, q), tk: t.tk, attr: `data-tr="${t.id}"` }); });
+  EXPERTS.forEach(x => { const full = x.quote + ' ' + x.insights.join(' ') + ' ' + x.qa.flat().join(' '); if (has(x.title + ' ' + x.role + ' ' + x.tks.join(' ') + ' ' + x.tks.map(coName).join(' ') + ' ' + full)) out.push({ type: 'expert', label: 'Expert Interview · ' + x.type, date: x.date, title: x.title, snip: snippet(full, q), tk: x.tks[0], attr: `data-exp="${x.id}"` }); });
   RESEARCH.forEach(r => { const s = r.title + ' ' + r.summary + ' ' + r.points.join(' ') + ' ' + r.broker + ' ' + coName(r.tk) + ' ' + r.tk; if (has(s)) out.push({ type: 'research', label: 'Research · ' + r.rating, date: r.date, title: r.title, snip: snippet(r.summary + ' ' + r.points.join(' '), q), tk: r.tk, attr: `data-rs="${r.id}"` }); });
   DEALS.forEach(d => { const s = dealTarget(d) + ' ' + d.acqName + ' ' + coSector(d.target) + ' ' + d.type + ' ' + d.stage + ' EV/EBITDA synergies'; if (has(s)) out.push({ type: 'deal', label: 'Deal · ' + d.stage, date: d.announced, title: `${dealTarget(d)} — ${d.acqName}`, snip: `${d.type} · ${bn(d.value)} · ${d.evEbitda ? d.evEbitda.toFixed(1) + '× EV/EBITDA' : 'n.m.'} · expected close ${d.close}`, tk: d.target, attr: `data-deal="${d.id}"` }); });
   FILINGS.forEach(f => { const s = f.form + ' ' + f.title + ' ' + coName(f.tk) + ' ' + f.tk; if (has(s)) out.push({ type: 'filing', label: f.form, date: f.date, title: `${coName(f.tk)}: ${f.title}`, snip: `${FORM_DESC[f.form] || 'Filing'} · ${f.pages} pages`, tk: f.tk, attr: `data-fil="${f.id}"` }); });
@@ -2631,19 +3134,19 @@ function searchAll(q) {
 }
 function runSearch(q) {
   state.query = (q || '').trim(); state.srFilter = 'all';
-  $('gSearch').value = state.query; $('heroSearch').value = '';
+  $('gSearch').value = state.query;
   renderSearch(); navTo('search'); $('gSearch').blur();
 }
 function renderSearch() {
   const q = state.query, all = searchAll(q);
   $('srTitle').textContent = q ? `Results for “${q}”` : 'All content';
-  $('srSub').textContent = `${all.length} result${all.length === 1 ? '' : 's'} across documents, calls, transcripts, research, deals and filings`;
+  $('srSub').textContent = `${all.length} result${all.length === 1 ? '' : 's'} across calls, transcripts, expert interviews, research, deals, filings and fund documents`;
   $('srFilters').innerHTML = chipsHTML(SR_TYPES.map(([v, l]) => [v, l, v === 'all' ? all.length : all.filter(r => r.type === v).length]), state.srFilter);
   const list = all.filter(r => state.srFilter === 'all' || r.type === state.srFilter);
   $('srList').innerHTML = list.map(r => `<div class="sr-item" ${r.attr}>
       ${r.tk ? coLogo(r.tk) : '<div class="feed-logo" style="background:#94A3B8">DOC</div>'}
       <div class="feed-body"><div class="feed-title">${hl(r.title, q)}</div>
-        <div class="feed-meta"><span class="tbadge ${r.badge || r.type}">${esc(r.label)}</span><span>${fmtDate(day(r.date))}</span></div>
+        <div class="feed-meta"><span class="tbadge ${r.type}">${esc(r.label)}</span><span>${fmtDate(day(r.date))}</span></div>
         <div class="sr-snip">${r.snip}</div></div></div>`).join('')
     || `<p class="empty-state">No results for “${esc(q)}”. Try a company name, ticker or theme like “synergies”.</p>`;
 }
@@ -2658,6 +3161,7 @@ const modalInput = $('modalFileInput');
 function openUpload() {
   stagedFiles = []; renderStaged();
   $('upCat').value = DOC_SECTIONS[state.docSection].upload;
+  if (state.docFund && [...$('upFund').options].some(o => o.value === state.docFund)) $('upFund').value = state.docFund;
   closeDropdowns(); openModal('uploadModal');
 }
 function fileProblem(f) {
@@ -2799,18 +3303,24 @@ if (!('sessionTimeout' in prefs)) prefs.sessionTimeout = true;
 /* ── CHARTS ────────────────────────────────────────────────────────── */
 function initCharts() {
   if (typeof Chart === 'undefined') { document.querySelectorAll('.chart-box').forEach(b => b.innerHTML = '<p class="empty-state">Charts could not load (offline?).</p>'); return; }
-  const teal = '#0E8C7F', mint = '#19C2A8', blue = '#3B82F6', violet = '#7C5CE0', amber = '#E89B0C', rose = '#E0435A', slate = '#94A3B8';
+  const teal = '#0E8C7F', mint = '#19C2A8', blue = '#3B82F6', violet = '#7C5CE0', amber = '#E89B0C', rose = '#E0435A', slate = '#94A3B8', green = '#16A34A';
   const gridColor = '#EEF2F6', textColor = '#6B7A90';
   Chart.defaults.font.family = "'Inter', sans-serif";
-  const tooltip = { backgroundColor: '#0F1B2D', titleColor: '#fff', bodyColor: '#E3E8EF', cornerRadius: 8, padding: 10, boxPadding: 4 };
+  const tooltip = { backgroundColor: '#0F1B2D', titleColor: '#fff', bodyColor: '#E3E8EF', footerColor: '#19C2A8', cornerRadius: 8, padding: 10, boxPadding: 4 };
   const legend = { display: true, position: 'bottom', labels: { color: textColor, font: { size: 11 }, boxWidth: 10, boxHeight: 10, padding: 12, usePointStyle: true } };
   const defaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip },
     scales: { x: { grid: { display: false }, border: { color: '#E3E8EF' }, ticks: { color: textColor, font: { size: 11 } } }, y: { grid: { color: gridColor }, border: { display: false }, ticks: { color: textColor, font: { size: 11 } } } } };
   const quarters = ["Q4'24", "Q1'25", "Q2'25", "Q3'25", "Q4'25", "Q1'26", "Q2'26", "Q3'26"];
-  const line = (label, data, color) => ({ label, data, borderColor: color, backgroundColor: color, borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.35 });
 
-  new Chart($('trendChart'), { type: 'line', data: { labels: quarters, datasets: [line('synergies', [410, 455, 470, 520, 610, 640, 700, 760], teal), line('antitrust', [120, 135, 160, 150, 190, 230, 260, 360], violet), line('divestiture', [210, 205, 240, 260, 255, 300, 340, 330], amber), line('take-private', [90, 110, 140, 170, 200, 215, 250, 290], blue)] },
-    options: { ...defaults, interaction: { mode: 'index', intersect: false }, plugins: { legend, tooltip } } });
+  // Dashboard: deal value by stage — click a bar to open the Deal Tracker filtered to that stage
+  const stageVal = STAGES.map(([s]) => +DEALS.filter(d => d.stage === s).reduce((a, d) => a + d.value, 0).toFixed(1));
+  const stageCnt = STAGES.map(([s]) => DEALS.filter(d => d.stage === s).length);
+  new Chart($('dealStageChart'), { type: 'bar', data: { labels: STAGES.map(s => s[0].split(' ')), datasets: [{ label: 'Deal value ($B)', data: stageVal, backgroundColor: [slate, blue, violet, teal, green], borderRadius: 5, maxBarThickness: 48 }] },
+    options: { ...defaults,
+      onClick: (ev, els) => { if (els.length) { state.dealStage = STAGES[els[0].index][0]; navTo('deals'); renderDeals(); } },
+      onHover: (ev, els) => { ev.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+      plugins: { legend: { display: false }, tooltip: { ...tooltip, callbacks: { label: c => ` ${bn(c.parsed.y)} · ${stageCnt[c.dataIndex]} deal${stageCnt[c.dataIndex] === 1 ? '' : 's'}`, footer: () => 'Click to open in Deal Tracker' } } },
+      scales: { x: { ...defaults.scales.x, ticks: { ...defaults.scales.x.ticks, font: { size: 10 } } }, y: { ...defaults.scales.y, ticks: { ...defaults.scales.y.ticks, callback: v => '$' + v + 'B' } } } } });
 
   new Chart($('navChart'), { type: 'line', data: { labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'], datasets: [{ label: 'Portfolio NAV ($M)', data: [18, 22, 28, 32, 38, 44, 54, 61.2], fill: true, backgroundColor: 'rgba(14,140,127,0.08)', borderColor: teal, borderWidth: 2, pointBackgroundColor: teal, pointRadius: 3, tension: 0.35 }] }, options: defaults });
 
@@ -2820,10 +3330,6 @@ function initCharts() {
   new Chart($('irrChart'), { type: 'bar', data: { labels: ['PE V', 'PE VI', 'RE IV', 'Infra II', 'HF', 'Credit I'], datasets: [{ label: 'Net IRR %', data: [14.1, 18.4, 14.2, 16.9, 9.8, -0.6], backgroundColor: [teal, teal, mint, blue, violet, rose], borderRadius: 4, borderSkipped: false, maxBarThickness: 36 }] }, options: defaults });
 
   new Chart($('callChart'), { type: 'bar', data: { labels: ["Q1'26", "Q2'26", "Q3'26", "Q4'26", "Q1'27", "Q2'27"], datasets: [{ label: 'Scheduled calls ($M)', data: [0, 0, 0, 2.4, 0.9, 0], backgroundColor: mint, borderRadius: 4, maxBarThickness: 36 }] }, options: defaults });
-
-  new Chart($('jcurveChart'), { type: 'line', data: { labels: ['Y0', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y6', 'Y7'], datasets: [{ label: 'Cumulative cash flow ($M)', data: [-10, -18, -25, -22, -12, 5, 22, 45], fill: true, backgroundColor: 'rgba(14,140,127,0.08)', borderColor: teal, borderWidth: 2, tension: 0.35, pointBackgroundColor: teal, pointRadius: 3 }] }, options: defaults });
-
-  new Chart($('vintageChart'), { type: 'bar', data: { labels: ['2017', '2018', '2019', '2020', '2021', '2022'], datasets: [{ label: 'Committed ($M)', data: [8, 3.5, 15, 10, 12, 8], backgroundColor: [...Array(6)].map((_, i) => `rgba(14,140,127,${0.35 + i * 0.12})`), borderRadius: 4, borderSkipped: false, maxBarThickness: 40 }] }, options: defaults });
 
   const sectors = [...new Set(DEALS.map(d => coSector(d.target)))];
   new Chart($('dealSectorChart'), { type: 'bar', data: { labels: sectors, datasets: [{ label: 'Deal value ($B)', data: sectors.map(s => +DEALS.filter(d => coSector(d.target) === s).reduce((a, d) => a + d.value, 0).toFixed(1)), backgroundColor: [teal, blue, violet, rose, mint, amber, slate], borderRadius: 4, maxBarThickness: 40 }] },
@@ -2841,9 +3347,16 @@ function initCharts() {
   const opts = arr => arr.map(s => `<option>${esc(s)}</option>`).join('');
   $('callSector').innerHTML += opts([...new Set(EARNINGS.map(e => coSector(e.tk)))].sort());
   $('compSector').innerHTML += opts([...new Set(COMPS.map(c => c.sector))].sort());
+  $('exSector').innerHTML += opts([...new Set(EXPERTS.map(x => x.sector))].sort());
+  const fundOpts = FUNDS.map(f => `<option value="${esc(f.docKey)}">${esc(f.name)}</option>`).join('');
+  $('docFund').innerHTML = '<option value="">All funds</option>' + fundOpts + '<option value="All Funds">All Funds (shared)</option><option value="General">General</option>';
+  $('upFund').innerHTML = FUNDS.filter(f => f.active).map(f => `<option value="${esc(f.docKey)}">${esc(f.name)}</option>`).join('') + '<option value="All Funds">General / All Funds</option>';
+  $('erCompany').innerHTML = Object.entries(COMPANIES).sort((a, b) => a[1].name.localeCompare(b[1].name)).map(([tk, c]) => `<option value="${tk}">${esc(c.name)} (${tk})</option>`).join('');
 })();
-renderDashboard(); renderFundMatrix(); renderCapital(); renderActivity(); renderCountdown();
-renderCalls(); renderTranscripts(); renderResearch(); renderDeals(); renderComps(); renderFilings();
+$('asOf').textContent = fmtDate(day(DEMO_TODAY));
+renderDashboard(); renderFundMatrix(); renderCapital(); renderActivity();
+renderCalls(); renderTranscripts(); renderExperts(); renderResearch(); renderDeals(); renderComps(); renderFilings();
+document.body.classList.toggle('on-dash', !location.hash || location.hash === '#dashboard');
 window.addEventListener('hashchange', () => { if ($('app').classList.contains('visible')) navTo(location.hash.replace('#', ''), false); });
 setAuthMethod(authMethod, false);
 detectMode();
