@@ -51,7 +51,7 @@ DEMO_DOCUMENTS = [
     ("Q2 2026 Investor Presentation", "pptx", "presentation", "All Funds", "2026-07-12"),
     ("K-1 Tax Package 2025 — All Funds", "xlsx", "tax", "All Funds", "2026-04-15"),
     ("Q1 2026 Quarterly Report — Absolute Return HF", "pdf", "report", "Absolute Return HF", "2026-04-05"),
-    ("Annual Report 2025 — Meridian PE Fund VI", "pdf", "report", "PE Fund VI", "2026-03-30"),
+    ("Annual Report 2025 — PE Fund VI", "pdf", "report", "PE Fund VI", "2026-03-30"),
     ("Subscription Agreement — PE Fund VI", "docx", "legal", "PE Fund VI", "2021-01-03"),
     ("Side Letter Agreement — Whitfield Family Office", "docx", "legal", "General", "2017-03-12"),
 ]
@@ -66,7 +66,7 @@ def _pdf_escape(text: str) -> str:
 def make_placeholder_pdf(title: str, fund: str, category: str, date: str) -> bytes:
     """Build a small, valid one-page PDF (correct xref offsets) with no dependencies."""
     lines = [
-        ("F2", 20, "Meridian Capital - Investor Portal"),
+        ("F2", 20, "DataIntelligence"),
         ("F2", 14, title),
         ("F1", 11, f"Fund: {fund}"),
         ("F1", 11, f"Category: {category}"),
