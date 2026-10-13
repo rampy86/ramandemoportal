@@ -59,7 +59,7 @@ python seed.py
 ```
 
 Creates sample documents and two demo investor accounts:
-- `j.whitfield@meridian.com` / `ChangeMe123!`
+- `rampy007@gmail.com` / `ChangeMe123!` (then the 4-digit code from **Send code**)
 - `raman.dandona@aithonsolutions.com` / `ChangeMe123!`
 
 ### 4. Run the server

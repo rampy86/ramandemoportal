@@ -57,7 +57,7 @@ Sign in on the **Password** tab with any email and password, or on the **Email c
 4. Click **Apply** / **Deploy Blueprint**. The first Docker build takes ~3–6 minutes.
 5. Open the URL Render shows (e.g. `https://dataintelligence-platform.onrender.com`).
    - Sign-in pill should read **Live API**.
-   - **Password** tab: `j.whitfield@meridian.com` / `ChangeMe123!`.
+   - **Password** tab: `rampy007@gmail.com` / `ChangeMe123!`, then **Send code** and enter the 4-digit code.
    - **Email code** tab: enter your own email. Until step 3 is done, the code appears on screen instead of being emailed.
    - API docs: `https://<your-app>.onrender.com/docs`
 
@@ -75,7 +75,7 @@ Render's free tier **blocks outbound SMTP (ports 25/465/587)**, so the Gmail SMT
 5. **Save, rebuild and deploy.** On the **Email code** tab enter your own email — the code now arrives by email (check spam the first time; free-mail senders like Gmail often land there).
 6. When emails arrive reliably, set `DEMO_SHOW_OTP=false` so the code is no longer shown on screen. That's real MFA.
 
-> Use the **Password** tab for the seeded `j.whitfield@meridian.com` account — don't request email codes for it once Brevo is on, because `meridian.com` belongs to someone else.
+> The seeded demo account is `rampy007@gmail.com`, so once Brevo is on its sign-in codes arrive in that inbox.
 
 ### 4. (Optional) Keep data across restarts — Neon Postgres
 Free Render services have an **ephemeral disk**: the SQLite database and uploaded files are wiped whenever the service sleeps, restarts, or redeploys. The demo investors and sample documents are recreated automatically on every start, so the demo always works — only *new uploads* disappear.
