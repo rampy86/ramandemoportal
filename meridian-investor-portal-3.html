@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Meridian Capital — Investor Portal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C9A84C'/%3E%3Cpath d='M16 6 6 11.5l10 5.5 10-5.5L16 6zM6 20.5 16 26l10-5.5M6 16l10 5.5L26 16' fill='none' stroke='%230B1628' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!--
+  ═══════════════════════════════════════════════════════════════════════════
+  MERIDIAN CAPITAL — INVESTOR PORTAL (complete single-file prototype)
+
+  Runs in two modes, picked automatically on load:
+    • DEMO mode  – no backend needed. Any email/password works, the 6-digit
+                   code is shown on screen, uploads stay in the browser.
+                   Use this on static hosts (Netlify Drop, GitHub Pages…).
+    • LIVE mode  – talks to the FastAPI backend (login → email OTP → JWT,
+                   document list / upload / download).
+
+  How the mode is chosen:
+    1. ?demo=1 in the URL                → demo
+    2. ?api=https://your-api.onrender.com → live against that API
+    3. CONFIG.API_BASE below (if not 'auto')
+    4. 'auto': if this page is served BY the backend (same origin /health
+       answers) → live, otherwise demo.
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1628;
+  --navy-mid:#112240;
+  --navy-light:#1A3A5C;
+  --gold:#C9A84C;
+  --gold-light:#E8C97A;
+  --gold-dim:#8B6F2E;
+  --cream:#F5F1E8;
+  --cream-dark:#EDE7D5;
+  --white:#FFFFFF;
+  --text-on-dark:#D4CBB5;
+  --text-muted-dark:#7A8EA8;
+  --border-dark:rgba(201,168,76,0.18);
+  --border-light:#DDD6C4;
+  --surface-dark:#0F1E35;
+  --surface-card:#162B45;
+  --red:#E05252;
+  --green:#3DBE8A;
+  --radius:8px;
+  --radius-lg:14px;
+}
+html,body{height:100%;font-family:'Instrument Sans',sans-serif;background:var(--navy);color:var(--white);overflow:hidden}
+button{font-family:inherit}
+a{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes lineFade{0%,100%{opacity:0}50%{opacity:1}}
+
+/* ── AUTH SCREENS ── */
+#authWrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--navy);z-index:1000;overflow:auto;padding:16px}
+#authWrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,0.07) 0%,transparent 70%);pointer-events:none}
+.auth-lines{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.auth-lines span{position:absolute;width:1px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,0.12),transparent);animation:lineFade 6s infinite}
+.auth-lines span:nth-child(1){left:15%;height:60%;top:20%;animation-delay:0s}
+.auth-lines span:nth-child(2){left:35%;height:40%;top:30%;animation-delay:1.5s}
+.auth-lines span:nth-child(3){left:65%;height:50%;top:15%;animation-delay:3s}
+.auth-lines span:nth-child(4){left:85%;height:35%;top:25%;animation-delay:4.5s}
+
+.auth-box{
+  background:var(--surface-dark);
+  border:1px solid var(--border-dark);
+  border-radius:var(--radius-lg);
+  padding:3rem 2.8rem 2.4rem;
+  width:420px;max-width:100%;
+  position:relative;margin:auto;
+  animation:fadeUp 0.5s ease both;
+}
+.auth-logo{text-align:center;margin-bottom:1.4rem}
+.auth-logo-mark{width:52px;height:52px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border-radius:12px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.auth-logo-mark svg{width:26px;height:26px;stroke:var(--navy);fill:none;stroke-width:2}
+.auth-logo h1{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:500;color:var(--white);letter-spacing:0.04em}
+.auth-logo p{font-size:0.75rem;color:var(--text-muted-dark);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
+
+.mode-pill{display:flex;align-items:center;justify-content:center;gap:6px;margin:0 auto 1.6rem;font-size:0.7rem;letter-spacing:0.06em;color:var(--text-muted-dark);width:max-content;max-width:100%;padding:4px 12px;border-radius:20px;border:1px solid var(--border-dark)}
+.mode-pill i{width:6px;height:6px;border-radius:50%;background:var(--text-muted-dark);display:inline-block;flex-shrink:0}
+.mode-pill.demo{color:var(--gold);border-color:rgba(201,168,76,0.35)}
+.mode-pill.demo i{background:var(--gold)}
+.mode-pill.live{color:var(--green);border-color:rgba(61,190,138,0.35)}
+.mode-pill.live i{background:var(--green)}
+.mode-pill.wait i{animation:lineFade 1.2s infinite;background:var(--gold)}
+
+.auth-tabs{display:flex;gap:4px;padding:4px;margin-bottom:1.4rem;background:rgba(255,255,255,0.03);border:1px solid var(--border-dark);border-radius:var(--radius)}
+.auth-tabs.hidden{display:none}
+.auth-tab{flex:1;height:36px;border:none;background:none;border-radius:6px;color:var(--text-muted-dark);font-size:0.82rem;font-weight:500;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.auth-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.auth-tab:hover{color:var(--white)}
+.auth-tab.active{background:rgba(201,168,76,0.14);color:var(--gold)}
+.auth-lead{font-size:0.8rem;color:var(--text-muted-dark);line-height:1.55;margin-bottom:1.1rem}
+.auth-lead strong{color:var(--text-on-dark);font-weight:500}
+.auth-step{display:none}
+.auth-step.active{display:block;animation:fadeUp 0.35s ease both}
+
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:0.75rem;font-weight:500;color:var(--text-muted-dark);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px}
+.form-group input,.form-group select{
+  width:100%;height:44px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:var(--radius);
+  padding:0 14px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:0.9rem;color:var(--white);
+  outline:none;transition:border-color 0.2s;
+}
+.form-group input::placeholder{color:rgba(255,255,255,0.25)}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold)}
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:64px}
+.pass-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted-dark);font-size:0.72rem;cursor:pointer;padding:6px;letter-spacing:0.04em}
+.pass-toggle:hover{color:var(--gold)}
+
+.auth-btn{
+  width:100%;height:46px;
+  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+  border:none;border-radius:var(--radius);
+  font-family:'Instrument Sans',sans-serif;
+  font-size:0.9rem;font-weight:600;
+  color:var(--navy);cursor:pointer;
+  transition:opacity 0.2s,transform 0.15s;
+  margin-top:0.4rem;letter-spacing:0.03em;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.auth-btn:hover{opacity:0.92;transform:translateY(-1px)}
+.auth-btn:active{transform:translateY(0)}
+.auth-btn[disabled]{opacity:0.6;cursor:wait;transform:none}
+.spinner{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin 0.7s linear infinite;display:inline-block}
+
+.auth-error{display:none;font-size:0.78rem;color:var(--red);background:rgba(224,82,82,0.08);border:1px solid rgba(224,82,82,0.25);border-radius:var(--radius);padding:8px 12px;margin-bottom:1rem}
+.auth-error.show{display:block;animation:fadeIn 0.2s}
+.auth-hint{font-size:0.78rem;color:var(--text-muted-dark);text-align:center;margin-top:1.2rem;line-height:1.6}
+.auth-hint .link{color:var(--gold);cursor:pointer;background:none;border:none;font-size:inherit;padding:0}
+.auth-hint .link:hover{text-decoration:underline}
+.demo-creds{font-size:0.72rem;color:var(--text-muted-dark);text-align:center;margin-top:0.9rem;padding-top:0.9rem;border-top:1px dashed var(--border-dark)}
+.demo-creds code{color:var(--text-on-dark);font-family:inherit}
+
+/* MFA OTP inputs */
+.otp-row{display:flex;gap:10px;justify-content:center;margin:1.2rem 0}
+.otp-row.shake{animation:shake 0.4s}
+.otp-input{
+  width:48px;height:56px;min-width:0;flex:0 1 48px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:var(--radius);
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;font-weight:600;
+  color:var(--gold);outline:none;
+  transition:border-color 0.2s;
+}
+.otp-input:focus{border-color:var(--gold);background:rgba(201,168,76,0.06)}
+.otp-input.err{border-color:var(--red)}
+.mfa-icon{text-align:center;margin-bottom:1.5rem}
+.mfa-icon-bg{width:64px;height:64px;border-radius:50%;border:1px solid var(--border-dark);background:rgba(201,168,76,0.08);display:inline-flex;align-items:center;justify-content:center}
+.mfa-icon-bg svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.mfa-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--white);text-align:center;margin-bottom:6px}
+.mfa-sub{font-size:0.8rem;color:var(--text-muted-dark);text-align:center;margin-bottom:1rem;line-height:1.5}
+.mfa-code-hint{text-align:center;font-size:0.78rem;color:var(--text-muted-dark);margin-bottom:0.5rem}
+.mfa-code-hint strong{color:var(--gold);letter-spacing:0.08em}
+.mfa-code-hint:empty{display:none}
+.mfa-timer{text-align:center;font-size:0.72rem;color:var(--text-muted-dark);margin-top:0.7rem}
+
+/* ── APP SHELL ── */
+#app{display:none;height:100vh;height:100dvh;overflow:hidden;flex-direction:column}
+#app.visible{display:flex;animation:fadeIn 0.5s ease}
+
+/* TOP BAR */
+.topbar{
+  background:var(--navy-mid);
+  border-bottom:1px solid var(--border-dark);
+  min-height:58px;display:flex;align-items:center;
+  padding:0 1.5rem;gap:1.5rem;flex-shrink:0;position:relative;z-index:50;
+}
+.topbar-logo{display:flex;align-items:center;gap:10px;min-width:200px}
+.topbar-logomark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topbar-logomark svg{width:15px;height:15px;stroke:var(--navy);fill:none;stroke-width:2.2}
+.topbar-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);letter-spacing:0.04em;white-space:nowrap}
+.demo-tag{font-size:0.6rem;font-weight:600;letter-spacing:0.1em;color:var(--gold);border:1px solid rgba(201,168,76,0.4);border-radius:4px;padding:1px 5px;margin-left:2px}
+
+.topbar-nav{display:flex;gap:2px;flex:1;min-width:0}
+.nav-item{
+  padding:6px 14px;border-radius:6px;
+  font-size:0.82rem;font-weight:400;
+  color:var(--text-muted-dark);cursor:pointer;
+  transition:all 0.15s;white-space:nowrap;border:none;background:none;
+  font-family:'Instrument Sans',sans-serif;
+}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,0.06)}
+.nav-item.active{color:var(--gold);background:rgba(201,168,76,0.1)}
+
+.topbar-right{display:flex;align-items:center;gap:12px;margin-left:auto;position:relative}
+.notif-btn{
+  width:34px;height:34px;border-radius:7px;
+  background:transparent;border:1px solid var(--border-dark);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;color:var(--text-muted-dark);transition:all 0.15s;
+}
+.notif-btn:hover{border-color:var(--gold);color:var(--gold)}
+.notif-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;position:absolute;top:6px;right:6px;border:1.5px solid var(--navy-mid)}
+.notif-dot.hidden{display:none}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:600;color:var(--navy);cursor:pointer;border:none;
+  font-family:'Instrument Sans',sans-serif;
+}
+.user-info{text-align:right}
+.user-info .name{font-size:0.8rem;font-weight:500;color:var(--white);white-space:nowrap}
+.user-info .role{font-size:0.7rem;color:var(--text-muted-dark)}
+
+/* DROPDOWNS */
+.dropdown{position:absolute;top:calc(100% + 10px);right:0;background:var(--navy-mid);border:1px solid var(--border-dark);border-radius:var(--radius-lg);box-shadow:0 16px 40px rgba(0,0,0,0.45);display:none;z-index:200;animation:fadeUp 0.2s ease both}
+.dropdown.open{display:block}
+.notif-panel{width:340px;max-width:calc(100vw - 32px);padding:0.6rem 0}
+.notif-panel h5{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted-dark);padding:0.4rem 1.1rem 0.6rem;display:flex;justify-content:space-between}
+.notif-panel h5 button{background:none;border:none;color:var(--gold);font-size:0.7rem;cursor:pointer;text-transform:none;letter-spacing:0}
+.notif-item{display:flex;gap:10px;padding:0.7rem 1.1rem;cursor:pointer;transition:background 0.15s}
+.notif-item:hover{background:rgba(201,168,76,0.05)}
+.notif-item.unread .activity-text strong::after{content:' •';color:var(--gold)}
+.user-menu{width:220px;padding:0.5rem}
+.user-menu .um-head{padding:0.6rem 0.7rem 0.8rem;border-bottom:1px solid var(--border-dark);margin-bottom:0.4rem}
+.user-menu .um-head div{font-size:0.85rem;color:var(--white);font-weight:500}
+.user-menu .um-head span{font-size:0.72rem;color:var(--text-muted-dark);word-break:break-all}
+.user-menu button{display:block;width:100%;text-align:left;background:none;border:none;color:var(--text-on-dark);font-size:0.82rem;padding:8px 10px;border-radius:6px;cursor:pointer}
+.user-menu button:hover{background:rgba(255,255,255,0.05);color:var(--white)}
+.user-menu button.danger:hover{color:var(--red)}
+
+/* CONTENT AREA */
+.content{flex:1;overflow-y:auto;background:var(--navy);padding:1.5rem 2rem 2.5rem}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-track{background:transparent}
+.content::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.15);border-radius:3px}
+
+.page{display:none}
+.page.active{display:block;animation:fadeUp 0.3s ease both}
+
+.page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.75rem;gap:1rem;flex-wrap:wrap}
+.page-hdr-left h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:500;color:var(--white);letter-spacing:-0.01em}
+.page-hdr-left p{font-size:0.8rem;color:var(--text-muted-dark);margin-top:3px}
+.page-hdr-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.btn{
+  height:36px;padding:0 16px;border-radius:7px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:0.8rem;font-weight:500;cursor:pointer;
+  border:1px solid var(--border-dark);
+  background:transparent;color:var(--text-muted-dark);
+  transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn-primary{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:600}
+.btn-primary:hover{background:var(--gold-light);border-color:var(--gold-light);color:var(--navy)}
+.btn[disabled]{opacity:0.6;cursor:wait}
+select.btn{appearance:none;padding-right:28px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A8EA8' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+select.btn option{background:var(--navy-mid);color:var(--white)}
+
+/* METRIC CARDS */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.metric-card{
+  background:var(--surface-card);
+  border:1px solid var(--border-dark);
+  border-radius:var(--radius-lg);
+  padding:1.2rem 1.4rem;
+  position:relative;overflow:hidden;
+}
+.metric-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold-dim),var(--gold),transparent)}
+.metric-label{font-size:0.7rem;font-weight:500;color:var(--text-muted-dark);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
+.metric-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:500;color:var(--white);letter-spacing:-0.02em}
+.metric-sub{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.metric-change{font-size:0.75rem;font-weight:500;padding:2px 7px;border-radius:20px}
+.metric-change.up{background:rgba(61,190,138,0.15);color:var(--green)}
+.metric-change.down{background:rgba(224,82,82,0.15);color:var(--red)}
+.metric-period{font-size:0.72rem;color:var(--text-muted-dark)}
+
+.chart-row{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:1.5rem}
+.card{
+  background:var(--surface-card);
+  border:1px solid var(--border-dark);
+  border-radius:var(--radius-lg);
+  padding:1.3rem 1.5rem;min-width:0;
+}
+.card-title{font-size:0.78rem;font-weight:600;color:var(--text-muted-dark);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card-title span,.card-title .link{font-size:0.7rem;font-weight:400;color:var(--gold);cursor:pointer;text-transform:none;letter-spacing:0;background:none;border:none}
+.chart-box{position:relative;height:220px}
+.chart-box.sm{height:200px}
+.chart-box.lg{height:240px}
+
+/* FUND TABLE */
+.table-wrap{overflow-x:auto;margin:0 -0.4rem}
+.fund-table{width:100%;border-collapse:collapse;min-width:720px}
+.fund-table th{
+  font-size:0.7rem;font-weight:500;
+  color:var(--text-muted-dark);text-transform:uppercase;
+  letter-spacing:0.09em;padding:8px 12px;
+  border-bottom:1px solid var(--border-dark);text-align:left;white-space:nowrap;
+}
+.fund-table td{
+  padding:12px;font-size:0.83rem;color:var(--text-on-dark);
+  border-bottom:1px solid rgba(201,168,76,0.07);white-space:nowrap;
+}
+.fund-table tr:last-child td{border-bottom:none}
+.fund-table tr:hover td{background:rgba(201,168,76,0.03)}
+.fund-table .empty td{text-align:center;color:var(--text-muted-dark);padding:1.5rem}
+.fund-name{font-weight:500;color:var(--white)}
+.fund-strategy{font-size:0.7rem;padding:2px 8px;border-radius:20px;border:1px solid;display:inline-block;margin-top:2px}
+.fund-strategy.pe{border-color:rgba(201,168,76,0.4);color:var(--gold)}
+.fund-strategy.re{border-color:rgba(61,190,138,0.4);color:var(--green)}
+.fund-strategy.hf{border-color:rgba(150,130,200,0.4);color:#A89ECA}
+.fund-strategy.infra{border-color:rgba(100,160,220,0.4);color:#6AA4DC}
+.perf-up{color:var(--green);font-weight:500}
+.perf-down{color:var(--red);font-weight:500}
+
+.status{font-size:0.7rem;padding:3px 10px;border-radius:20px;font-weight:500}
+.status.open{background:rgba(61,190,138,0.12);color:var(--green)}
+.status.closed{background:rgba(224,82,82,0.1);color:var(--red)}
+.status.harvest{background:rgba(201,168,76,0.12);color:var(--gold)}
+
+/* DOCUMENTS PAGE */
+.doc-filters{display:flex;gap:8px;margin-bottom:1.2rem;flex-wrap:wrap}
+.doc-filter-btn{
+  height:32px;padding:0 14px;border-radius:20px;
+  font-size:0.78rem;font-family:'Instrument Sans',sans-serif;
+  border:1px solid var(--border-dark);background:transparent;
+  color:var(--text-muted-dark);cursor:pointer;transition:all 0.15s;
+}
+.doc-filter-btn.active{background:rgba(201,168,76,0.12);border-color:var(--gold);color:var(--gold)}
+.doc-filter-btn:hover:not(.active){border-color:rgba(201,168,76,0.3);color:var(--text-on-dark)}
+.doc-count{font-size:0.72rem;color:var(--text-muted-dark);margin-bottom:0.7rem}
+
+.docs-list{display:flex;flex-direction:column;gap:8px}
+.doc-row{
+  background:var(--surface-card);
+  border:1px solid var(--border-dark);
+  border-radius:var(--radius);
+  padding:1rem 1.3rem;
+  display:flex;align-items:center;gap:1.2rem;
+  transition:border-color 0.15s,transform 0.15s;
+}
+.doc-row:hover{border-color:rgba(201,168,76,0.35);transform:translateX(3px)}
+.doc-type-icon{
+  width:42px;height:42px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.05em;flex-shrink:0;
+  background:rgba(255,255,255,0.05);color:var(--text-on-dark);border:1px solid var(--border-dark);
+}
+.doc-type-icon.pdf{background:rgba(224,82,82,0.12);color:#E05252;border:1px solid rgba(224,82,82,0.2)}
+.doc-type-icon.xlsx,.doc-type-icon.xls{background:rgba(61,190,138,0.1);color:var(--green);border:1px solid rgba(61,190,138,0.2)}
+.doc-type-icon.docx,.doc-type-icon.doc{background:rgba(100,160,220,0.1);color:#6AA4DC;border:1px solid rgba(100,160,220,0.2)}
+.doc-type-icon.pptx,.doc-type-icon.ppt{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2)}
+.doc-info{flex:1;min-width:0}
+.doc-info .doc-title{font-size:0.88rem;font-weight:500;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-info .doc-meta{font-size:0.72rem;color:var(--text-muted-dark);margin-top:3px}
+.doc-fund-tag{font-size:0.7rem;padding:2px 8px;border-radius:4px;background:rgba(201,168,76,0.08);color:var(--gold);border:1px solid rgba(201,168,76,0.15);white-space:nowrap}
+.doc-date{font-size:0.77rem;color:var(--text-muted-dark);white-space:nowrap;min-width:84px;text-align:right}
+.doc-actions{display:flex;gap:6px;flex-shrink:0}
+.icon-btn{
+  width:32px;height:32px;border-radius:6px;
+  border:1px solid var(--border-dark);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.15s;color:var(--text-muted-dark);
+}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold)}
+.icon-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.icon-btn[disabled]{opacity:0.5;cursor:wait}
+.empty-state{color:var(--text-muted-dark);font-size:0.85rem;padding:2rem 0;text-align:center}
+
+/* MODALS */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);
+  display:none;align-items:center;justify-content:center;
+  z-index:500;backdrop-filter:blur(4px);padding:16px;
+}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease}
+.modal{
+  background:var(--navy-mid);
+  border:1px solid var(--border-dark);
+  border-radius:var(--radius-lg);
+  width:520px;max-width:100%;max-height:calc(100dvh - 32px);overflow-y:auto;
+  padding:2rem;
+  animation:fadeUp 0.25s ease both;
+}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem}
+.modal-hdr h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--white)}
+.modal-close{width:30px;height:30px;flex-shrink:0;border-radius:6px;border:1px solid var(--border-dark);background:transparent;color:var(--text-muted-dark);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.15s}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal p.lead{font-size:0.82rem;color:var(--text-on-dark);line-height:1.6;margin-bottom:1rem}
+
+.drop-zone{
+  border:2px dashed rgba(201,168,76,0.25);
+  border-radius:var(--radius);padding:2.5rem 1rem;
+  text-align:center;cursor:pointer;transition:all 0.2s;
+  margin-bottom:1rem;
+}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--gold);background:rgba(201,168,76,0.04)}
+.drop-zone svg{width:36px;height:36px;stroke:var(--gold-dim);fill:none;stroke-width:1.5;margin-bottom:0.8rem}
+.drop-zone p{font-size:0.85rem;color:var(--text-muted-dark)}
+.drop-zone strong{color:var(--gold);cursor:pointer}
+#modalFileInput{display:none}
+
+.modal-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.modal-fields .form-group{margin:0}
+.modal-fields select,.modal select.field{
+  width:100%;height:40px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:var(--radius);padding:0 12px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:0.85rem;color:var(--white);outline:none;
+  transition:border-color 0.2s;appearance:none;cursor:pointer;
+}
+.modal-fields select:focus{border-color:var(--gold)}
+.modal-fields select option{background:var(--navy-mid);color:var(--white)}
+
+.uploaded-file{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(61,190,138,0.06);border:1px solid rgba(61,190,138,0.15);
+  border-radius:var(--radius);padding:10px 14px;margin-bottom:0.6rem;
+}
+.uploaded-file.bad{background:rgba(224,82,82,0.06);border-color:rgba(224,82,82,0.25)}
+.uploaded-file svg{width:18px;height:18px;stroke:var(--green);fill:none;stroke-width:2;flex-shrink:0}
+.uploaded-file.bad svg{stroke:var(--red)}
+.uploaded-file span{font-size:0.83rem;color:var(--text-on-dark);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uploaded-file small{font-size:0.7rem;color:var(--text-muted-dark);white-space:nowrap}
+.uploaded-file .remove{color:var(--text-muted-dark);cursor:pointer;font-size:1rem;transition:color 0.15s;background:none;border:none;flex:0}
+.uploaded-file .remove:hover{color:var(--red)}
+
+.kv{display:flex;justify-content:space-between;gap:1rem;padding:9px 0;border-bottom:1px solid rgba(201,168,76,0.07);font-size:0.82rem}
+.kv:last-of-type{border-bottom:none}
+.kv span:first-child{color:var(--text-muted-dark)}
+.kv span:last-child{color:var(--white);font-weight:500;text-align:right}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.4rem;flex-wrap:wrap}
+
+/* CAPITAL ACCOUNT PAGE */
+.account-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.account-card{background:var(--surface-card);border:1px solid var(--border-dark);border-radius:var(--radius-lg);padding:1.4rem}
+.account-card h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:1rem}
+.account-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(201,168,76,0.07);gap:1rem}
+.account-row:last-child{border-bottom:none}
+.account-row .lbl{font-size:0.78rem;color:var(--text-muted-dark)}
+.account-row .val{font-size:0.88rem;color:var(--white);font-weight:500}
+.account-row .val.pos{color:var(--green)}
+.account-row .val.neg{color:var(--red)}
+.commitment-bar{margin-top:12px}
+.commitment-bar .bar-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--text-muted-dark);margin-bottom:6px}
+.bar-track{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:linear-gradient(to right,var(--gold-dim),var(--gold));transition:width 0.6s ease}
+
+/* NOTICE BANNER */
+.notice{
+  background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);
+  border-radius:var(--radius);padding:10px 16px;
+  display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;
+}
+.notice svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2;flex-shrink:0}
+.notice p{font-size:0.78rem;color:var(--text-on-dark);line-height:1.5}
+.notice strong{color:var(--gold)}
+.notice .link{color:var(--gold);cursor:pointer;background:none;border:none;font-size:inherit;padding:0}
+.notice .link:hover{text-decoration:underline}
+
+/* PROFILE PAGE */
+.profile-section{background:var(--surface-card);border:1px solid var(--border-dark);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.profile-section h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--white);margin-bottom:1.2rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border-dark)}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.profile-field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.profile-field label{font-size:0.7rem;font-weight:500;color:var(--text-muted-dark);text-transform:uppercase;letter-spacing:0.08em}
+.profile-field span{font-size:0.88rem;color:var(--white);overflow-wrap:anywhere}
+.mfa-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.07);gap:1rem}
+.mfa-toggle:last-child{border-bottom:none}
+.mfa-toggle-info h5{font-size:0.88rem;font-weight:500;color:var(--white);margin-bottom:3px}
+.mfa-toggle-info p{font-size:0.75rem;color:var(--text-muted-dark)}
+.pw-note{font-size:0.78rem;color:var(--text-muted-dark);margin-bottom:1rem;line-height:1.5}
+.pw-form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.pw-form .form-group{margin:0}
+.pw-form .btn{height:44px}
+.toggle{width:42px;height:24px;flex-shrink:0;background:rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;position:relative;transition:background 0.2s;border:none}
+.toggle.on{background:var(--gold)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:3px;left:3px;transition:transform 0.2s}
+.toggle.on::after{transform:translateX(18px)}
+
+/* SEARCH BAR */
+.search-bar{
+  height:36px;background:rgba(255,255,255,0.05);
+  border:1px solid var(--border-dark);border-radius:7px;
+  display:flex;align-items:center;padding:0 12px;gap:8px;
+  transition:border-color 0.2s;width:220px;max-width:100%;
+}
+.search-bar:focus-within{border-color:rgba(201,168,76,0.4)}
+.search-bar svg{width:13px;height:13px;stroke:var(--text-muted-dark);fill:none;stroke-width:2;flex-shrink:0}
+.search-bar input{background:none;border:none;outline:none;font-family:'Instrument Sans',sans-serif;font-size:0.82rem;color:var(--white);width:100%}
+.search-bar input::placeholder{color:var(--text-muted-dark)}
+
+/* ACTIVITY FEED */
+.activity-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.07)}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.activity-dot.gold{background:var(--gold)}
+.activity-dot.green{background:var(--green)}
+.activity-dot.blue{background:#6AA4DC}
+.activity-text{font-size:0.8rem;color:var(--text-on-dark);line-height:1.5}
+.activity-text strong{color:var(--white)}
+.activity-time{font-size:0.7rem;color:var(--text-muted-dark);margin-top:2px}
+
+/* TOAST */
+.toast-stack{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:1100;max-width:calc(100vw - 32px)}
+.toast{
+  background:var(--surface-card);border:1px solid rgba(61,190,138,0.3);
+  border-radius:var(--radius);padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  animation:slideIn 0.3s ease;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:340px;
+}
+.toast svg{width:16px;height:16px;stroke:var(--green);fill:none;stroke-width:2;flex-shrink:0}
+.toast.error{border-color:rgba(224,82,82,0.4)}
+.toast.error svg{stroke:var(--red)}
+.toast p{font-size:0.82rem;color:var(--white);line-height:1.4}
+
+.app-foot{font-size:0.7rem;color:var(--text-muted-dark);text-align:center;margin-top:2rem;opacity:0.7}
+
+#printArea{display:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .topbar-logo{min-width:0}
+  .user-info{display:none}
+}
+@media(max-width:900px){
+  .metrics-grid{grid-template-columns:1fr 1fr}
+  .chart-row{grid-template-columns:1fr}
+  .account-grid{grid-template-columns:1fr}
+  .topbar{flex-wrap:wrap;padding:10px 16px 0;gap:10px 12px}
+  .topbar-nav{order:3;flex-basis:100%;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+  .topbar-nav::-webkit-scrollbar{display:none}
+  .content{padding:1.2rem 16px 2rem}
+  .doc-row{flex-wrap:wrap;gap:0.8rem;padding:0.9rem 1rem}
+  .doc-info{flex-basis:calc(100% - 60px)}
+  .doc-fund-tag{margin-left:54px}
+  .doc-date{min-width:0;margin-left:auto}
+  .doc-row:hover{transform:none}
+}
+@media(max-width:560px){
+  .metrics-grid{grid-template-columns:1fr}
+  .profile-grid,.modal-fields,.pw-form{grid-template-columns:1fr}
+  .auth-box{padding:2.2rem 1.3rem 1.8rem}
+  .otp-row{gap:6px}
+  .otp-input{height:50px;font-size:1.4rem}
+  .page-hdr-right,.search-bar{width:100%}
+  .page-hdr-right .search-bar{flex:1 1 100%}
+  .modal{padding:1.4rem}
+  .toast-stack{right:16px;bottom:16px}
+  .topbar-name{font-size:1rem}
+}
+
+/* ── PRINT (Export PDF / Generate Report) ── */
+@media print{
+  @page{margin:16mm}
+  html,body{overflow:visible!important;height:auto!important;background:#fff!important;color:#111!important}
+  #authWrap,#app,.modal-overlay,.toast-stack{display:none!important}
+  #printArea{display:block!important;font-family:'Instrument Sans',Arial,sans-serif;color:#111}
+  #printArea h1{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin-bottom:2px}
+  #printArea h2{font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:#8B6F2E;margin:22px 0 8px}
+  #printArea .meta{font-size:11px;color:#555;margin-bottom:16px}
+  #printArea table{width:100%;border-collapse:collapse;font-size:11px}
+  #printArea th,#printArea td{border-bottom:1px solid #ddd;padding:6px 6px;text-align:left}
+  #printArea th{background:#f5f1e8;font-weight:600}
+  #printArea td.num,#printArea th.num{text-align:right}
+  #printArea .kpis{display:flex;gap:10px;flex-wrap:wrap}
+  #printArea .kpi{border:1px solid #ddd;border-radius:6px;padding:8px 12px;flex:1;min-width:120px}
+  #printArea .kpi b{display:block;font-size:18px}
+  #printArea .kpi span{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:0.06em}
+  #printArea .foot{margin-top:24px;font-size:9px;color:#777;border-top:1px solid #ddd;padding-top:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ AUTH WRAP ══════════════ -->
+<div id="authWrap">
+  <div class="auth-lines"><span></span><span></span><span></span><span></span></div>
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+      </div>
+      <h1>Meridian Capital</h1>
+      <p>Investor Portal</p>
+    </div>
+    <div class="mode-pill wait" id="modePill"><i></i><span>Connecting…</span></div>
+
+    <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Sign-in method">
+      <button type="button" class="auth-tab active" data-method="password" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Password
+      </button>
+      <button type="button" class="auth-tab" data-method="otp" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email code
+      </button>
+    </div>
+
+    <!-- STEP 1a: EMAIL + PASSWORD -->
+    <form class="auth-step active" id="stepPassword" novalidate onsubmit="event.preventDefault();passwordLogin()">
+      <div class="auth-error" id="loginError" role="alert"></div>
+      <div class="form-group">
+        <label for="loginEmail">Investor ID / Email</label>
+        <input type="email" id="loginEmail" placeholder="you@institution.com" value="j.whitfield@meridian.com" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="loginPass" placeholder="••••••••••" value="ChangeMe123!" autocomplete="current-password" required>
+          <button type="button" class="pass-toggle" onclick="togglePass(this)">SHOW</button>
+        </div>
+      </div>
+      <button class="auth-btn" type="submit" id="loginBtn">Sign In</button>
+      <p class="auth-hint">Forgot your password? <button type="button" class="link" onclick="switchToCode()">Sign in with an email code</button></p>
+      <p class="demo-creds" id="demoCreds">Demo login: <code>j.whitfield@meridian.com</code> / <code>ChangeMe123!</code></p>
+    </form>
+
+    <!-- STEP 1b: EMAIL ONE-TIME CODE -->
+    <form class="auth-step" id="stepOtpEmail" novalidate onsubmit="event.preventDefault();requestCode()">
+      <p class="auth-lead">Enter your email and we'll send you a <strong>6-digit sign-in code</strong> — no password needed. New here? Your investor account is created automatically.</p>
+      <div class="auth-error" id="otpReqError" role="alert"></div>
+      <div class="form-group">
+        <label for="otpEmail">Your Email</label>
+        <input type="email" id="otpEmail" placeholder="you@institution.com" autocomplete="email" required>
+      </div>
+      <button class="auth-btn" type="submit" id="sendCodeBtn">Send Code</button>
+      <p class="auth-hint">Trouble signing in? <button type="button" class="link" onclick="openModal('irModal')">Contact Investor Relations</button></p>
+      <p class="demo-creds" id="otpModeNote"></p>
+    </form>
+
+    <!-- STEP 2: MFA -->
+    <form class="auth-step" id="stepMFA" novalidate onsubmit="event.preventDefault();verifyMFA()">
+      <div class="mfa-icon">
+        <div class="mfa-icon-bg">
+          <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+        </div>
+      </div>
+      <p class="mfa-title">Two-Factor Authentication</p>
+      <p class="mfa-sub" id="mfaSubText">A 6-digit code has been sent to your registered email.</p>
+      <p class="mfa-code-hint" id="mfaCodeHint"></p>
+      <div class="auth-error" id="mfaError" role="alert"></div>
+      <div class="otp-row" id="otpRow">
+        <input class="otp-input" maxlength="1" id="o0" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1">
+        <input class="otp-input" maxlength="1" id="o1" inputmode="numeric" aria-label="Digit 2">
+        <input class="otp-input" maxlength="1" id="o2" inputmode="numeric" aria-label="Digit 3">
+        <input class="otp-input" maxlength="1" id="o3" inputmode="numeric" aria-label="Digit 4">
+        <input class="otp-input" maxlength="1" id="o4" inputmode="numeric" aria-label="Digit 5">
+        <input class="otp-input" maxlength="1" id="o5" inputmode="numeric" aria-label="Digit 6">
+      </div>
+      <button class="auth-btn" type="submit" id="verifyBtn">Verify &amp; Sign In</button>
+      <p class="mfa-timer" id="mfaTimer"></p>
+      <p class="auth-hint">Didn't receive a code? <button type="button" class="link" onclick="resendCode()">Resend</button> · <button type="button" class="link" onclick="backToLogin()">Use a different email</button></p>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════════ APP SHELL ══════════════ -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-logomark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+      </div>
+      <span class="topbar-name">Meridian Capital</span>
+      <span class="demo-tag" id="demoTag" title="Prototype running on sample data" hidden>DEMO</span>
+    </div>
+    <nav class="topbar-nav" id="topNav">
+      <button class="nav-item active" data-page="dashboard">Dashboard</button>
+      <button class="nav-item" data-page="funds">Fund Overview</button>
+      <button class="nav-item" data-page="documents">Documents</button>
+      <button class="nav-item" data-page="capital">Capital Account</button>
+      <button class="nav-item" data-page="reports">Reports</button>
+      <button class="nav-item" data-page="profile">Settings</button>
+    </nav>
+    <div class="topbar-right">
+      <button class="notif-btn" title="Notifications" aria-label="Notifications" onclick="toggleDropdown('notifPanel',event)">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="notif-dot" id="notifDot"></div>
+      </button>
+      <div class="user-info">
+        <div class="name" id="uiName">J. Whitfield</div>
+        <div class="role" id="uiRole">LP Investor</div>
+      </div>
+      <button class="avatar" id="uiAvatar" aria-label="Account menu" onclick="toggleDropdown('userMenu',event)">JW</button>
+
+      <div class="dropdown notif-panel" id="notifPanel">
+        <h5>Notifications <button onclick="markAllRead()">Mark all read</button></h5>
+        <div id="notifList"></div>
+      </div>
+      <div class="dropdown user-menu" id="userMenu">
+        <div class="um-head"><div id="umName">James Whitfield</div><span id="umEmail">j.whitfield@meridian.com</span></div>
+        <button onclick="navTo('profile');closeDropdowns()">Account settings</button>
+        <button onclick="navTo('documents');closeDropdowns()">My documents</button>
+        <button onclick="openModal('irModal');closeDropdowns()">Contact Investor Relations</button>
+        <button class="danger" onclick="signOut()">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content" id="content">
+
+    <!-- ─── DASHBOARD ─── -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-hdr">
+        <div class="page-hdr-left">
+          <h2 id="greeting">Good morning, James.</h2>
+          <p>Portfolio summary as of Q3 2026 · Last updated Oct 1, 2026</p>
+        </div>
+        <div class="page-hdr-right">
+          <button class="btn" onclick="printReport('summary','Q3 2026')">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export PDF
+          </button>
+          <button class="btn btn-primary" onclick="navTo('documents');openUpload()">Upload Document</button>
+        </div>
+      </div>
+
+      <div class="notice">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p><strong>Capital call notice:</strong> Meridian Real Assets Fund IV — $2.4M due by <strong>October 31, 2026</strong><span id="callCountdown"></span>. <button class="link" onclick="openModal('callModal')">View details →</button></p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Total Committed Capital</div>
+          <div class="metric-val">$48.5M</div>
+          <div class="metric-sub"><span class="metric-change up">+$3.2M</span><span class="metric-period">since last quarter</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Net Asset Value</div>
+          <div class="metric-val">$61.2M</div>
+          <div class="metric-sub"><span class="metric-change up">+8.4%</span><span class="metric-period">YTD return</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Distributions Received</div>
+          <div class="metric-val">$7.8M</div>
+          <div class="metric-sub"><span class="metric-change up">+$1.1M</span><span class="metric-period">this year</span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">TVPI (Total Value Paid)</div>
+          <div class="metric-val">1.74×</div>
+          <div class="metric-sub"><span class="metric-change up">+0.12×</span><span class="metric-period">vs. prior year</span></div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="card">
+          <div class="card-title">Portfolio NAV Over Time ($M) <button class="link" onclick="navTo('reports')">View all</button></div>
+          <div class="chart-box"><canvas id="navChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Allocation by Strategy</div>
+          <div class="chart-box"><canvas id="allocChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Active Fund Positions <button class="link" onclick="navTo('funds')">View all funds →</button></div>
+        <div class="table-wrap">
+          <table class="fund-table">
+            <thead><tr><th>Fund</th><th>Vintage</th><th>Commitment</th><th>Called</th><th>Distributed</th><th>NAV</th><th>TVPI</th><th>IRR</th><th>Status</th></tr></thead>
+            <tbody id="dashFundBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="app-foot">Prototype · illustrative sample data only</p>
+    </section>
+
+    <!-- ─── FUND OVERVIEW ─── -->
+    <section class="page" id="page-funds">
+      <div class="page-hdr">
+        <div class="page-hdr-left"><h2>Fund Overview</h2><p>All fund positions and performance metrics</p></div>
+        <div class="page-hdr-right">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="Search funds…" id="fundSearch" oninput="renderFundMatrix()" aria-label="Search funds">
+          </div>
+          <select class="btn" id="fundStrategyFilter" onchange="renderFundMatrix()" aria-label="Filter by strategy">
+            <option value="">All strategies</option>
+            <option>Private Equity</option><option>Real Estate</option><option>Infrastructure</option><option>Hedge Fund</option><option>Private Credit</option>
+          </select>
+          <select class="btn" id="fundStatusFilter" onchange="renderFundMatrix()" aria-label="Filter by status">
+            <option value="">All statuses</option>
+            <option>Investing</option><option>Harvest</option><option>Open</option><option>Wound Down</option>
+          </select>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-title">Fund Performance Matrix <span id="fundCount" style="cursor:default"></span></div>
+        <div class="table-wrap">
+          <table class="fund-table">
+            <thead><tr><th>Fund Name</th><th>Strategy</th><th>Vintage</th><th>Fund Size</th><th>Commitment</th><th>% Called</th><th>Distributions</th><th>NAV</th><th>MOIC</th><th>Net IRR</th><th>DPI</th><th>Status</th></tr></thead>
+            <tbody id="fundMatrixBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="card">
+          <div class="card-title">Net IRR by Fund (%)</div>
+          <div class="chart-box sm"><canvas id="irrChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Capital Call Schedule ($M)</div>
+          <div class="chart-box sm"><canvas id="callChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── DOCUMENTS ─── -->
+    <section class="page" id="page-documents">
+      <div class="page-hdr">
+        <div class="page-hdr-left"><h2>Documents</h2><p>Fund reports, legal agreements, and investor notices</p></div>
+        <div class="page-hdr-right">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="Search documents…" id="docSearch" oninput="renderDocs()" aria-label="Search documents">
+          </div>
+          <button class="btn btn-primary" onclick="openUpload()">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Upload
+          </button>
+        </div>
+      </div>
+      <div class="doc-filters" id="docFilters">
+        <button class="doc-filter-btn active" data-cat="all">All Documents</button>
+        <button class="doc-filter-btn" data-cat="report">Quarterly Reports</button>
+        <button class="doc-filter-btn" data-cat="legal">Legal &amp; Agreements</button>
+        <button class="doc-filter-btn" data-cat="notice">Capital Notices</button>
+        <button class="doc-filter-btn" data-cat="tax">Tax Documents</button>
+        <button class="doc-filter-btn" data-cat="presentation">Presentations</button>
+        <button class="doc-filter-btn" data-cat="other">Other</button>
+      </div>
+      <div class="doc-count" id="docCount"></div>
+      <div class="docs-list" id="docsList"></div>
+    </section>
+
+    <!-- ─── CAPITAL ACCOUNT ─── -->
+    <section class="page" id="page-capital">
+      <div class="page-hdr">
+        <div class="page-hdr-left"><h2>Capital Account</h2><p>Your detailed commitment and cash flow history</p></div>
+        <div class="page-hdr-right">
+          <button class="btn" onclick="downloadStatementCSV()">Download Statement (CSV)</button>
+          <button class="btn" onclick="printReport('capital','Q3 2026')">Print / PDF</button>
+        </div>
+      </div>
+      <div class="metrics-grid" style="margin-bottom:1.2rem">
+        <div class="metric-card"><div class="metric-label">Total Committed</div><div class="metric-val">$48.5M</div></div>
+        <div class="metric-card"><div class="metric-label">Total Called</div><div class="metric-val">$42.2M</div></div>
+        <div class="metric-card"><div class="metric-label">Uncalled Capital</div><div class="metric-val">$6.3M</div></div>
+        <div class="metric-card"><div class="metric-label">Total Distributions</div><div class="metric-val">$7.8M</div></div>
+      </div>
+      <div class="account-grid" id="accountGrid"></div>
+    </section>
+
+    <!-- ─── REPORTS ─── -->
+    <section class="page" id="page-reports">
+      <div class="page-hdr">
+        <div class="page-hdr-left"><h2>Reports &amp; Analytics</h2><p>Performance analytics and portfolio reporting</p></div>
+        <div class="page-hdr-right">
+          <button class="btn btn-primary" onclick="openModal('reportModal')">Generate Report</button>
+        </div>
+      </div>
+      <div class="chart-row" style="margin-bottom:1rem">
+        <div class="card">
+          <div class="card-title">Cash Flow J-Curve (Cumulative, $M)</div>
+          <div class="chart-box lg"><canvas id="jcurveChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Vintage Year Diversification ($M)</div>
+          <div class="chart-box lg"><canvas id="vintageChart"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Recent Activity</div>
+        <div id="activityList"></div>
+      </div>
+    </section>
+
+    <!-- ─── PROFILE / SETTINGS ─── -->
+    <section class="page" id="page-profile">
+      <div class="page-hdr">
+        <div class="page-hdr-left"><h2>Account Settings</h2><p>Manage your profile, security, and notifications</p></div>
+      </div>
+      <div class="profile-section">
+        <h4>Investor Profile</h4>
+        <div class="profile-grid">
+          <div class="profile-field"><label>Full Name</label><span id="pfName">James R. Whitfield</span></div>
+          <div class="profile-field"><label>Investor ID</label><span id="pfCode">MCP-LP-2847</span></div>
+          <div class="profile-field"><label>Entity</label><span id="pfEntity">Whitfield Family Office LLC</span></div>
+          <div class="profile-field"><label>Investor Type</label><span id="pfType">Institutional LP</span></div>
+          <div class="profile-field"><label>Email</label><span id="pfEmail">j.whitfield@meridian.com</span></div>
+          <div class="profile-field"><label>Primary Relationship Manager</label><span>Sarah Chen, VP IR</span></div>
+          <div class="profile-field"><label>Onboarding Date</label><span>March 12, 2017</span></div>
+          <div class="profile-field"><label>Tax Jurisdiction</label><span>United States (Delaware)</span></div>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h4>Security &amp; MFA</h4>
+        <div class="mfa-toggle">
+          <div class="mfa-toggle-info"><h5>Email One-Time Code</h5><p>Sign in without a password · 6-digit code sent to your email, valid 10 minutes</p></div>
+          <button class="toggle on" data-pref="mfaEmail" aria-label="Email one-time code" disabled title="Always available"></button>
+        </div>
+        <div class="mfa-toggle">
+          <div class="mfa-toggle-info"><h5>Authenticator App (TOTP)</h5><p>Google Authenticator or Authy · coming soon</p></div>
+          <button class="toggle" data-pref="mfaTotp" aria-label="Authenticator app"></button>
+        </div>
+        <div class="mfa-toggle">
+          <div class="mfa-toggle-info"><h5>Email Verification on New Device</h5><p>Sends a confirmation email when a new device logs in</p></div>
+          <button class="toggle" data-pref="newDevice" aria-label="New device email"></button>
+        </div>
+        <div class="mfa-toggle">
+          <div class="mfa-toggle-info"><h5>Session Timeout (30 min)</h5><p>Auto sign-out after a period of inactivity</p></div>
+          <button class="toggle on" data-pref="sessionTimeout" aria-label="Session timeout"></button>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h4>Notification Preferences</h4>
+        <div class="mfa-toggle"><div class="mfa-toggle-info"><h5>Capital Call Notices</h5><p>Email alerts for upcoming capital calls</p></div><button class="toggle on" data-pref="nCalls" aria-label="Capital call notices"></button></div>
+        <div class="mfa-toggle"><div class="mfa-toggle-info"><h5>Distribution Alerts</h5><p>Notify when distributions are wired</p></div><button class="toggle on" data-pref="nDist" aria-label="Distribution alerts"></button></div>
+        <div class="mfa-toggle"><div class="mfa-toggle-info"><h5>New Document Uploads</h5><p>Alert when reports and documents are posted</p></div><button class="toggle on" data-pref="nDocs" aria-label="New document uploads"></button></div>
+        <div class="mfa-toggle"><div class="mfa-toggle-info"><h5>Portfolio Newsletters</h5><p>Quarterly market commentary from the investment team</p></div><button class="toggle" data-pref="nNews" aria-label="Portfolio newsletters"></button></div>
+      </div>
+      <div class="profile-section">
+        <h4>Password</h4>
+        <p class="pw-note" id="pwNote">Set a password to sign in from the <strong>Password</strong> tab. If you joined with an email code, you don't have one yet — you can keep using email codes, or set one here.</p>
+        <form class="pw-form" novalidate onsubmit="event.preventDefault();savePassword()">
+          <div class="form-group"><label for="newPass">New password</label><input type="password" id="newPass" minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div>
+          <div class="form-group"><label for="newPass2">Confirm password</label><input type="password" id="newPass2" minlength="8" autocomplete="new-password" placeholder="Repeat password"></div>
+          <button class="btn btn-primary" type="submit" id="savePassBtn">Save password</button>
+        </form>
+      </div>
+      <div class="profile-section">
+        <h4>Session</h4>
+        <div class="mfa-toggle">
+          <div class="mfa-toggle-info"><h5>Connection</h5><p id="connInfo">—</p></div>
+          <button class="btn" onclick="signOut()">Sign out</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════════════ MODALS ══════════════ -->
+<!-- Upload -->
+<div class="modal-overlay" id="uploadModal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="uploadTitle">Upload Document</h3>
+      <button class="modal-close" onclick="closeModal('uploadModal')" aria-label="Close">×</button>
+    </div>
+    <div class="drop-zone" id="dropZone" tabindex="0" role="button" onclick="document.getElementById('modalFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
+      <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      <p><strong>Click to browse</strong> or drag &amp; drop files here</p>
+      <p style="font-size:0.72rem;margin-top:4px">PDF, DOC/DOCX, XLS/XLSX, PPT/PPTX, TXT, ZIP — max 50MB</p>
+    </div>
+    <input type="file" id="modalFileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip">
+    <div id="uploadedFileList"></div>
+    <div class="modal-fields">
+      <div class="form-group"><label for="upFund">Fund</label>
+        <select id="upFund">
+          <option value="PE Fund VI">Meridian PE Fund VI</option>
+          <option value="Real Assets IV">Real Assets Fund IV</option>
+          <option value="Infra II">Meridian Infra II</option>
+          <option value="Absolute Return HF">Absolute Return HF</option>
+          <option value="All Funds">General / All Funds</option>
+        </select>
+      </div>
+      <div class="form-group"><label for="upCat">Category</label>
+        <select id="upCat">
+          <option value="report">Quarterly Report</option>
+          <option value="notice">Capital Notice</option>
+          <option value="legal">Legal Agreement</option>
+          <option value="tax">Tax Document</option>
+          <option value="presentation">Presentation</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <button class="auth-btn" style="margin-top:0" id="uploadBtn" onclick="submitUpload()">Upload Document</button>
+  </div>
+</div>
+
+<!-- Capital call details -->
+<div class="modal-overlay" id="callModal" role="dialog" aria-modal="true" aria-labelledby="callTitle">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="callTitle">Capital Call — Real Assets Fund IV</h3>
+      <button class="modal-close" onclick="closeModal('callModal')" aria-label="Close">×</button>
+    </div>
+    <p class="lead">Pursuant to Section 4.2 of the Limited Partnership Agreement, the General Partner requests a capital contribution for new investments and fund expenses.</p>
+    <div class="kv"><span>Fund</span><span>Meridian Real Assets Fund IV</span></div>
+    <div class="kv"><span>Call number</span><span>#11</span></div>
+    <div class="kv"><span>Amount due</span><span>$2,400,000</span></div>
+    <div class="kv"><span>Due date</span><span>October 31, 2026</span></div>
+    <div class="kv"><span>Purpose</span><span>Acquisition — logistics portfolio (73%) · Fees &amp; expenses (27%)</span></div>
+    <div class="kv"><span>Commitment called after this call</span><span>94%</span></div>
+    <div class="kv"><span>Wire instructions</span><span>See the signed notice PDF</span></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('callModal');openModal('irModal')">Ask a question</button>
+      <button class="btn btn-primary" onclick="downloadByTitle('Capital Call Notice')">Download notice</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generate report -->
+<div class="modal-overlay" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h3 id="reportTitle">Generate Report</h3>
+      <button class="modal-close" onclick="closeModal('reportModal')" aria-label="Close">×</button>
+    </div>
+    <div class="modal-fields">
+      <div class="form-group"><label for="rpType">Report</label>
+        <select id="rpType">
+          <option value="summary">Portfolio Summary</option>
+          <option value="performance">Fund Performance</option>
+          <option value="capital">Capital Account Statement</option>
+        </select>
+      </div>
+      <div class="form-group"><label for="rpPeriod">Period</label>
+        <select id="rpPeriod"><option>Q3 2026</option><option>Q2 2026</option><option>Q1 2026</option><option>FY 2025</option></select>
+      </div>
+      <div class="form-group"><label for="rpFormat">Format</label>
+        <select id="rpFormat"><option value="pdf">PDF (print dialog)</option><option value="csv">CSV (Excel)</option></select>
+      </div>
+    </div>
+    <p class="lead" style="font-size:0.75rem;color:var(--text-muted-dark)">For PDF, choose “Save as PDF” as the printer in the dialog that opens.</p>
+    <button class="auth-btn" style="margin-top:0" onclick="generateReport()">Generate</button>
+  </div>
+</div>
+
+<!-- Investor relations -->
+<div class="modal-overlay" id="irModal" role="dialog" aria-modal="true" aria-labelledby="irTitle">
+  <div class="modal" style="width:440px">
+    <div class="modal-hdr">
+      <h3 id="irTitle">Investor Relations</h3>
+      <button class="modal-close" onclick="closeModal('irModal')" aria-label="Close">×</button>
+    </div>
+    <p class="lead">Our Investor Relations team is available Monday–Friday, 8:00am–6:00pm ET.</p>
+    <div class="kv"><span>Relationship manager</span><span>Sarah Chen, VP IR</span></div>
+    <div class="kv"><span>Email</span><span><a id="irEmailLink" href="#">ir@meridiancapital.com</a></span></div>
+    <div class="kv"><span>Response time</span><span>Within 1 business day</span></div>
+    <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal('irModal')">Done</button></div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+<div id="printArea"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   CONFIG — edit API_BASE if your frontend and backend live on different
+   hosts, e.g. API_BASE: 'https://meridian-portal-api.onrender.com'
+   ══════════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  API_BASE: 'auto',                    // 'auto' | 'demo' | 'https://your-api.example.com'
+  IR_EMAIL: 'ir@meridiancapital.com',
+  SESSION_TIMEOUT_MIN: 30,
+  MAX_UPLOAD_MB: 50,
+};
+
+/* ── STATE & UTILITIES ─────────────────────────────────────────────── */
+const state = {
+  mode: 'demo', api: '', token: null, refresh: null, user: null,
+  email: '', password: '', demoCode: null, otpExpires: 0,
+  docs: [], docFilter: 'all', chartsReady: false,
+};
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, area = 'local') { try { return JSON.parse(window[area + 'Storage'].getItem('mcp_' + k)); } catch { return null; } },
+  set(k, v, area = 'local') { try { window[area + 'Storage'].setItem('mcp_' + k, JSON.stringify(v)); } catch {} },
+  del(k, area = 'local') { try { window[area + 'Storage'].removeItem('mcp_' + k); } catch {} },
+};
+const fmtDate = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const fmtSize = b => b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+const money = n => '$' + Math.round(n).toLocaleString('en-US');
+const mm = n => '$' + n.toFixed(1) + 'M';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function fetchTimeout(url, opts = {}, ms = 5000) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), ms);
+  return fetch(url, { ...opts, signal: ctl.signal }).finally(() => clearTimeout(t));
+}
+
+function showToast(msg, type = 'ok') {
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  t.innerHTML = (type === 'error'
+    ? '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+    : '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>') + `<p>${esc(msg)}</p>`;
+  $('toastStack').appendChild(t);
+  setTimeout(() => { t.style.animation = 'fadeOut 0.3s ease forwards'; setTimeout(() => t.remove(), 300); }, 3800);
+}
+
+function setBusy(btn, busy, label) {
+  if (!btn) return;
+  if (busy) { btn.dataset.label = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<span class="spinner"></span>${esc(label || 'Please wait…')}`; }
+  else { btn.disabled = false; if (btn.dataset.label) btn.innerHTML = btn.dataset.label; }
+}
+
+function showError(id, msg) { const el = $(id); el.textContent = msg; el.classList.toggle('show', !!msg); }
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+
+/* ── MODE DETECTION ────────────────────────────────────────────────── */
+async function detectMode() {
+  const qs = new URLSearchParams(location.search);
+  let base = qs.get('api') || (CONFIG.API_BASE !== 'auto' ? CONFIG.API_BASE : null);
+  if (qs.get('demo') === '1' || base === 'demo') return setMode('demo');
+  const explicit = base !== null;
+  if (!explicit) {
+    if (!/^https?:$/.test(location.protocol)) return setMode('demo');   // opened from disk
+    base = '';                                                         // same origin
+  }
+  base = base.replace(/\/+$/, '');
+  // A separately hosted free-tier API may be asleep — give it time to wake up
+  const deadline = Date.now() + (explicit ? 75000 : 5000);
+  let attempt = 0;
+  while (Date.now() < deadline) {
+    try {
+      const r = await fetchTimeout(base + '/health', {}, explicit ? 20000 : 4000);
+      const j = await r.json();
+      if (j && j.service === 'meridian-portal-api') return setMode('live', base, j);
+      break;
+    } catch {
+      if (!explicit) break;
+      attempt++;
+      setPill('wait', `Waking up server… (${attempt})`);
+      await sleep(3000);
+    }
+  }
+  setMode('demo', '', null, explicit ? 'Could not reach the API — running in demo mode.' : null);
+}
+
+function setPill(cls, text) { const p = $('modePill'); p.className = 'mode-pill ' + cls; p.querySelector('span').textContent = text; }
+
+function setMode(mode, base = '', health = null, warning = null) {
+  state.mode = mode; state.api = base;
+  if (mode === 'live') setPill('live', 'Live API · secure email verification');
+  else setPill('demo', 'Demo mode · sample data, no real emails');
+  $('demoTag').hidden = mode !== 'demo';
+  $('demoCreds').innerHTML = mode === 'demo'
+    ? 'Demo mode: any email and password will work.'
+    : 'Demo login: <code>j.whitfield@meridian.com</code> / <code>ChangeMe123!</code>';
+  $('otpModeNote').textContent = mode === 'demo'
+    ? 'Demo mode can\'t send emails — your code will be shown on screen.'
+    : (health && health.email_provider === 'console' ? 'Email sending isn\'t set up on this server yet — your code will be shown on screen.' : '');
+  $('otpModeNote').hidden = !$('otpModeNote').textContent;
+  $('connInfo').textContent = mode === 'live'
+    ? `Live API ${base || location.origin}${health && health.email_provider ? ' · email: ' + health.email_provider : ''}`
+    : 'Demo mode — data stays in this browser tab';
+  if (warning) showToast(warning, 'error');
+  restoreSession();
+}
+
+/* ── API CLIENT ────────────────────────────────────────────────────── */
+function errText(data, status) {
+  if (data && typeof data.detail === 'string') return data.detail;
+  if (data && Array.isArray(data.detail)) return data.detail.map(d => (d.loc ? d.loc.slice(-1)[0] + ': ' : '') + d.msg).join('; ');
+  return status === 0 ? 'Network error — please try again.' : `Request failed (${status}).`;
+}
+
+async function api(path, { method = 'GET', body, form, auth = true, raw = false, retried = false } = {}) {
+  const headers = {};
+  if (body) headers['Content-Type'] = 'application/json';
+  if (auth && state.token) headers.Authorization = 'Bearer ' + state.token;
+  let res;
+  try {
+    res = await fetch(state.api + path, { method, headers, body: form || (body ? JSON.stringify(body) : undefined) });
+  } catch { throw new Error('Cannot reach the server. Check your connection.'); }
+  if (res.status === 401 && auth && state.refresh && !retried) {
+    if (await refreshTokens()) return api(path, { method, body, form, auth, raw, retried: true });
+    signOut(true); throw new Error('Your session has expired. Please sign in again.');
+  }
+  if (raw) { if (!res.ok) throw new Error(errText(await res.json().catch(() => null), res.status)); return res; }
+  const data = res.status === 204 ? null : await res.json().catch(() => null);
+  if (!res.ok) throw new Error(errText(data, res.status));
+  return data;
+}
+
+async function refreshTokens() {
+  try {
+    const d = await api('/api/auth/refresh', { method: 'POST', body: { refresh_token: state.refresh }, auth: false });
+    state.token = d.access_token; state.refresh = d.refresh_token; saveSession();
+    return true;
+  } catch { return false; }
+}
+
+/* ── AUTH FLOW ─────────────────────────────────────────────────────── */
+function showStep(id) {
+  document.querySelectorAll('.auth-step').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  $('authTabs').classList.toggle('hidden', id === 'stepMFA');
+}
+function togglePass(btn) {
+  const i = $('loginPass'); const show = i.type === 'password';
+  i.type = show ? 'text' : 'password'; btn.textContent = show ? 'HIDE' : 'SHOW';
+}
+const maskEmail = e => e.replace(/^(.{2})[^@]*(@.+)$/, '$1***$2');
+const isEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+/* Two sign-in methods:
+   • Password   → POST /api/auth/login-password  → tokens
+   • Email code → POST /api/auth/request-otp → code by email → POST /api/auth/verify-mfa → tokens */
+let authMethod = store.get('authMethod') === 'otp' ? 'otp' : 'password';
+
+function setAuthMethod(m, focus = true) {
+  authMethod = m; store.set('authMethod', m);
+  document.querySelectorAll('.auth-tab').forEach(t => {
+    const on = t.dataset.method === m; t.classList.toggle('active', on); t.setAttribute('aria-selected', on);
+  });
+  showStep(m === 'password' ? 'stepPassword' : 'stepOtpEmail');
+  showError('loginError', ''); showError('otpReqError', '');
+  if (focus) setTimeout(() => $(m === 'password' ? 'loginPass' : 'otpEmail').focus(), 50);
+}
+$('authTabs').addEventListener('click', e => { const t = e.target.closest('.auth-tab'); if (t) setAuthMethod(t.dataset.method); });
+
+function switchToCode() {
+  const e = $('loginEmail').value.trim();
+  if (e && !$('otpEmail').value) $('otpEmail').value = e;
+  setAuthMethod('otp');
+}
+
+async function passwordLogin() {
+  showError('loginError', '');
+  const email = $('loginEmail').value.trim().toLowerCase();
+  const password = $('loginPass').value;
+  if (!isEmail(email)) return showError('loginError', 'Please enter a valid email address.');
+  if (!password) return showError('loginError', 'Please enter your password.');
+  const btn = $('loginBtn');
+  setBusy(btn, true, 'Signing in…');
+  try {
+    state.email = email;
+    if (state.mode === 'demo') {
+      await sleep(450);
+      state.token = 'demo'; state.user = demoUser(email);
+    } else {
+      const d = await api('/api/auth/login-password', { method: 'POST', body: { email, password }, auth: false });
+      state.token = d.access_token; state.refresh = d.refresh_token;
+      state.user = await api('/api/auth/me');
+    }
+    finishLogin();
+  } catch (e) {
+    showError('loginError', e.message);
+  } finally { setBusy(btn, false); }
+}
+
+async function requestCode() {
+  showError('otpReqError', '');
+  const email = $('otpEmail').value.trim().toLowerCase();
+  if (!isEmail(email)) return showError('otpReqError', 'Please enter a valid email address.');
+  const btn = $('sendCodeBtn');
+  setBusy(btn, true, 'Sending code…');
+  try {
+    await sendCode(email, false);
+    clearOTP(); showError('mfaError', '');
+    showStep('stepMFA');
+    setTimeout(() => $('o0').focus(), 200);
+  } catch (e) {
+    showError('otpReqError', e.message);
+  } finally { setBusy(btn, false); }
+}
+
+async function sendCode(email, isResend) {
+  state.email = email;
+  const label = isResend ? 'new code' : 'your code';
+  if (state.mode === 'demo') {
+    await sleep(450);
+    state.demoCode = String(Math.floor(100000 + Math.random() * 900000));
+    $('mfaSubText').innerHTML = `Demo mode doesn't send real emails. In the live portal the code goes to <strong style="color:var(--gold)">${esc(maskEmail(email))}</strong>.`;
+    $('mfaCodeHint').innerHTML = `Demo — ${label}: <strong>${state.demoCode}</strong>`;
+  } else {
+    const d = await api('/api/auth/request-otp', { method: 'POST', body: { email }, auth: false });
+    $('mfaSubText').innerHTML = d.delivery === 'email'
+      ? `We've emailed a 6-digit code to <strong style="color:var(--gold)">${esc(d.email_masked)}</strong>. Check your inbox (and spam folder).`
+      : `Email sending isn't set up on this server yet, so your code is shown below.`;
+    $('mfaCodeHint').innerHTML = d.demo_otp ? `Demo — ${label}: <strong>${esc(d.demo_otp)}</strong>` : '';
+  }
+  state.otpExpires = Date.now() + 10 * 60 * 1000;
+  startOtpTimer();
+}
+
+function finishLogin() {
+  state.password = ''; state.demoCode = null; clearInterval(otpTimer);
+  $('newPass').value = ''; $('newPass2').value = '';
+  saveSession();
+  enterApp(true);
+}
+
+function clearOTP() { for (let i = 0; i < 6; i++) { $('o' + i).value = ''; $('o' + i).classList.remove('err'); } }
+function readOTP() { return [...Array(6)].map((_, i) => $('o' + i).value).join(''); }
+function otpFail(msg) {
+  const row = $('otpRow'); row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake');
+  document.querySelectorAll('.otp-input').forEach(i => { i.classList.add('err'); setTimeout(() => i.classList.remove('err'), 1200); });
+  showError('mfaError', msg);
+}
+
+let otpTimer = null;
+function startOtpTimer() {
+  clearInterval(otpTimer);
+  const tick = () => {
+    const s = Math.max(0, Math.round((state.otpExpires - Date.now()) / 1000));
+    $('mfaTimer').textContent = s ? `Code expires in ${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : 'Code expired — tap Resend.';
+    if (!s) clearInterval(otpTimer);
+  };
+  tick(); otpTimer = setInterval(tick, 1000);
+}
+
+async function verifyMFA() {
+  showError('mfaError', '');
+  const code = readOTP();
+  if (!/^\d{6}$/.test(code)) return otpFail('Enter all 6 digits.');
+  const btn = $('verifyBtn');
+  setBusy(btn, true, 'Verifying…');
+  try {
+    if (state.mode === 'demo') {
+      await sleep(400);
+      if (Date.now() > state.otpExpires) throw new Error('This code has expired. Tap Resend for a new one.');
+      if (code !== state.demoCode) throw new Error('Invalid verification code.');
+      state.token = 'demo'; state.user = demoUser(state.email);
+    } else {
+      const d = await api('/api/auth/verify-mfa', { method: 'POST', body: { email: state.email, otp_code: code }, auth: false });
+      state.token = d.access_token; state.refresh = d.refresh_token;
+      state.user = await api('/api/auth/me');
+    }
+    finishLogin();
+  } catch (e) {
+    otpFail(e.message);
+  } finally { setBusy(btn, false); }
+}
+
+async function resendCode() {
+  if (!state.email) return backToLogin();
+  try {
+    await sendCode(state.email, true);
+    clearOTP(); showError('mfaError', ''); $('o0').focus();
+    showToast(state.mode === 'demo' ? 'New demo code generated.' : 'A new code is on its way.');
+  } catch (e) { showError('mfaError', e.message); }
+}
+
+function backToLogin() { clearInterval(otpTimer); clearOTP(); showError('mfaError', ''); setAuthMethod(authMethod, false); }
+
+async function savePassword() {
+  const a = $('newPass').value, b = $('newPass2').value, btn = $('savePassBtn');
+  if (a.length < 8) return showToast('Password must be at least 8 characters.', 'error');
+  if (a !== b) return showToast('The two passwords don\'t match.', 'error');
+  if (state.mode === 'demo') {
+    $('newPass').value = ''; $('newPass2').value = '';
+    return showToast('Demo mode: passwords aren\'t stored — any password works here.');
+  }
+  setBusy(btn, true, 'Saving…');
+  try {
+    await api('/api/auth/set-password', { method: 'POST', body: { new_password: a } });
+    $('newPass').value = ''; $('newPass2').value = '';
+    showToast('Password saved. You can now sign in with the Password tab.');
+  } catch (e) { showToast(e.message, 'error'); }
+  finally { setBusy(btn, false); }
+}
+
+function demoUser(email) {
+  const known = email === 'j.whitfield@meridian.com';
+  const local = email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return {
+    full_name: known ? 'James R. Whitfield' : (local || 'Demo Investor'),
+    email, investor_code: known ? 'MCP-LP-2847' : 'MCP-LP-2900',
+    entity_name: known ? 'Whitfield Family Office LLC' : 'Demo Entity LLC',
+    investor_type: 'Institutional LP',
+  };
+}
+
+// OTP keyboard: auto-advance, backspace, arrows, paste all 6 digits, auto-submit
+(function wireOTP() {
+  for (let i = 0; i < 6; i++) {
+    const el = $('o' + i);
+    el.addEventListener('input', e => {
+      const v = e.target.value.replace(/\D/g, '');
+      if (v.length > 1) { fillOTP(v, i); return; }
+      e.target.value = v;
+      if (v && i < 5) $('o' + (i + 1)).focus();
+      if (readOTP().length === 6) verifyMFA();
+    });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !e.target.value && i > 0) $('o' + (i - 1)).focus();
+      if (e.key === 'ArrowLeft' && i > 0) $('o' + (i - 1)).focus();
+      if (e.key === 'ArrowRight' && i < 5) $('o' + (i + 1)).focus();
+    });
+    el.addEventListener('paste', e => {
+      e.preventDefault();
+      fillOTP((e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, ''), 0);
+    });
+  }
+  function fillOTP(digits, start) {
+    digits.slice(0, 6 - start).split('').forEach((d, k) => { $('o' + (start + k)).value = d; });
+    const next = Math.min(5, start + digits.length);
+    $('o' + next).focus();
+    if (readOTP().length === 6) verifyMFA();
+  }
+})();
+
+/* ── SESSION ───────────────────────────────────────────────────────── */
+function saveSession() {
+  store.set('session', { mode: state.mode, api: state.api, token: state.token, refresh: state.refresh, user: state.user, email: state.email }, 'session');
+}
+
+async function restoreSession() {
+  const s = store.get('session', 'session');
+  if (!s || !s.token || s.mode !== state.mode || s.api !== state.api) return;
+  Object.assign(state, { token: s.token, refresh: s.refresh, user: s.user, email: s.email });
+  if (state.mode === 'live') {
+    try { state.user = await api('/api/auth/me'); } catch { return clearSession(); }
+  }
+  enterApp(false);
+}
+
+function clearSession() {
+  store.del('session', 'session');
+  Object.assign(state, { token: null, refresh: null, user: null, password: '', demoCode: null });
+}
+
+function enterApp(animate) {
+  const wrap = $('authWrap');
+  const show = () => {
+    wrap.style.display = 'none'; wrap.style.animation = '';
+    $('app').classList.add('visible');
+    applyUser();
+    if (!state.chartsReady) { initCharts(); state.chartsReady = true; }
+    loadDocs();
+    startIdleWatch();
+    navTo(location.hash.replace('#', '') || 'dashboard', false);
+  };
+  if (animate) { wrap.style.animation = 'fadeOut 0.4s ease forwards'; setTimeout(show, 400); } else show();
+}
+
+async function signOut(expired = false) {
+  closeDropdowns();
+  if (state.mode === 'live' && state.token && !expired) { try { await api('/api/auth/logout', { method: 'POST' }); } catch {} }
+  clearSession(); stopIdleWatch();
+  state.docs.forEach(d => d.objectUrl && URL.revokeObjectURL(d.objectUrl));
+  state.docs = [];
+  $('app').classList.remove('visible');
+  const wrap = $('authWrap'); wrap.style.display = 'flex'; wrap.style.animation = 'fadeIn 0.3s ease';
+  $('loginPass').value = '';
+  backToLogin();
+  history.replaceState(null, '', location.pathname + location.search);
+  showToast(expired === 'idle' ? 'Signed out after 30 minutes of inactivity.' : expired ? 'Your session expired — please sign in again.' : 'You have been signed out.');
+}
+
+let idleTimer = null;
+const idleEvents = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+function resetIdle() {
+  clearTimeout(idleTimer);
+  if (prefs.sessionTimeout !== false) idleTimer = setTimeout(() => signOut('idle'), CONFIG.SESSION_TIMEOUT_MIN * 60000);
+}
+function startIdleWatch() { idleEvents.forEach(e => document.addEventListener(e, resetIdle, { passive: true, capture: true })); resetIdle(); }
+function stopIdleWatch() { clearTimeout(idleTimer); idleEvents.forEach(e => document.removeEventListener(e, resetIdle, { capture: true })); }
+
+function applyUser() {
+  const u = state.user || demoUser(state.email || 'j.whitfield@meridian.com');
+  const parts = u.full_name.trim().split(/\s+/);
+  const first = parts[0], last = parts[parts.length - 1];
+  const initials = (first[0] + (parts.length > 1 ? last[0] : '')).toUpperCase();
+  const h = new Date().getHours();
+  $('greeting').textContent = `Good ${h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening'}, ${first}.`;
+  $('uiName').textContent = parts.length > 1 ? `${first[0]}. ${last}` : first;
+  $('uiRole').textContent = u.investor_type === 'Institutional LP' ? 'LP Investor' : (u.investor_type || 'LP Investor');
+  $('uiAvatar').textContent = initials;
+  $('umName').textContent = u.full_name; $('umEmail').textContent = u.email;
+  $('pfName').textContent = u.full_name; $('pfEmail').textContent = u.email;
+  $('pfCode').textContent = u.investor_code || '—'; $('pfEntity').textContent = u.entity_name || '—';
+  $('pfType').textContent = u.investor_type || '—';
+}
+
+/* ── NAVIGATION ────────────────────────────────────────────────────── */
+const PAGES = ['dashboard', 'funds', 'documents', 'capital', 'reports', 'profile'];
+function navTo(page, push = true) {
+  if (!PAGES.includes(page)) page = 'dashboard';
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + page));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  $('content').scrollTop = 0;
+  if (push && location.hash !== '#' + page) history.replaceState(null, '', '#' + page);
+  const active = document.querySelector('.nav-item.active');
+  if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+$('topNav').addEventListener('click', e => { const b = e.target.closest('.nav-item'); if (b) navTo(b.dataset.page); });
+
+/* ── DROPDOWNS & MODALS ────────────────────────────────────────────── */
+function toggleDropdown(id, ev) {
+  ev && ev.stopPropagation();
+  const el = $(id); const open = !el.classList.contains('open');
+  closeDropdowns();
+  if (open) el.classList.add('open');
+}
+function closeDropdowns() { document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open')); }
+document.addEventListener('click', e => { if (!e.target.closest('.dropdown')) closeDropdowns(); });
+
+function openModal(id) { $(id).classList.add('open'); const f = $(id).querySelector('select,button:not(.modal-close),input'); f && setTimeout(() => f.focus(), 50); }
+function closeModal(id) { $(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open')); closeDropdowns(); }
+});
+$('irEmailLink').textContent = CONFIG.IR_EMAIL;
+$('irEmailLink').href = 'mailto:' + CONFIG.IR_EMAIL + '?subject=' + encodeURIComponent('Investor Portal enquiry');
+
+/* ── DATA ──────────────────────────────────────────────────────────── */
+const FUNDS = [
+  { name: 'Meridian PE Fund VI', short: 'PE VI', strategy: 'Private Equity', cls: 'pe', vintage: 2021, size: '$2.4B', commit: 12.0, called: 9.6, dist: 1.2, nav: 14.8, tvpi: 1.67, irr: 18.4, dpi: 0.10, status: 'Investing', st: 'open', active: true },
+  { name: 'Real Assets Fund IV', short: 'RE IV', strategy: 'Real Estate', cls: 're', vintage: 2020, size: '$1.8B', commit: 10.0, called: 7.0, dist: 2.1, nav: 9.7, tvpi: 1.69, irr: 14.2, dpi: 0.30, status: 'Investing', st: 'open', active: true },
+  { name: 'Meridian Infra II', short: 'Infra II', strategy: 'Infrastructure', cls: 'infra', vintage: 2019, size: '$3.1B', commit: 15.0, called: 14.1, dist: 3.8, nav: 22.4, tvpi: 1.85, irr: 16.9, dpi: 0.27, status: 'Harvest', st: 'harvest', active: true },
+  { name: 'Absolute Return HF', short: 'HF', strategy: 'Hedge Fund', cls: 'hf', vintage: 2022, size: '$890M', commit: 8.0, called: 8.0, dist: 0.5, nav: 9.1, tvpi: 1.20, irr: 9.8, dpi: 0.06, status: 'Open', st: 'open', active: true },
+  { name: 'Credit Opportunities I', short: 'Credit I', strategy: 'Private Credit', cls: 'pe', vintage: 2018, size: '$620M', commit: 3.5, called: 3.5, dist: 0.2, nav: 5.2, tvpi: 0.98, irr: -0.6, dpi: 0.06, status: 'Wound Down', st: 'closed', active: true },
+  { name: 'Meridian PE Fund V', short: 'PE V', strategy: 'Private Equity', cls: 'pe', vintage: 2017, size: '$1.9B', commit: 8.0, called: 8.0, dist: 9.4, nav: 3.6, tvpi: 1.63, irr: 14.1, dpi: 1.18, status: 'Harvest', st: 'harvest', active: false },
+];
+
+const CAPITAL = [
+  { fund: 'Meridian PE Fund VI', commit: 12000000, contrib: 9600000, dist: 1200000, nav: 14820000, ugl: 6420000 },
+  { fund: 'Real Assets Fund IV', commit: 10000000, contrib: 7000000, dist: 2100000, nav: 9710000, ugl: 4810000 },
+  { fund: 'Meridian Infra II', commit: 15000000, contrib: 14100000, dist: 3800000, nav: 22380000, ugl: 12080000 },
+  { fund: 'Absolute Return HF', commit: 8000000, contrib: 8000000, dist: 500000, nav: 9090000, ugl: 1590000 },
+];
+
+const ACTIVITY = [
+  { id: 'a1', dot: 'gold', title: 'Capital Call Notice', text: 'Meridian Real Assets Fund IV, $2.4M due Oct 31', time: '2 days ago', action: () => openModal('callModal') },
+  { id: 'a2', dot: 'green', title: 'Distribution Received', text: 'Meridian Infra II, $420,000 wired to your account', time: '1 week ago', action: () => { navTo('documents'); setDocFilter('notice'); } },
+  { id: 'a3', dot: 'blue', title: 'Q3 2026 Reports Available', text: 'Quarterly statements uploaded for all 5 funds', time: 'Oct 1, 2026', action: () => { navTo('documents'); setDocFilter('report'); } },
+  { id: 'a4', dot: 'gold', title: 'New Investment', text: 'PE Fund VI deployed $180M into Apex TechCo (Software, Series D)', time: 'Sep 22, 2026', action: () => navTo('funds') },
+  { id: 'a5', dot: 'green', title: 'Document Uploaded', text: 'K-1 Tax Package 2025 for all fund positions', time: 'Apr 15, 2026', action: () => { navTo('documents'); setDocFilter('tax'); } },
+];
+
+const DEMO_DOCS = [
+  ['Q3 2026 Quarterly Report — PE Fund VI', 'pdf', 'report', 'PE Fund VI', 4.2, '2026-10-01'],
+  ['Q3 2026 Quarterly Report — Real Assets IV', 'pdf', 'report', 'Real Assets IV', 3.8, '2026-10-01'],
+  ['Q3 2026 Quarterly Report — Infra II', 'pdf', 'report', 'Infra II', 5.1, '2026-10-01'],
+  ['Capital Call Notice — Real Assets IV ($2.4M)', 'pdf', 'notice', 'Real Assets IV', 0.8, '2026-09-28'],
+  ['Distribution Notice — Infra II ($420K)', 'pdf', 'notice', 'Infra II', 0.4, '2026-09-18'],
+  ['LPA Amendment No. 3 — Infra II', 'docx', 'legal', 'Infra II', 1.2, '2026-09-15'],
+  ['Q2 2026 Investor Presentation', 'pptx', 'presentation', 'All Funds', 8.6, '2026-07-12'],
+  ['K-1 Tax Package 2025 — All Funds', 'xlsx', 'tax', 'All Funds', 2.4, '2026-04-15'],
+  ['Q1 2026 Quarterly Report — Absolute Return HF', 'pdf', 'report', 'Absolute Return HF', 2.1, '2026-04-05'],
+  ['Annual Report 2025 — Meridian PE Fund VI', 'pdf', 'report', 'PE Fund VI', 9.4, '2026-03-30'],
+  ['Subscription Agreement — PE Fund VI', 'docx', 'legal', 'PE Fund VI', 0.6, '2021-01-03'],
+  ['Side Letter Agreement — Whitfield Family Office', 'docx', 'legal', 'General', 0.3, '2017-03-12'],
+].map(([title, type, cat, fund, mb, date], i) => ({
+  id: 'd' + (i + 1), title, type, cat, fund, size: Math.round(mb * 1048576), date: new Date(date + 'T12:00:00'), sample: true,
+}));
+
+/* ── DASHBOARD & FUNDS ─────────────────────────────────────────────── */
+function fundRowDash(f) {
+  const pc = f.tvpi >= 1 ? 'perf-up' : 'perf-down';
+  return `<tr><td><div class="fund-name">${esc(f.name)}</div><span class="fund-strategy ${f.cls}">${esc(f.strategy)}</span></td>
+    <td>${f.vintage}</td><td>${mm(f.commit)}</td><td>${mm(f.called)}</td><td>${mm(f.dist)}</td><td>${mm(f.nav)}</td>
+    <td class="${pc}">${f.tvpi.toFixed(2)}×</td><td class="${f.irr >= 0 ? 'perf-up' : 'perf-down'}">${f.irr.toFixed(1)}%</td>
+    <td><span class="status ${f.st}">${esc(f.status)}</span></td></tr>`;
+}
+function renderDashFunds() { $('dashFundBody').innerHTML = FUNDS.filter(f => f.active).map(fundRowDash).join(''); }
+
+function renderFundMatrix() {
+  const q = $('fundSearch').value.trim().toLowerCase();
+  const strat = $('fundStrategyFilter').value, stat = $('fundStatusFilter').value;
+  const rows = FUNDS.filter(f => (!q || (f.name + ' ' + f.strategy + ' ' + f.vintage).toLowerCase().includes(q)) && (!strat || f.strategy === strat) && (!stat || f.status === stat));
+  $('fundCount').textContent = `${rows.length} of ${FUNDS.length}`;
+  $('fundMatrixBody').innerHTML = rows.map(f => `<tr>
+    <td><div class="fund-name">${esc(f.name)}</div></td><td><span class="fund-strategy ${f.cls}">${esc(f.strategy)}</span></td>
+    <td>${f.vintage}</td><td>${f.size}</td><td>${mm(f.commit)}</td><td>${Math.round(f.called / f.commit * 100)}%</td><td>${mm(f.dist)}</td><td>${mm(f.nav)}</td>
+    <td class="${f.tvpi >= 1 ? 'perf-up' : 'perf-down'}">${f.tvpi.toFixed(2)}×</td><td class="${f.irr >= 0 ? 'perf-up' : 'perf-down'}">${f.irr.toFixed(1)}%</td>
+    <td>${f.dpi.toFixed(2)}×</td><td><span class="status ${f.st}">${esc(f.status)}</span></td></tr>`).join('')
+    || '<tr class="empty"><td colspan="12">No funds match your filters.</td></tr>';
+}
+
+function renderCapital() {
+  $('accountGrid').innerHTML = CAPITAL.map(c => {
+    const pct = Math.round(c.contrib / c.commit * 100); const unc = c.commit - c.contrib;
+    return `<div class="account-card"><h4>${esc(c.fund)}</h4>
+      <div class="account-row"><span class="lbl">Commitment</span><span class="val">${money(c.commit)}</span></div>
+      <div class="account-row"><span class="lbl">Contributed Capital</span><span class="val">${money(c.contrib)}</span></div>
+      <div class="account-row"><span class="lbl">Distributions</span><span class="val pos">${money(c.dist)}</span></div>
+      <div class="account-row"><span class="lbl">NAV</span><span class="val">${money(c.nav)}</span></div>
+      <div class="account-row"><span class="lbl">Unrealized G/L</span><span class="val ${c.ugl >= 0 ? 'pos' : 'neg'}">${c.ugl >= 0 ? '+' : '−'}${money(Math.abs(c.ugl))}</span></div>
+      <div class="commitment-bar"><div class="bar-label"><span>Called: ${pct}%</span><span>${unc > 0 ? 'Uncalled: ' + mm(unc / 1e6) : 'Fully Called'}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div></div>`;
+  }).join('');
+}
+
+function activityHTML(a, unread) {
+  return `<div class="activity-item ${unread ? 'notif-item unread' : ''}" data-act="${a.id}" style="cursor:pointer"><div class="activity-dot ${a.dot}"></div><div><div class="activity-text"><strong>${esc(a.title)}</strong> — ${esc(a.text)}</div><div class="activity-time">${esc(a.time)}</div></div></div>`;
+}
+function renderActivity() {
+  $('activityList').innerHTML = ACTIVITY.map(a => activityHTML(a, false)).join('');
+  const read = store.get('read') || [];
+  $('notifList').innerHTML = ACTIVITY.slice(0, 4).map(a => activityHTML(a, !read.includes(a.id)).replace('activity-item', 'activity-item notif-item')).join('');
+  $('notifDot').classList.toggle('hidden', ACTIVITY.slice(0, 4).every(a => read.includes(a.id)));
+}
+function markAllRead() { store.set('read', ACTIVITY.map(a => a.id)); renderActivity(); }
+document.addEventListener('click', e => {
+  const item = e.target.closest('[data-act]'); if (!item) return;
+  const a = ACTIVITY.find(x => x.id === item.dataset.act); if (!a) return;
+  const read = store.get('read') || []; if (!read.includes(a.id)) { read.push(a.id); store.set('read', read); }
+  closeDropdowns(); renderActivity(); a.action();
+});
+
+function renderCountdown() {
+  const days = Math.ceil((new Date('2026-10-31T23:59:59') - new Date()) / 86400000);
+  $('callCountdown').textContent = days > 0 ? ` (${days} day${days === 1 ? '' : 's'} left)` : days === 0 ? ' (due today)' : '';
+}
+
+/* ── DOCUMENTS ─────────────────────────────────────────────────────── */
+async function loadDocs() {
+  if (state.mode === 'demo') {
+    const uploaded = store.get('demoUploads', 'session') || [];       // metadata only; files live in memory
+    if (!state.docs.length) state.docs = [...DEMO_DOCS];
+    uploaded.forEach(u => { if (!state.docs.find(d => d.id === u.id)) state.docs.unshift({ ...u, date: new Date(u.date), lost: true }); });
+    return renderDocs();
+  }
+  $('docsList').innerHTML = '<p class="empty-state"><span class="spinner"></span>&nbsp; Loading documents…</p>';
+  try {
+    const list = await api('/api/documents');
+    state.docs = list.map(d => ({
+      id: d.id, title: d.title, type: (d.file_type || '').toLowerCase(), cat: d.category, fund: d.fund_name,
+      size: d.file_size_bytes, date: new Date(d.published_at || d.created_at), filename: d.original_filename,
+      downloadUrl: d.download_url, remote: true,
+    }));
+    renderDocs();
+  } catch (e) {
+    $('docsList').innerHTML = `<p class="empty-state">Could not load documents: ${esc(e.message)} <button class="btn" style="margin-left:8px" onclick="loadDocs()">Retry</button></p>`;
+  }
+}
+
+function setDocFilter(cat) {
+  state.docFilter = cat;
+  document.querySelectorAll('.doc-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  renderDocs();
+}
+$('docFilters').addEventListener('click', e => { const b = e.target.closest('.doc-filter-btn'); if (b) setDocFilter(b.dataset.cat); });
+
+function renderDocs() {
+  const q = $('docSearch').value.trim().toLowerCase();
+  const list = state.docs
+    .filter(d => (state.docFilter === 'all' || d.cat === state.docFilter) && (!q || (d.title + ' ' + d.fund).toLowerCase().includes(q)))
+    .sort((a, b) => b.date - a.date);
+  $('docCount').textContent = `${list.length} document${list.length === 1 ? '' : 's'}`;
+  $('docsList').innerHTML = list.map(d => `
+    <div class="doc-row">
+      <div class="doc-type-icon ${esc(d.type)}">${esc((d.type || 'file').toUpperCase().slice(0, 4))}</div>
+      <div class="doc-info">
+        <div class="doc-title" title="${esc(d.title)}">${esc(d.title)}</div>
+        <div class="doc-meta">${fmtSize(d.size)}${d.objectUrl || d.justUploaded ? ' · <span style="color:var(--green);font-size:0.7rem">● Uploaded</span>' : ''}${d.lost ? ' · <span style="font-size:0.7rem">file not kept after reload (demo)</span>' : ''}</div>
+      </div>
+      <span class="doc-fund-tag">${esc(d.fund)}</span>
+      <div class="doc-date">${fmtDate(d.date)}</div>
+      <div class="doc-actions">
+        <button class="icon-btn" title="Download" aria-label="Download ${esc(d.title)}" data-dl="${esc(d.id)}" ${d.lost ? 'disabled' : ''}>
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+      </div>
+    </div>`).join('') || '<p class="empty-state">No documents found.</p>';
+}
+$('docsList').addEventListener('click', e => { const b = e.target.closest('[data-dl]'); if (b) downloadDoc(b.dataset.dl, b); });
+
+const safeName = s => s.replace(/[\/\\?%*:|"<>]/g, '-').replace(/—/g, '-');
+
+async function downloadDoc(id, btn) {
+  const doc = state.docs.find(d => String(d.id) === String(id));
+  if (!doc) return;
+  try {
+    if (doc.objectUrl) {                          // file uploaded in this browser (demo)
+      const a = document.createElement('a'); a.href = doc.objectUrl; a.download = doc.filename; document.body.appendChild(a); a.click(); a.remove();
+    } else if (doc.remote) {
+      if (doc.downloadUrl) { window.open(doc.downloadUrl, '_blank', 'noopener'); }   // S3 presigned URL
+      else {
+        btn && (btn.disabled = true);
+        const res = await api(`/api/documents/${encodeURIComponent(doc.id)}/download`, { raw: true });
+        downloadBlob(await res.blob(), doc.filename || safeName(doc.title) + '.' + doc.type);
+      }
+    } else {                                      // built-in demo sample → generated PDF
+      downloadBlob(makeSamplePdf(doc), safeName(doc.title) + '.pdf');
+    }
+    showToast('Downloading: ' + doc.title.substring(0, 40) + (doc.title.length > 40 ? '…' : ''));
+  } catch (e) { showToast(e.message, 'error'); }
+  finally { btn && (btn.disabled = false); }
+}
+
+function downloadByTitle(prefix) {
+  const d = state.docs.find(x => x.title.startsWith(prefix));
+  if (d) downloadDoc(d.id); else showToast('Document not found.', 'error');
+}
+
+// Valid one-page PDF (correct xref offsets) for the built-in sample documents
+function makeSamplePdf(doc) {
+  const clean = s => s.replace(/—/g, '-').replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+  const lines = [['F2', 20, 'Meridian Capital - Investor Portal'], ['F2', 14, doc.title], ['F1', 11, 'Fund: ' + doc.fund],
+    ['F1', 11, 'Category: ' + doc.cat], ['F1', 11, 'Date: ' + fmtDate(doc.date)], ['F1', 11, ''],
+    ['F1', 10, 'Sample document generated for the prototype. Contains no real financial data.']];
+  const stream = ['BT', '50 780 Td', ...lines.map(([f, s, t], i) => (i ? `0 -${s * 2} Td ` : '') + `/${f} ${s} Tf (${clean(t)}) Tj`), 'ET'].join('\n');
+  const objs = ['<< /Type /Catalog /Pages 2 0 R >>', '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>',
+    `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`,
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>', '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>'];
+  let out = '%PDF-1.4\n'; const offs = [];
+  objs.forEach((o, i) => { offs.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + offs.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('');
+  out += `trailer\n<< /Size ${objs.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
+  return new Blob([out], { type: 'application/pdf' });
+}
+
+/* ── UPLOAD ────────────────────────────────────────────────────────── */
+const ALLOWED_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip'];
+let stagedFiles = [];
+const modalInput = $('modalFileInput');
+
+function openUpload() { stagedFiles = []; renderStaged(); openModal('uploadModal'); }
+function fileProblem(f) {
+  const ext = f.name.split('.').pop().toLowerCase();
+  if (!ALLOWED_EXT.includes(ext)) return `.${ext} not allowed`;
+  if (f.size > CONFIG.MAX_UPLOAD_MB * 1048576) return `over ${CONFIG.MAX_UPLOAD_MB} MB`;
+  return null;
+}
+function renderStaged() {
+  $('uploadedFileList').innerHTML = stagedFiles.map((f, i) => {
+    const bad = fileProblem(f);
+    return `<div class="uploaded-file ${bad ? 'bad' : ''}">
+      <svg viewBox="0 0 24 24">${bad ? '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' : '<polyline points="20 6 9 17 4 12"/>'}</svg>
+      <span title="${esc(f.name)}">${esc(f.name)}</span><small>${bad ? esc(bad) : fmtSize(f.size)}</small>
+      <button class="remove" onclick="removeFile(${i})" aria-label="Remove ${esc(f.name)}">×</button></div>`;
+  }).join('');
+}
+function addFiles(files) { stagedFiles.push(...files); modalInput.value = ''; renderStaged(); }
+function removeFile(i) { stagedFiles.splice(i, 1); renderStaged(); }
+modalInput.addEventListener('change', e => addFiles([...e.target.files]));
+const dropZone = $('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag'); addFiles([...e.dataTransfer.files]); });
+
+async function submitUpload() {
+  const good = stagedFiles.filter(f => !fileProblem(f));
+  if (!good.length) return showToast(stagedFiles.length ? 'None of the selected files can be uploaded.' : 'Please select a file to upload.', 'error');
+  const fund = $('upFund').value, cat = $('upCat').value;
+  const btn = $('uploadBtn');
+  setBusy(btn, true, `Uploading ${good.length} file${good.length > 1 ? 's' : ''}…`);
+  let ok = 0;
+  try {
+    for (const f of good) {
+      const ext = f.name.split('.').pop().toLowerCase();
+      const title = f.name.replace(/\.[^.]+$/, '');
+      if (state.mode === 'demo') {
+        const doc = { id: 'u' + Date.now() + Math.random().toString(36).slice(2, 6), title, type: ext, cat, fund, size: f.size, date: new Date(), filename: f.name, objectUrl: URL.createObjectURL(f) };
+        state.docs.unshift(doc);
+        const meta = store.get('demoUploads', 'session') || [];
+        meta.push({ id: doc.id, title, type: ext, cat, fund, size: f.size, date: doc.date.toISOString(), filename: f.name });
+        store.set('demoUploads', meta, 'session');
+      } else {
+        const fd = new FormData();
+        fd.append('file', f); fd.append('title', title); fd.append('category', cat); fd.append('fund_name', fund);
+        await api('/api/documents/upload', { method: 'POST', form: fd });
+      }
+      ok++;
+    }
+  } catch (e) { showToast(`Upload failed: ${e.message}`, 'error'); }
+  finally { setBusy(btn, false); }
+  if (ok) {
+    closeModal('uploadModal'); stagedFiles = []; renderStaged();
+    if (state.mode === 'live') await loadDocs();
+    setDocFilter('all'); navTo('documents');
+    showToast(`${ok} document${ok > 1 ? 's' : ''} uploaded — click the download icon to retrieve.`);
+  }
+}
+
+/* ── STATEMENTS, REPORTS, EXPORT ───────────────────────────────────── */
+const csvCell = v => /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+const toCSV = rows => rows.map(r => r.map(csvCell).join(',')).join('\r\n');
+const userName = () => (state.user && state.user.full_name) || 'Investor';
+
+function capitalRows() {
+  const rows = [['Fund', 'Commitment', 'Contributed', 'Uncalled', '% Called', 'Distributions', 'NAV', 'Unrealized G/L']];
+  CAPITAL.forEach(c => rows.push([c.fund, c.commit, c.contrib, c.commit - c.contrib, Math.round(c.contrib / c.commit * 100) + '%', c.dist, c.nav, c.ugl]));
+  const sum = k => CAPITAL.reduce((s, c) => s + c[k], 0);
+  rows.push(['TOTAL', sum('commit'), sum('contrib'), sum('commit') - sum('contrib'), '', sum('dist'), sum('nav'), sum('ugl')]);
+  return rows;
+}
+function performanceRows() {
+  const rows = [['Fund', 'Strategy', 'Vintage', 'Fund Size', 'Commitment ($M)', 'Called ($M)', 'Distributions ($M)', 'NAV ($M)', 'TVPI/MOIC', 'Net IRR %', 'DPI', 'Status']];
+  FUNDS.forEach(f => rows.push([f.name, f.strategy, f.vintage, f.size, f.commit, f.called, f.dist, f.nav, f.tvpi, f.irr, f.dpi, f.status]));
+  return rows;
+}
+function downloadStatementCSV(period = 'Q3 2026') {
+  const head = [['Meridian Capital — Capital Account Statement'], ['Investor', userName()], ['Period', period], ['Generated', new Date().toLocaleString()], ['Note', 'Prototype - illustrative sample data'], []];
+  downloadBlob(new Blob(['﻿' + toCSV([...head, ...capitalRows()])], { type: 'text/csv' }), `Meridian-Capital-Statement-${period.replace(/\s/g, '-')}.csv`);
+  showToast('Statement downloaded.');
+}
+
+function tableHTML(rows, numFrom = 1) {
+  const [h, ...b] = rows;
+  const fmt = (v, i) => typeof v === 'number' && i >= numFrom ? (v > 1000 ? money(v) : v) : esc(v);
+  return `<table><thead><tr>${h.map((c, i) => `<th class="${i >= numFrom ? 'num' : ''}">${esc(c)}</th>`).join('')}</tr></thead>
+    <tbody>${b.map(r => `<tr>${r.map((c, i) => `<td class="${i >= numFrom ? 'num' : ''}">${fmt(c, i)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function printReport(type, period) {
+  const titles = { summary: 'Portfolio Summary', performance: 'Fund Performance Report', capital: 'Capital Account Statement' };
+  const kpis = `<div class="kpis">${[['Total Committed', '$48.5M'], ['Net Asset Value', '$61.2M'], ['Distributions', '$7.8M'], ['TVPI', '1.74×']].map(([l, v]) => `<div class="kpi"><span>${l}</span><b>${v}</b></div>`).join('')}</div>`;
+  let body = '';
+  if (type === 'summary') body = `<h2>Key metrics</h2>${kpis}<h2>Fund positions</h2>${tableHTML(performanceRows(), 2)}<h2>Capital account</h2>${tableHTML(capitalRows())}<h2>Recent activity</h2><table><tbody>${ACTIVITY.map(a => `<tr><td>${esc(a.time)}</td><td><b>${esc(a.title)}</b> — ${esc(a.text)}</td></tr>`).join('')}</tbody></table>`;
+  if (type === 'performance') body = `<h2>Fund performance</h2>${tableHTML(performanceRows(), 2)}`;
+  if (type === 'capital') body = `<h2>Capital account by fund</h2>${tableHTML(capitalRows())}`;
+  $('printArea').innerHTML = `<h1>Meridian Capital</h1><div class="meta">${titles[type]} · ${esc(period)} · Prepared for ${esc(userName())} · Generated ${esc(new Date().toLocaleString())}</div>${body}
+    <div class="foot">Confidential. Prototype document generated from illustrative sample data — not an offer or a statement of actual holdings.</div>`;
+  setTimeout(() => window.print(), 50);
+}
+
+function generateReport() {
+  const type = $('rpType').value, period = $('rpPeriod').value, format = $('rpFormat').value;
+  closeModal('reportModal');
+  if (format === 'pdf') return printReport(type, period);
+  if (type === 'capital') return downloadStatementCSV(period);
+  const rows = type === 'performance' ? performanceRows() : [...performanceRows(), [], ...capitalRows()];
+  downloadBlob(new Blob(['﻿' + toCSV([[`Meridian Capital — ${type === 'performance' ? 'Fund Performance' : 'Portfolio Summary'}`], ['Period', period], ['Investor', userName()], [], ...rows])], { type: 'text/csv' }),
+    `Meridian-Capital-${type}-${period.replace(/\s/g, '-')}.csv`);
+  showToast('Report downloaded.');
+}
+
+/* ── SETTINGS / PREFERENCES ────────────────────────────────────────── */
+const prefs = store.get('prefs') || {};
+document.querySelectorAll('.toggle[data-pref]').forEach(t => {
+  const k = t.dataset.pref;
+  if (k in prefs) t.classList.toggle('on', !!prefs[k]);
+  t.setAttribute('role', 'switch'); t.setAttribute('aria-checked', t.classList.contains('on'));
+  t.addEventListener('click', () => {
+    if (t.disabled) return;
+    const on = t.classList.toggle('on'); t.setAttribute('aria-checked', on);
+    prefs[k] = on; store.set('prefs', prefs);
+    if (k === 'sessionTimeout') resetIdle();
+    if (k === 'mfaTotp' && on) showToast('Authenticator app setup will be available in the next release.');
+    else showToast('Preference saved.');
+  });
+});
+if (!('sessionTimeout' in prefs)) prefs.sessionTimeout = true;
+
+/* ── CHARTS ────────────────────────────────────────────────────────── */
+function initCharts() {
+  if (typeof Chart === 'undefined') { document.querySelectorAll('.chart-box').forEach(b => b.innerHTML = '<p class="empty-state">Charts could not load (offline?).</p>'); return; }
+  const gold = '#C9A84C', goldDim = 'rgba(201,168,76,0.15)', green = '#3DBE8A', blue = '#6AA4DC', red = '#E05252';
+  const gridColor = 'rgba(201,168,76,0.08)', textColor = '#7A8EA8';
+  Chart.defaults.font.family = "'Instrument Sans', sans-serif";
+  const tooltip = { backgroundColor: '#162B45', borderColor: 'rgba(201,168,76,0.2)', borderWidth: 1, titleColor: '#D4CBB5', bodyColor: '#D4CBB5', cornerRadius: 6, padding: 10 };
+  const defaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip },
+    scales: { x: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } }, y: { grid: { color: gridColor }, ticks: { color: textColor, font: { size: 10 } } } } };
+
+  new Chart($('navChart'), { type: 'line', data: { labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'], datasets: [{ label: 'Portfolio NAV ($M)', data: [18, 22, 28, 32, 38, 44, 54, 61.2], fill: true, backgroundColor: 'rgba(201,168,76,0.06)', borderColor: gold, borderWidth: 2, pointBackgroundColor: gold, pointRadius: 3, tension: 0.4 }] }, options: defaults });
+
+  new Chart($('allocChart'), { type: 'doughnut', data: { labels: ['Private Equity', 'Real Estate', 'Infrastructure', 'Hedge Fund', 'Private Credit'], datasets: [{ data: [35, 21, 31, 16, 7], backgroundColor: ['rgba(201,168,76,0.8)', 'rgba(61,190,138,0.8)', 'rgba(106,164,220,0.8)', 'rgba(168,158,202,0.8)', 'rgba(201,168,76,0.3)'], borderColor: 'transparent', borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: true, position: 'bottom', labels: { color: textColor, font: { size: 10 }, boxWidth: 10, padding: 10 } }, tooltip: { ...tooltip, callbacks: { label: c => ` ${c.label}: ${c.parsed}%` } } } } });
+
+  new Chart($('irrChart'), { type: 'bar', data: { labels: ['PE V', 'PE VI', 'RE IV', 'Infra II', 'HF', 'Credit I'], datasets: [{ label: 'Net IRR %', data: [14.1, 18.4, 14.2, 16.9, 9.8, -0.6], backgroundColor: [gold, gold, green, blue, 'rgba(168,158,202,0.8)', red], borderRadius: 4, borderSkipped: false }] }, options: defaults });
+
+  new Chart($('callChart'), { type: 'bar', data: { labels: ["Q1'26", "Q2'26", "Q3'26", "Q4'26", "Q1'27", "Q2'27"], datasets: [{ label: 'Scheduled calls ($M)', data: [0, 0, 0, 2.4, 0.9, 0], backgroundColor: goldDim, borderColor: gold, borderWidth: 1, borderRadius: 4 }] }, options: defaults });
+
+  new Chart($('jcurveChart'), { type: 'line', data: { labels: ['Y0', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y6', 'Y7'], datasets: [{ label: 'Cumulative cash flow ($M)', data: [-10, -18, -25, -22, -12, 5, 22, 45], fill: true, backgroundColor: 'rgba(201,168,76,0.05)', borderColor: gold, borderWidth: 2, tension: 0.4, pointBackgroundColor: gold, pointRadius: 3 }] }, options: defaults });
+
+  new Chart($('vintageChart'), { type: 'bar', data: { labels: ['2017', '2018', '2019', '2020', '2021', '2022'], datasets: [{ label: 'Committed ($M)', data: [8, 3.5, 15, 10, 12, 8], backgroundColor: [...Array(6)].map((_, i) => `rgba(201,168,76,${0.4 + i * 0.1})`), borderRadius: 4, borderSkipped: false }] }, options: defaults });
+}
+
+/* ── BOOT ──────────────────────────────────────────────────────────── */
+renderDashFunds(); renderFundMatrix(); renderCapital(); renderActivity(); renderCountdown();
+window.addEventListener('hashchange', () => { if ($('app').classList.contains('visible')) navTo(location.hash.replace('#', ''), false); });
+setAuthMethod(authMethod, false);
+detectMode();
+</script>
+</body>
+</html>

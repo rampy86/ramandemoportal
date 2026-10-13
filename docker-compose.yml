@@ -1,0 +1,11 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./uploads:/app/uploads      # persist local uploads in dev
+      - ./frontend:/app/frontend    # live-edit the HTML without rebuilding
+    restart: unless-stopped

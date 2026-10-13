@@ -1,0 +1,32 @@
+# Render Blueprint — one free web service that serves the API *and* the portal HTML.
+# Render dashboard → New → Blueprint → pick this repo → fill in the "sync: false" values.
+services:
+  - type: web
+    name: meridian-investor-portal
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true          # Render creates a random secret for you
+      - key: ENVIRONMENT
+        value: production
+      - key: SEED_DEMO_DATA
+        value: "true"
+      - key: DEMO_SHOW_OTP          # show the code on screen (prototype). Set "false" once Brevo works.
+        value: "true"
+      - key: ALLOW_OTP_SIGNUP       # "Email code" sign-in creates an account for any new email
+        value: "true"
+      - key: EMAIL_PROVIDER
+        value: auto                  # brevo if BREVO_API_KEY is set, otherwise on-screen code
+      - key: BREVO_API_KEY
+        sync: false
+      - key: EMAIL_FROM_ADDRESS     # must be a verified sender in Brevo
+        sync: false
+      - key: DEMO_EXTRA_EMAIL       # optional: your own email, added as a demo login
+        sync: false
+      - key: DATABASE_URL           # optional: Neon Postgres URL for data that survives restarts
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: "*"
