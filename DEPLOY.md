@@ -1,4 +1,4 @@
-# Hosting the Meridian Investor Portal for free
+# Hosting the DataIntelligence Platform for free
 
 Two options. Pick **A** if you only need to click through the portal in a meeting.
 Pick **B** if you want the real backend (login → one-time code → JWT, documents stored on the server).
@@ -43,19 +43,19 @@ Sign in on the **Password** tab with any email and password, or on the **Email c
 ## B. Full stack on Render (free web service)
 
 ### 1. Put the code on GitHub
-1. Create a new **private** repository on GitHub (e.g. `meridian-portal`).
+1. Create a new **private** repository on GitHub (e.g. `dataintelligence-platform`).
 2. Upload the whole contents of this folder (`app/`, `frontend/`, `Dockerfile`, `render.yaml`, `requirements.txt`, `seed.py`, …).
    Do **not** upload a `.env` file.
    - Browser only: repository page → **Add file → Upload files** → drag everything in → **Commit**.
-   - Or with git: `git init && git add . && git commit -m "Meridian portal" && git branch -M main && git remote add origin https://github.com/<you>/meridian-portal.git && git push -u origin main`
+   - Or with git: `git init && git add . && git commit -m "DataIntelligence platform" && git branch -M main && git remote add origin https://github.com/<you>/dataintelligence-platform.git && git push -u origin main`
 
 ### 2. Deploy with the Blueprint
 1. Sign up at https://render.com with your GitHub account (no card needed for the free plan).
-2. **New → Blueprint** → connect the `meridian-portal` repository.
-3. Render reads `render.yaml` and proposes one free web service, `meridian-investor-portal`.
+2. **New → Blueprint** → connect the `dataintelligence-platform` repository.
+3. Render reads `render.yaml` and proposes one free web service, `dataintelligence-platform`.
    It asks for the optional values (`BREVO_API_KEY`, `EMAIL_FROM_ADDRESS`, `DEMO_EXTRA_EMAIL`, `DATABASE_URL`) — leave them **blank** for now.
 4. Click **Apply** / **Deploy Blueprint**. The first Docker build takes ~3–6 minutes.
-5. Open the URL Render shows (e.g. `https://meridian-investor-portal.onrender.com`).
+5. Open the URL Render shows (e.g. `https://dataintelligence-platform.onrender.com`).
    - Sign-in pill should read **Live API**.
    - **Password** tab: `j.whitfield@meridian.com` / `ChangeMe123!`.
    - **Email code** tab: enter your own email. Until step 3 is done, the code appears on screen instead of being emailed.

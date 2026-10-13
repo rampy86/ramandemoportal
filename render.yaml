@@ -2,7 +2,7 @@
 # Render dashboard → New → Blueprint → pick this repo → fill in the "sync: false" values.
 services:
   - type: web
-    name: meridian-investor-portal
+    name: dataintelligence-platform
     runtime: docker
     plan: free
     healthCheckPath: /health
