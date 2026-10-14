@@ -109,7 +109,7 @@ Uploaded *files* still live on the ephemeral disk. For durable files, set the `A
 ## C. (Optional) Frontend on Netlify + API on Render
 If you prefer the HTML on Netlify (always awake) and the API on Render:
 1. Do B (API) and A (HTML).
-2. In Render set `ALLOWED_ORIGINS` to your Netlify URL, e.g. `https://meridian-demo.netlify.app`.
+2. In Render set `ALLOWED_ORIGINS` to your Netlify URL, e.g. `https://dataintelligence-demo.netlify.app`.
 3. Either edit `CONFIG.API_BASE` at the top of the `<script>` in `index.html` to your Render URL and redeploy it, or open the Netlify site with `?api=https://<your-app>.onrender.com` appended.
    While the API wakes up, the sign-in pill shows "Waking up server…".
 

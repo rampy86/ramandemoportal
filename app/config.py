@@ -65,7 +65,7 @@ class Settings(BaseSettings):
 
     # ── Database ─────────────────────────────────────────
     # sqlite (default) or any Postgres URL, e.g. from Neon:  postgresql://user:pw@host/db?sslmode=require
-    DATABASE_URL: str = "sqlite+aiosqlite:///./meridian.db"
+    DATABASE_URL: str = "sqlite+aiosqlite:///./dataintelligence.db"
 
     # ── AWS S3 (document storage) ─────────────────────────
     AWS_ACCESS_KEY_ID: str = ""

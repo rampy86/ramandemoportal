@@ -27,7 +27,7 @@ The backend serves the portal at `/`, so the whole prototype runs as one web ser
 
 ```bash
 git clone <your-repo>
-cd meridian-backend
+cd ramandemoportal
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -136,11 +136,11 @@ Already done — `frontend/index.html` detects the backend automatically:
 
 1. **Push image to ECR:**
    ```bash
-   aws ecr create-repository --repository-name meridian-portal-api
+   aws ecr create-repository --repository-name dataintelligence-api
    aws ecr get-login-password | docker login --username AWS --password-stdin <account>.dkr.ecr.us-east-1.amazonaws.com
-   docker build -t meridian-portal-api .
-   docker tag meridian-portal-api:latest <account>.dkr.ecr.us-east-1.amazonaws.com/meridian-portal-api:latest
-   docker push <account>.dkr.ecr.us-east-1.amazonaws.com/meridian-portal-api:latest
+   docker build -t dataintelligence-api .
+   docker tag dataintelligence-api:latest <account>.dkr.ecr.us-east-1.amazonaws.com/dataintelligence-api:latest
+   docker push <account>.dkr.ecr.us-east-1.amazonaws.com/dataintelligence-api:latest
    ```
 
 2. **Create App Runner service** in AWS Console:
@@ -213,7 +213,7 @@ Already done — `frontend/index.html` detects the backend automatically:
 ## Project Structure
 
 ```
-meridian-backend/
+ramandemoportal/
 ├── frontend/
 │   └── index.html        ← Complete portal UI (demo + live modes)
 ├── app/
