@@ -30,7 +30,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database import get_db
-from app.email_service import send_mfa_email
+from app.email_service import last_email_error, send_mfa_email
 from app.models import AuditLog, Investor, InvestorStatus, OTPCode
 from app.schemas import (
     LoginRequest, MFARequest, MFASentResponse, OTPRequest, PasswordLoginRequest, SetPasswordRequest,
@@ -149,12 +149,14 @@ async def _issue_otp(db: AsyncSession, investor: Investor, request: Request,
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                             detail="Could not send the verification email. Please try again.")
 
+    reason = None if sent else (last_email_error() or "email could not be sent.")
     return MFASentResponse(
         message=("Verification code sent to your email address." if sent
-                 else "Email delivery is not configured — demo code shown on screen."),
+                 else "Email not sent — code shown on screen."),
         email_masked=_mask_email(investor.email),
         delivery="email" if sent else "console",
         demo_otp=otp if settings.DEMO_SHOW_OTP else None,
+        delivery_error=reason if settings.DEMO_SHOW_OTP else None,
     )
 
 

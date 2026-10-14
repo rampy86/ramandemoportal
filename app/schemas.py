@@ -61,6 +61,7 @@ class MFASentResponse(BaseModel):
     email_masked: str    # e.g. ra***@aithonsolutions.com
     delivery: str = "email"            # email | console
     demo_otp: Optional[str] = None     # only when DEMO_SHOW_OTP=true (prototype only)
+    delivery_error: Optional[str] = None   # why email failed — only when DEMO_SHOW_OTP=true
 
 
 class RefreshRequest(BaseModel):
