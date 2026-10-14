@@ -163,6 +163,7 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 .mfa-wrap .btn{height:42px;flex-shrink:0;font-size:0.8rem}
 .mfa-help{font-size:0.74rem;color:var(--muted);margin-top:6px;line-height:1.45}
 .mfa-help:empty{display:none}
+.mail-warn{display:block;margin-top:4px;padding:6px 9px;border-radius:7px;background:#FFF8EB;border:1px solid #F3D9A4;color:#7A4E00;font-size:0.72rem;line-height:1.45}
 .lbl-link{font-size:0.74rem;font-weight:500;color:var(--brand);background:none;border:none;cursor:pointer;font-family:inherit;padding:0}
 .lbl-link:hover{text-decoration:underline}
 .mfa-help strong{color:var(--brand-600)}
@@ -250,7 +251,7 @@ svg.i{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke
 
 /* CONTENT */
 .content{flex:1;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column}
-.content-inner{padding:1.6rem 2rem 2.5rem;max-width:1440px;width:100%;margin:0 auto;flex:1}
+.content-inner{padding:1.4rem 1.5rem 2.2rem;width:100%;flex:1}
 .content::-webkit-scrollbar{width:8px}
 .content::-webkit-scrollbar-thumb{background:#CBD3DE;border-radius:4px}
 .page{display:none}
@@ -807,12 +808,12 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
 
 /* FOOTER */
 .app-footer{background:var(--brand-ink);color:rgba(255,255,255,0.7);padding:1.6rem 2rem 1.4rem;flex-shrink:0}
-.foot-inner{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:1.5rem 2rem}
+.foot-inner{margin:0;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:1.5rem 2rem}
 .foot-inner p{font-size:0.78rem;line-height:1.6;margin-top:10px;max-width:320px}
 .foot-col h6{font-size:0.72rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
 .foot-col button{display:block;background:none;border:none;color:rgba(255,255,255,0.7);font-size:0.8rem;padding:3px 0;cursor:pointer;font-family:inherit;text-align:left}
 .foot-col button:hover{color:var(--mint)}
-.foot-bottom{max-width:1440px;margin:1.3rem auto 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:0.74rem;color:rgba(255,255,255,0.5)}
+.foot-bottom{margin:1.3rem 0 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:0.74rem;color:rgba(255,255,255,0.5)}
 
 #printArea{display:none}
 
@@ -1903,7 +1904,7 @@ async function sendPasswordMfa() {
       shown = d.demo_otp || null;
       $('mfaHelp').innerHTML = d.delivery === 'email'
         ? `Sent to <strong>${esc(d.email_masked)}</strong> · valid 10 min · check spam if it's not there.`
-        : 'Code shown below · valid 10 min.';
+        : `Code shown below · valid 10 min.${d.delivery_error ? `<span class="mail-warn">Email not sent: ${esc(d.delivery_error)}</span>` : ''}`;
     }
     Object.assign(pwMfa, { code: shown, email, expires: Date.now() + 10 * 60 * 1000 });
     $('loginMfa').value = ''; $('loginMfa').focus();
@@ -1973,7 +1974,7 @@ async function sendCode(email, isResend) {
     const d = await api('/api/auth/request-otp', { method: 'POST', body: { email }, auth: false });
     $('mfaSubText').innerHTML = d.delivery === 'email'
       ? `We've emailed a 6-digit code to <strong>${esc(d.email_masked)}</strong>. Not in your inbox? Check your spam or junk folder.`
-      : `Use the 6-digit code below to sign in as <strong>${esc(d.email_masked)}</strong>.`;
+      : `Use the 6-digit code below to sign in as <strong>${esc(d.email_masked)}</strong>.${d.delivery_error ? `<span class="mail-warn">Email not sent: ${esc(d.delivery_error)}</span>` : ''}`;
     $('mfaCodeHint').innerHTML = d.demo_otp ? `${label}: <strong>${esc(d.demo_otp)}</strong>` : '';
   }
   state.otpExpires = Date.now() + 10 * 60 * 1000;

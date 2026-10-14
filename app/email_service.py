@@ -128,6 +128,21 @@ def _build_plain_mfa(recipient_name: str, otp_code: str, expire_minutes: int) ->
 
 # ── Send function ────────────────────────────────────────────────────────────
 
+_last_error: str | None = None
+
+
+def last_email_error() -> str | None:
+    """Plain-language reason the most recent send failed (None after a success)."""
+    return _last_error
+
+
+def _fail(reason: str) -> bool:
+    global _last_error
+    _last_error = reason
+    logger.error("Email not sent: %s", reason)
+    return False
+
+
 def send_mfa_email(recipient_email: str, recipient_name: str, otp_code: str) -> bool:
     """
     Sends the MFA OTP using the configured provider.
@@ -136,6 +151,8 @@ def send_mfa_email(recipient_email: str, recipient_name: str, otp_code: str) -> 
     subject, html_body = _build_mfa_email(recipient_name, otp_code, settings.OTP_EXPIRE_MINUTES)
     plain_body = _build_plain_mfa(recipient_name, otp_code, settings.OTP_EXPIRE_MINUTES)
     provider = settings.email_provider
+    global _last_error
+    _last_error = None
 
     if provider == "brevo":
         return _send_brevo(recipient_email, recipient_name, subject, html_body, plain_body)
@@ -144,14 +161,15 @@ def send_mfa_email(recipient_email: str, recipient_name: str, otp_code: str) -> 
 
     # console
     logger.warning("EMAIL_PROVIDER=console — OTP for %s is %s (not emailed)", recipient_email, otp_code)
-    return False
+    return _fail("email sending isn't set up on the server — add BREVO_API_KEY and EMAIL_FROM_ADDRESS in Render → Environment.")
 
 
 def _send_brevo(recipient_email: str, recipient_name: str, subject: str,
                 html_body: str, plain_body: str) -> bool:
-    if not settings.BREVO_API_KEY or not settings.email_from:
-        logger.error("Brevo selected but BREVO_API_KEY or EMAIL_FROM_ADDRESS is missing")
-        return False
+    if not settings.BREVO_API_KEY:
+        return _fail("BREVO_API_KEY is not set on the server.")
+    if not settings.email_from:
+        return _fail("EMAIL_FROM_ADDRESS is not set — use the sender address you verified in Brevo.")
     payload = {
         "sender": {"name": settings.EMAIL_FROM_NAME, "email": settings.email_from},
         "to": [{"email": recipient_email, "name": recipient_name}],
@@ -160,7 +178,7 @@ def _send_brevo(recipient_email: str, recipient_name: str, subject: str,
         "textContent": plain_body,
     }
     req = urllib.request.Request(
-        "https://api.brevo.com/v3/smtp/email",
+        settings.BREVO_API_URL,
         data=json.dumps(payload).encode(),
         headers={
             "api-key": settings.BREVO_API_KEY,
@@ -174,13 +192,34 @@ def _send_brevo(recipient_email: str, recipient_name: str, subject: str,
             ok = 200 <= resp.status < 300
         if ok:
             logger.info(f"MFA email sent via Brevo → {recipient_email}")
-        return ok
+            return True
+        return _fail(f"Brevo answered with status {resp.status}.")
     except urllib.error.HTTPError as exc:
-        logger.error(f"Brevo API error {exc.code}: {exc.read()[:300]!r}")
-        return False
+        return _fail(_brevo_reason(exc.code, exc.read()[:500]))
     except Exception as exc:
-        logger.error(f"Brevo send failed for {recipient_email}: {exc}")
-        return False
+        return _fail(f"could not reach Brevo ({exc}).")
+
+
+def _brevo_reason(status: int, raw: bytes) -> str:
+    """Turn a Brevo error response into a fix the operator can act on."""
+    try:
+        body = json.loads(raw or b"{}")
+        msg = str(body.get("message") or body.get("code") or "").strip()
+    except ValueError:
+        msg = raw.decode(errors="replace").strip()
+    low = msg.lower()
+    if "ip" in low and ("unrecognised" in low or "unrecognized" in low or "authori" in low):
+        hint = "In Brevo → Settings → Security → Authorised IPs, turn off IP blocking (Render's IP changes)."
+    elif status == 401 or "key" in low:
+        hint = "Check BREVO_API_KEY — create a new API key under Brevo → SMTP & API → API keys."
+    elif "sender" in low:
+        hint = f"Verify {settings.email_from} as a sender in Brevo → Senders, domains & dedicated IPs."
+    elif "not activated" in low or "account" in low:
+        hint = "Your Brevo account isn't activated for transactional email yet — complete activation in Brevo."
+    else:
+        hint = "See the Brevo dashboard for details."
+    return f"Brevo error {status}{': ' + msg if msg else ''}. {hint}"
+
 
 
 def _send_smtp(recipient_email: str, subject: str, html_body: str, plain_body: str) -> bool:
@@ -204,11 +243,8 @@ def _send_smtp(recipient_email: str, subject: str, html_body: str, plain_body: s
         logger.info(f"MFA email sent → {recipient_email}")
         return True
     except smtplib.SMTPAuthenticationError:
-        logger.error("SMTP authentication failed — check SMTP_USER and SMTP_PASSWORD (use Gmail App Password)")
-        return False
+        return _fail("SMTP login failed — check SMTP_USER and SMTP_PASSWORD (use a Gmail App Password).")
     except smtplib.SMTPRecipientsRefused:
-        logger.error(f"Recipient refused: {recipient_email}")
-        return False
+        return _fail(f"the mail server refused {recipient_email}.")
     except Exception as exc:
-        logger.error(f"Failed to send MFA email to {recipient_email}: {exc}")
-        return False
+        return _fail(f"SMTP failed ({exc}). Render's free plan blocks SMTP — use Brevo instead.")

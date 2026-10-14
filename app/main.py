@@ -63,6 +63,7 @@ async def health_check():
         "status": "ok",
         "service": "meridian-portal-api",
         "email_provider": settings.email_provider,
+        "email_from_set": bool(settings.email_from),
         "demo_otp": settings.DEMO_SHOW_OTP,
     }
 

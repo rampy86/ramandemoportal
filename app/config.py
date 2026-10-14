@@ -5,6 +5,7 @@ Never hard-code credentials. See .env.example for required variables.
 import json
 from typing import List
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -57,6 +58,7 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = ""                 # Gmail App Password (not your login password)
 
     BREVO_API_KEY: str = ""
+    BREVO_API_URL: str = "https://api.brevo.com/v3/smtp/email"
 
     EMAIL_FROM_NAME: str = "DataIntelligence Support"
     EMAIL_FROM_ADDRESS: str = ""           # Defaults to SMTP_USER if blank (must be a verified sender for Brevo)
@@ -85,6 +87,12 @@ class Settings(BaseSettings):
         else:
             items = v.split(",")
         return [o.strip().rstrip("/") for o in items if o and o.strip()]
+
+    # Values pasted into a hosting dashboard often carry stray spaces or quotes
+    @field_validator("BREVO_API_KEY", "EMAIL_FROM_ADDRESS", "SMTP_USER", "SMTP_PASSWORD", "EMAIL_PROVIDER", mode="before")
+    @classmethod
+    def _trim(cls, v):
+        return v.strip().strip('"').strip("'").strip() if isinstance(v, str) else v
 
     @property
     def email_from(self) -> str:

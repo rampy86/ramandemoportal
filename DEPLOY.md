@@ -77,6 +77,19 @@ Render's free tier **blocks outbound SMTP (ports 25/465/587)**, so the Gmail SMT
 
 > The seeded demo account is `rampy007@gmail.com`, so once Brevo is on its sign-in codes arrive in that inbox.
 
+#### Codes not arriving? Check the message under the code field
+While `DEMO_SHOW_OTP=true`, the login screen shows *why* an email wasn't sent, in an amber box under the code. Typical fixes:
+
+| Message | Fix |
+|---|---|
+| Email sending isn't set up on the server | In Render → **dataintelligence-platform** → **Environment**, add `BREVO_API_KEY` and `EMAIL_FROM_ADDRESS`, then redeploy. Settings on the old service are **not** copied to the renamed one. |
+| Brevo error 401 … unrecognised IP address | Brevo → **Settings → Security → Authorised IPs** → turn off IP blocking. Render's outgoing IP changes, so allow-listing one IP doesn't last. |
+| Brevo error 401 … Key not found | Create a new key under **SMTP & API → API keys** and paste it into `BREVO_API_KEY`. |
+| EMAIL_FROM_ADDRESS is not set / Sender is not valid | Set `EMAIL_FROM_ADDRESS` to an address verified under **Senders, domains & dedicated IPs** (e.g. `rampy007@gmail.com`, verified by clicking Brevo's confirmation email). |
+
+Open `https://<your-app>.onrender.com/health` to confirm: it should show `"email_provider": "brevo"` and `"email_from_set": true`.
+
+
 ### 4. (Optional) Keep data across restarts — Neon Postgres
 Free Render services have an **ephemeral disk**: the SQLite database and uploaded files are wiped whenever the service sleeps, restarts, or redeploys. The demo investors and sample documents are recreated automatically on every start, so the demo always works — only *new uploads* disappear.
 
