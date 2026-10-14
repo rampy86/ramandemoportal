@@ -304,77 +304,126 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 
 /* DASHBOARD */
 .dash{display:flex;flex-direction:column;gap:16px;width:100%}
-.dash-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.dash-top h2{font-size:1.15rem;font-weight:700;letter-spacing:-0.02em;line-height:1.25}
-.dash-top p{font-size:0.8rem;color:var(--muted);margin-top:1px}
-.dash-actions{display:flex;gap:6px}
-.icon-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.icon-btn.primary:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:0.7rem 0.9rem;display:flex;gap:10px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;min-width:0}
-.kpi:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-1px)}
-.kpi .metric-icon{width:32px;height:32px;border-radius:9px}
-.kpi .metric-icon svg.i{width:17px;height:17px}
+
+/* Hero band — greeting + KPI tiles on the brand ink */
+.dash-hero{position:relative;overflow:hidden;border-radius:16px;padding:14px 18px 16px;color:#fff;background:linear-gradient(120deg,#06232A 0%,var(--brand-ink) 42%,#0C5A5A 100%);box-shadow:0 10px 30px rgba(10,46,54,0.18)}
+.dash-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:36px 36px;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 55%);mask-image:linear-gradient(90deg,transparent 0%,#000 55%);pointer-events:none}
+.dash-hero::after{content:'';position:absolute;right:-90px;top:-140px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(25,194,168,0.28),transparent 70%);pointer-events:none}
+.dash-hero>*{position:relative;z-index:1}
+.dash-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:12px}
+.dash-top h2{font-size:1.3rem;font-weight:700;letter-spacing:-0.025em;line-height:1.25;color:#fff}
+.dash-top p{font-size:0.8rem;color:rgba(255,255,255,0.62);margin-top:2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dash-top p .hero-live{display:inline-flex;align-items:center;gap:6px;font-size:0.72rem;font-weight:600;color:#fff;background:rgba(224,67,90,0.22);border:1px solid rgba(255,138,155,0.4);border-radius:20px;padding:1px 9px 1px 7px;cursor:pointer;font-family:inherit}
+.dash-top p .hero-live:hover{background:rgba(224,67,90,0.34)}
+.dash-top p .hero-live i{width:6px;height:6px;border-radius:50%;background:#FF8A9B;animation:pulse 1.2s infinite}
+.dash-actions{display:flex;gap:8px}
+.dash-hero .icon-btn{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.16);color:#fff}
+.dash-hero .icon-btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.3);color:#fff}
+.dash-hero .icon-btn.primary{background:var(--mint);border-color:var(--mint);color:var(--brand-ink)}
+.dash-hero .icon-btn.primary:hover{background:#3AD3BC;border-color:#3AD3BC;color:var(--brand-ink)}
+
+/* KPI tiles (glass, on the hero) */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.kpi{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.11);border-radius:12px;padding:0.65rem 0.85rem;display:flex;gap:11px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;color:#fff;transition:background .15s,border-color .15s,transform .15s;position:relative;min-width:0;backdrop-filter:blur(6px)}
+.kpi:hover{background:rgba(255,255,255,0.11);border-color:rgba(25,194,168,0.55);transform:translateY(-2px)}
+.kpi .metric-icon{width:36px;height:36px;border-radius:10px;background:rgba(25,194,168,0.16);color:var(--mint)}
+.kpi .metric-icon svg.i{width:18px;height:18px}
+.kpi .metric-icon.violet{background:rgba(124,92,224,0.24);color:#B9A7F5}
+.kpi .metric-icon.green{background:rgba(22,163,74,0.22);color:#6EE7A0}
+.kpi .metric-icon.amber{background:rgba(232,155,12,0.2);color:#FCC862}
+.kpi .metric-icon.blue{background:rgba(59,130,246,0.22);color:#93BBFB}
+.kpi .metric-icon.rose{background:rgba(224,67,90,0.22);color:#FF8A9B}
 .kpi-body{min-width:0;flex:1}
-.kpi-label{font-size:0.7rem;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi-val{font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2}
-.kpi-sub{font-size:0.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi-sub b{color:var(--brand-600);font-weight:600}
-.kpi-sub b.red{color:var(--rose)}
-.kpi .go{position:absolute;right:9px;top:9px;color:#C2CBD7;width:13px;height:13px;transition:color .15s}
-.kpi:hover .go{color:var(--brand)}
+.kpi-label{font-size:0.7rem;color:rgba(255,255,255,0.62);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-val{font-size:1.45rem;font-weight:700;color:#fff;letter-spacing:-0.03em;line-height:1.15;font-variant-numeric:tabular-nums}
+.kpi-sub{font-size:0.68rem;color:rgba(255,255,255,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-sub b{color:var(--mint);font-weight:600}
+.kpi-sub b.red{color:#FF8A9B}
+.kpi .go{position:absolute;right:9px;top:9px;color:rgba(255,255,255,0.3);width:13px;height:13px;transition:color .15s}
+.kpi:hover .go{color:var(--mint)}
 .metric-icon.rose{background:#FDECEF;color:var(--rose)}
 .metric-icon.green{background:#E8F7EE;color:var(--green)}
+
+/* Dashboard cards */
 .dash-grid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(240px,1fr);gap:16px}
-.dash .card{display:flex;flex-direction:column;min-height:0;padding:1rem 1.2rem}
-.dash .card-title{font-size:0.88rem;margin-bottom:0.7rem}
-.dash .card-title small{font-size:0.74rem;font-weight:400;color:var(--muted);margin-left:6px}
-.dash .feed-logo{width:30px;height:30px;font-size:0.6rem;border-radius:7px}
+.dash .card{display:flex;flex-direction:column;min-height:0;padding:1rem 1.15rem 0.9rem;border-radius:14px;border-color:#E6EBF1;box-shadow:0 1px 2px rgba(15,27,45,0.04),0 8px 24px -12px rgba(15,27,45,0.10)}
+.dash .card-title{font-size:0.9rem;margin-bottom:0.55rem;padding-bottom:0.6rem;border-bottom:1px solid var(--line-2)}
+.dash .card-title>span:first-child{display:flex;align-items:center;gap:10px;min-width:0}
+.dash .card-title small{font-size:0.74rem;font-weight:400;color:var(--muted);margin-left:2px}
+.dash .card-title .link{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--brand-50);color:var(--brand-600);font-size:0.74rem;font-weight:600;white-space:nowrap;transition:background .15s}
+.dash .card-title .link:hover{background:var(--brand-100);text-decoration:none}
+.ct-ic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--brand-50);color:var(--brand)}
+.ct-ic svg.i{width:16px;height:16px}
+.ct-ic.violet{background:#F1EDFD;color:var(--violet)}
+.ct-ic.ai{background:linear-gradient(135deg,var(--mint),var(--violet));color:#fff}
+.ct-ic.blue{background:#EAF2FE;color:var(--blue)}
+.dash .feed-logo{width:32px;height:32px;font-size:0.58rem;border-radius:9px}
 .dash .feed-title{font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dash .feed-meta{margin-top:2px;font-size:0.72rem}
+.dash .feed-meta{margin-top:3px;font-size:0.72rem}
 .scroll-y{flex:1;min-height:0;overflow-y:auto;margin-right:-6px;padding-right:6px}
 .scroll-y::-webkit-scrollbar{width:6px}
 .scroll-y::-webkit-scrollbar-thumb{background:#D5DCE5;border-radius:3px}
-.dash .feed-item{padding:8px 0;align-items:center}
+.dash .feed-item{padding:8px 8px;margin:0 -8px;align-items:center;border-radius:10px;border-bottom:none;transition:background .15s}
+.dash .feed-item+.feed-item{margin-top:2px}
+.dash .feed-item:hover{background:#F4F7FA}
 .dash .chart-box{flex:1;min-height:160px;height:auto}
 .card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;margin-top:8px;border-top:1px solid var(--line-2);font-size:0.76rem;color:var(--muted)}
 .card-foot .link{font-size:0.78rem}
 
-/* Upcoming earnings (prominent) */
-.ue-card{border-top:3px solid var(--brand)}
-.ue-live{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;background:#FEF2F3;border:1px solid #F9CDD3;margin-bottom:6px;cursor:pointer;transition:border-color .15s}
-.ue-live:hover{border-color:var(--rose)}
+/* Upcoming earnings */
+.ue-live{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:linear-gradient(90deg,#FEF2F3,#FFF8F8);border:1px solid #F9CDD3;margin-bottom:6px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.ue-live:hover{border-color:var(--rose);box-shadow:0 4px 14px -6px rgba(224,67,90,0.35)}
 .ue-live svg{color:var(--rose)}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0;animation:pulse 1.2s infinite;display:inline-block}
 .live-pill{display:inline-flex;align-items:center;gap:5px;font-size:0.64rem;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--rose);border-radius:4px;padding:2px 7px;flex-shrink:0}
 .live-pill i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
-.ue-item{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line-2)}
-.ue-item:last-child{border-bottom:none}
-.ue-date{width:46px;flex-shrink:0;border-radius:9px;border:1px solid var(--brand-100);overflow:hidden;text-align:center;background:#fff}
-.ue-date span{display:block;background:var(--brand);color:#fff;font-size:0.58rem;font-weight:700;letter-spacing:.08em;padding:2px 0}
-.ue-date b{display:block;font-size:1.05rem;color:var(--ink);padding:1px 0 2px;line-height:1.2}
+.ue-item{display:flex;align-items:center;gap:12px;padding:7px 8px;margin:0 -8px;border-radius:10px;transition:background .15s}
+.ue-item+.ue-item{margin-top:2px}
+.ue-item:hover{background:#F4F7FA}
+.ue-date{width:44px;flex-shrink:0;border-radius:10px;text-align:center;background:var(--brand-50);padding:4px 0 3px}
+.ue-date span{display:block;color:var(--brand-600);font-size:0.56rem;font-weight:700;letter-spacing:.1em;line-height:1.3}
+.ue-date b{display:block;font-size:1.08rem;color:var(--ink);line-height:1.15;font-variant-numeric:tabular-nums}
 .ue-body{flex:1;min-width:0;cursor:pointer}
 .ue-body:hover .ue-co{color:var(--brand-600)}
 .ue-co{font-size:0.84rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ue-meta{font-size:0.72rem;color:var(--muted);margin-top:1px}
+.ue-co .tk{color:var(--muted);font-weight:500;font-size:0.76rem;margin-left:2px}
+.ue-meta{font-size:0.72rem;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .ue-meta b{color:var(--brand-600);font-weight:600}
+.ue-when{font-size:0.68rem;font-weight:600;color:var(--brand-600);background:var(--brand-50);border-radius:20px;padding:1px 8px;white-space:nowrap}
+.ue-when.soon{color:#9A6200;background:#FEF5E4}
 .remind-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s}
 .remind-btn:hover,.remind-btn.on{border-color:var(--brand);color:var(--brand);background:var(--brand-50)}
 .remind-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 .remind-btn.on svg{fill:currentColor}
 
 /* Smart summary actions */
-.ai-acts{list-style:none;display:flex;flex-direction:column;gap:4px}
-.ai-acts button{width:100%;display:flex;gap:10px;align-items:center;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:8px 8px;font-family:inherit;font-size:0.8rem;line-height:1.45;color:var(--ink-2);cursor:pointer;transition:all .15s}
-.ai-acts button:hover{background:#fff;border-color:var(--brand-100);box-shadow:var(--shadow-sm)}
+.dash .ai-card{background:linear-gradient(170deg,#F2FBF9 0%,#FFFFFF 45%) padding-box,linear-gradient(135deg,rgba(25,194,168,0.65),rgba(124,92,224,0.45)) border-box;border:1px solid transparent}
+.ai-acts{list-style:none;display:flex;flex-direction:column;gap:2px}
+.ai-acts button{width:100%;display:flex;gap:11px;align-items:center;text-align:left;background:none;border:1px solid transparent;border-radius:10px;padding:8px 8px;font-family:inherit;font-size:0.8rem;line-height:1.45;color:var(--ink-2);cursor:pointer;transition:all .15s}
+.ai-acts button:hover{background:#fff;border-color:var(--brand-100);box-shadow:0 4px 14px -8px rgba(14,140,127,0.35)}
 .ai-acts button b{color:var(--ink)}
-.ai-acts .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0}
+.ai-acts .num{width:22px;height:22px;border-radius:7px;background:#fff;border:1px solid var(--brand-100);color:var(--brand-600);font-size:0.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-variant-numeric:tabular-nums}
+.ai-acts button:hover .num{background:var(--brand);border-color:var(--brand);color:#fff}
 .ai-acts .chev{color:#B6C1CE;flex-shrink:0;width:15px;height:15px;transition:color .15s,transform .15s}
 .ai-acts button:hover .chev{color:var(--brand);transform:translateX(2px)}
-.ai-acts li+li{border-top:1px solid rgba(14,140,127,0.08)}
 .ai-acts .txt{flex:1;min-width:0}
-.ai-acts .act{display:block;font-size:0.7rem;font-weight:600;color:var(--brand-600);margin-top:2px;opacity:.7;transition:opacity .15s}
+.ai-acts .act{display:block;font-size:0.68rem;font-weight:600;color:var(--brand-600);margin-top:1px;opacity:.65;transition:opacity .15s}
 .ai-acts button:hover .act{opacity:1}
+
+/* M&A pipeline — one row per stage, bar length = deal value */
+.dpipe{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px}
+.dp-total{display:flex;align-items:baseline;gap:10px}
+.dp-total b{font-size:1.6rem;font-weight:700;letter-spacing:-0.03em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.dp-total span{font-size:0.76rem;color:var(--muted)}
+.dp-rows{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:2px;min-height:0}
+.dp-row{display:grid;grid-template-columns:132px 1fr 64px;align-items:center;gap:12px;padding:6px 8px;margin:0 -8px;border:none;background:none;border-radius:9px;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s}
+.dp-row:hover{background:#F4F7FA}
+.dp-lbl{font-size:0.8rem;font-weight:500;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dp-lbl small{color:var(--muted);font-weight:400;margin-left:4px;font-size:0.72rem}
+.dp-track{height:12px;border-radius:4px;background:#F0F3F7;overflow:hidden}
+.dp-fill{height:100%;border-radius:4px;min-width:4px;transition:width .6s cubic-bezier(.2,.8,.2,1),filter .15s}
+.dp-row:hover .dp-fill{filter:brightness(1.08)}
+.dp-val{font-size:0.8rem;font-weight:600;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
 
 /* Watchlist */
 .wl-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
@@ -462,9 +511,10 @@ body.on-dash .app-footer{padding:9px 24px}
   .dash-grid{grid-template-columns:1fr;grid-auto-rows:auto}
   .scroll-y{max-height:360px}
   .dash .chart-box{height:230px;flex:none}
+  .dp-rows{gap:4px}
   .ex-grid{grid-template-columns:1fr}
 }
-@media(max-width:560px){ .kpi-row{grid-template-columns:1fr 1fr} .kpi .metric-icon{display:none} .kpi-label,.kpi-sub{white-space:normal} .wl-grid{grid-template-columns:1fr} }
+@media(max-width:560px){ .kpi-row{grid-template-columns:1fr 1fr;gap:8px} .kpi .metric-icon{display:none} .kpi-label,.kpi-sub{white-space:normal} .wl-grid{grid-template-columns:1fr} .dash-hero{padding:14px 14px 14px;border-radius:14px} .dash-top h2{font-size:1.15rem} .dp-row{grid-template-columns:104px 1fr 56px;gap:8px} }
 
 .chip{height:28px;padding:0 12px;border-radius:20px;font-size:0.78rem;font-family:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .chip:hover{border-color:var(--brand);color:var(--brand-600)}
@@ -574,6 +624,8 @@ body.on-dash .app-footer{padding:9px 24px}
 .icon-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-50)}
 .icon-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
 .icon-btn[disabled]{opacity:0.5;cursor:wait}
+.icon-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.icon-btn.primary:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
 .empty-state{color:var(--muted);font-size:0.86rem;padding:2.2rem 1rem;text-align:center}
 
 /* EARNINGS CALL CARDS */
@@ -1039,34 +1091,38 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
     <!-- ─── DASHBOARD ─── -->
     <section class="page active" id="page-dashboard">
       <div class="dash">
-        <div class="dash-top">
-          <div>
-            <h2 id="greeting">Good morning, James.</h2>
-            <p>Your coverage at a glance · <span id="asOf">Oct 13, 2026</span></p>
+        <div class="dash-hero">
+          <div class="dash-top">
+            <div>
+              <h2 id="greeting">Good morning, James.</h2>
+              <p><span>Your coverage at a glance · <span id="asOf">Oct 13, 2026</span></span><span id="heroLive"></span></p>
+            </div>
+            <div class="dash-actions">
+              <button class="icon-btn" title="Export dashboard as PDF" aria-label="Export PDF" onclick="printReport('summary','Q3 2026')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+              <button class="icon-btn primary" title="Upload document" aria-label="Upload document" onclick="openUpload()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
+            </div>
           </div>
-          <div class="dash-actions">
-            <button class="icon-btn" title="Export dashboard as PDF" aria-label="Export PDF" onclick="printReport('summary','Q3 2026')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
-            <button class="icon-btn primary" title="Upload document" aria-label="Upload document" onclick="openUpload()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
-          </div>
+          <div class="kpi-row" id="kpiRow"></div>
         </div>
-
-        <div class="kpi-row" id="kpiRow"></div>
 
         <div class="dash-grid">
           <div class="card ue-card">
-            <div class="card-title">Upcoming earnings calls <button class="link" onclick="setCallFilter('all');navTo('earnings')">All calls →</button></div>
+            <div class="card-title"><span><span class="ct-ic violet"><svg class="i" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></span>Upcoming earnings calls</span><button class="link" onclick="setCallFilter('all');navTo('earnings')">All calls <svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>
             <div class="scroll-y" id="upcomingList"></div>
           </div>
           <div class="card ai-card">
-            <div class="card-title">Smart summary <span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI</span></div>
+            <div class="card-title"><span><span class="ct-ic ai"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg></span>Smart summary <small>AI briefing</small></span><span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI</span></div>
             <ul class="ai-acts scroll-y" id="aiList"></ul>
           </div>
           <div class="card">
-            <div class="card-title"><span>M&amp;A pipeline <small id="pipeTotal"></small></span><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Deal tracker →</button></div>
-            <div class="chart-box"><canvas id="dealStageChart" aria-label="Deal value by stage — click a bar to open those deals"></canvas></div>
+            <div class="card-title"><span><span class="ct-ic"><svg class="i" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>M&amp;A pipeline</span><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Deal tracker <svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>
+            <div class="dpipe">
+              <div class="dp-total"><b id="pipeValue"></b><span id="pipeTotal"></span></div>
+              <div class="dp-rows" id="pipeRows" role="list" aria-label="Deal value by stage — select a stage to open those deals"></div>
+            </div>
           </div>
           <div class="card">
-            <div class="card-title"><span>Your watchlist <small id="wlSummary"></small></span><button class="link" onclick="openWatchlist()">Manage</button></div>
+            <div class="card-title"><span><span class="ct-ic blue"><svg class="i" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>Your watchlist <small id="wlSummary"></small></span><button class="link" onclick="openWatchlist()">Manage</button></div>
             <div class="scroll-y" id="feedList"></div>
           </div>
         </div>
@@ -2561,8 +2617,8 @@ function renderUpcoming() {
   }).join('') + up.map(e => {
     const d = day(e.date), n = Math.round((d - today) / 86400000);
     return `<div class="ue-item"><div class="ue-date"><span>${d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</span><b>${d.getDate()}</b></div>
-      <div class="ue-body" data-call="${e.id}"><div class="ue-co">${esc(coName(e.tk))} <span style="color:var(--muted);font-weight:500">${esc(e.tk)}</span></div>
-      <div class="ue-meta">${esc(e.q)} · ${esc(e.time || '08:30 ET')} · <b>${n <= 0 ? 'today' : 'in ' + n + ' day' + (n === 1 ? '' : 's')}</b></div></div>
+      <div class="ue-body" data-call="${e.id}"><div class="ue-co">${esc(coName(e.tk))} <span class="tk">${esc(e.tk)}</span></div>
+      <div class="ue-meta"><span>${esc(e.q)} · ${esc(e.time || '08:30 ET')}</span><span class="ue-when ${n <= 3 ? 'soon' : ''}">${n <= 0 ? 'Today' : 'in ' + n + ' day' + (n === 1 ? '' : 's')}</span></div></div>
       <button class="remind-btn ${rem.includes(e.id) ? 'on' : ''}" data-remind="${e.id}" title="${rem.includes(e.id) ? 'Reminder set' : 'Remind me'}" aria-label="Remind me about ${esc(coName(e.tk))}">${SVG.remind}</button></div>`;
   }).join('');
 }
@@ -2585,7 +2641,7 @@ const AI_ITEMS = [
   { html: '<b>Apex TechCo</b> beat and raised; Northbridge lifts its price target to <b>$245</b>.', act: 'Read research', go: () => openResearch('r1') },
 ];
 function renderAi() {
-  $('aiList').innerHTML = AI_ITEMS.map((a, i) => `<li><button data-ai="${i}" title="${esc(a.act)}"><span class="dot"></span><span class="txt">${a.html}</span><svg class="i chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button></li>`).join('');
+  $('aiList').innerHTML = AI_ITEMS.map((a, i) => `<li><button data-ai="${i}" title="${esc(a.act)}"><span class="num">${i + 1}</span><span class="txt">${a.html}<span class="act">${esc(a.act)} →</span></span><svg class="i chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button></li>`).join('');
 }
 $('aiList').addEventListener('click', e => { const b = e.target.closest('[data-ai]'); if (b) AI_ITEMS[+b.dataset.ai].go(); });
 
@@ -2640,9 +2696,27 @@ function saveWatchlist() {
 
 function renderDashboard() {
   const deals = openDeals();
-  $('pipeTotal').textContent = `${deals.length} open · ${bn(deals.reduce((a, d) => a + d.value, 0))}`;
-  renderKpis(); renderUpcoming(); renderAi(); renderWatchFeed();
+  $('pipeValue').textContent = bn(deals.reduce((a, d) => a + d.value, 0));
+  $('pipeTotal').textContent = `across ${deals.length} open deal${deals.length === 1 ? '' : 's'}`;
+  const live = EARNINGS.filter(e => e.status === 'live');
+  $('heroLive').innerHTML = live.length ? `<button class="hero-live" data-tr="${live[0].tr}" title="Open live transcript"><i></i>${esc(coName(live[0].tk))} is live now</button>` : '';
+  renderKpis(); renderUpcoming(); renderAi(); renderPipeline(); renderWatchFeed();
 }
+
+// M&A pipeline — bar length is deal value; stages run light → dark teal in deal order
+const PIPE_SHADES = ['#8FDCCF', '#4FC4B0', '#19A893', '#0E8C7F', '#0A5F57'];
+function renderPipeline() {
+  const rows = STAGES.map(([s], i) => {
+    const ds = DEALS.filter(d => d.stage === s);
+    return { s, i, n: ds.length, v: ds.reduce((a, d) => a + d.value, 0) };
+  });
+  const max = Math.max(...rows.map(r => r.v), 1);
+  $('pipeRows').innerHTML = rows.map(r => `<button class="dp-row" role="listitem" data-stage="${esc(r.s)}" title="${esc(r.s)}: ${bn(r.v)} · ${r.n} deal${r.n === 1 ? '' : 's'} — open in Deal Tracker">
+    <span class="dp-lbl">${esc(r.s)}<small>${r.n}</small></span>
+    <span class="dp-track"><span class="dp-fill" style="display:block;width:${(r.v / max * 100).toFixed(1)}%;background:${PIPE_SHADES[r.i]}"></span></span>
+    <span class="dp-val">${bn(r.v)}</span></button>`).join('');
+}
+$('pipeRows').addEventListener('click', e => { const r = e.target.closest('[data-stage]'); if (r) { state.dealStage = r.dataset.stage; navTo('deals'); renderDeals(); } });
 
 // One delegated handler for clickable cards/rows anywhere in the app
 document.addEventListener('click', e => {
@@ -3473,16 +3547,6 @@ function initCharts() {
   const defaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip },
     scales: { x: { grid: { display: false }, border: { color: '#E3E8EF' }, ticks: { color: textColor, font: { size: 11 } } }, y: { grid: { color: gridColor }, border: { display: false }, ticks: { color: textColor, font: { size: 11 } } } } };
   const quarters = ["Q4'24", "Q1'25", "Q2'25", "Q3'25", "Q4'25", "Q1'26", "Q2'26", "Q3'26"];
-
-  // Dashboard: deal value by stage — click a bar to open the Deal Tracker filtered to that stage
-  const stageVal = STAGES.map(([s]) => +DEALS.filter(d => d.stage === s).reduce((a, d) => a + d.value, 0).toFixed(1));
-  const stageCnt = STAGES.map(([s]) => DEALS.filter(d => d.stage === s).length);
-  new Chart($('dealStageChart'), { type: 'bar', data: { labels: STAGES.map(s => s[0].split(' ')), datasets: [{ label: 'Deal value ($B)', data: stageVal, backgroundColor: [slate, blue, violet, teal, green], borderRadius: 5, maxBarThickness: 48 }] },
-    options: { ...defaults,
-      onClick: (ev, els) => { if (els.length) { state.dealStage = STAGES[els[0].index][0]; navTo('deals'); renderDeals(); } },
-      onHover: (ev, els) => { ev.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
-      plugins: { legend: { display: false }, tooltip: { ...tooltip, callbacks: { label: c => ` ${bn(c.parsed.y)} · ${stageCnt[c.dataIndex]} deal${stageCnt[c.dataIndex] === 1 ? '' : 's'}`, footer: () => 'Click to open in Deal Tracker' } } },
-      scales: { x: { ...defaults.scales.x, ticks: { ...defaults.scales.x.ticks, font: { size: 10 } } }, y: { ...defaults.scales.y, ticks: { ...defaults.scales.y.ticks, callback: v => '$' + v + 'B' } } } } });
 
   new Chart($('navChart'), { type: 'line', data: { labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'], datasets: [{ label: 'Portfolio NAV ($M)', data: [18, 22, 28, 32, 38, 44, 54, 61.2], fill: true, backgroundColor: 'rgba(14,140,127,0.08)', borderColor: teal, borderWidth: 2, pointBackgroundColor: teal, pointRadius: 3, tension: 0.35 }] }, options: defaults });
 
