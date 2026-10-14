@@ -61,7 +61,7 @@ app.include_router(documents.router, prefix="/api/documents", tags=["Documents"]
 async def health_check():
     return {
         "status": "ok",
-        "service": "meridian-portal-api",
+        "service": "dataintelligence-api",
         "email_provider": settings.email_provider,
         "email_from_set": bool(settings.email_from),
         "demo_otp": settings.DEMO_SHOW_OTP,

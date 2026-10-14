@@ -1772,7 +1772,7 @@ async function detectMode() {
     try {
       const r = await fetchTimeout(base + '/health', {}, explicit ? 20000 : 4000);
       const j = await r.json();
-      if (j && j.service === 'meridian-portal-api') return setMode('live', base, j);
+      if (j && j.service === 'dataintelligence-api') return setMode('live', base, j);
       break;
     } catch {
       if (!explicit) break;
