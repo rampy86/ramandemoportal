@@ -303,100 +303,108 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 .chart-box.lg{height:260px}
 
 /* DASHBOARD */
-.dash{display:flex;flex-direction:column;gap:14px;width:100%}
-.dash-hero{display:grid;grid-template-columns:minmax(220px,0.9fr) minmax(380px,1.7fr) auto;gap:24px;align-items:center;background:linear-gradient(110deg,#FFFFFF 0%,#F2FAF8 60%,#E6F5F2 100%);border:1px solid var(--line);border-radius:14px;padding:12px 20px;box-shadow:var(--shadow-sm)}
-.hero-greet h2{font-size:1.18rem;font-weight:700;letter-spacing:-0.02em;line-height:1.25;color:var(--ink)}
-.hero-greet p{font-size:0.78rem;color:var(--muted);margin-top:3px}
-.dash-actions{display:flex;gap:6px;align-self:start}
+.dash{display:flex;flex-direction:column;gap:20px;width:100%}
+.db-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0}
+.db-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.db-h h2{font-size:1.06rem;font-weight:600;color:var(--ink);letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-h h2 small{font-size:0.86rem;font-weight:500;color:var(--muted)}
+.db-h .link{font-size:0.86rem;font-weight:600;white-space:nowrap}
+.db-sub{font-size:0.8rem;color:var(--muted);margin-top:-6px}
+.db-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:20px}
+.db-ai ul{list-style:none;display:flex;flex-direction:column}
+.db-ai li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:0.9rem;line-height:1.5;color:var(--ink-2);cursor:pointer}
+.db-ai li+li{border-top:1px solid var(--line-2)}
+.db-ai li:hover b{color:var(--brand-600)}
+.db-ai li .dot{flex:0 0 8px;height:8px;border-radius:4px;background:var(--mint);margin-top:7px}
+.db-ai li b{color:var(--ink);font-weight:600;transition:color .15s}
+.db-ai .cite{font-weight:600;font-size:0.8rem;color:var(--brand);background:none;border:none;cursor:pointer;padding:0 2px;font-family:inherit}
+.db-ai .cite:hover{text-decoration:underline}
+.db-ai .follow{align-self:flex-start;font-weight:600;font-size:0.9rem;margin-top:-2px}
+.db-search{background:#EEF6F4;border-color:#DCEBE7;justify-content:center;gap:12px}
+.db-greet{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.db-greet h1{font-size:1.38rem;font-weight:700;letter-spacing:-0.01em;color:var(--ink);line-height:1.25}
+.db-greet p{font-size:0.82rem;color:var(--muted);margin-top:2px}
+.dash-actions{display:flex;gap:8px}
+.dash-actions .icon-btn{width:44px;height:44px;border-radius:10px}
+.dash-actions .icon-btn svg{width:17px;height:17px}
+.icon-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.icon-btn.primary:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
 .co-search{position:relative;min-width:0}
-.co-search form{display:flex;align-items:center;gap:8px;height:42px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:0 5px 0 12px;transition:border-color .15s,box-shadow .15s}
-.co-search form:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(14,140,127,.12)}
+.co-search form{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #CFDCD9;border-radius:10px;padding:3px 3px 3px 12px;transition:border-color .15s,box-shadow .15s}
+.co-search form:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(14,140,127,.2)}
 .co-search form svg{color:var(--muted)}
-.co-search input{flex:1;min-width:0;border:none;outline:none;background:none;font-family:inherit;font-size:0.88rem;color:var(--ink)}
-.co-search input::placeholder{color:#A3AFC0}
-.co-search .btn-sm{height:32px;padding:0 14px}
-.co-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:0.72rem;color:var(--muted)}
-.co-chips .chip{height:24px;font-size:0.72rem;padding:0 10px;background:rgba(255,255,255,.8)}
-.co-sugg{position:absolute;top:46px;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-lg);padding:4px;z-index:30;display:none}
+.co-search input{flex:1;min-width:0;height:40px;border:none;outline:none;background:none;font-family:inherit;font-size:0.94rem;color:var(--ink)}
+.co-search input::placeholder{color:#8C9AAB}
+.co-search .btn-primary{height:42px;padding:0 20px;font-size:0.9rem;border-radius:8px}
+.co-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:0.82rem;color:var(--muted)}
+.co-chips .chip{height:28px;font-size:0.8rem;padding:0 11px;background:#fff;border-color:#D3E2DE;color:var(--ink)}
+.co-sugg{position:absolute;top:52px;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-lg);padding:4px;z-index:30;display:none}
 .co-sugg.open{display:block}
 .co-sugg button{display:flex;gap:10px;align-items:center;width:100%;padding:7px 8px;border:none;background:none;border-radius:7px;cursor:pointer;text-align:left;font-family:inherit}
 .co-sugg button:hover,.co-sugg button.sel{background:var(--brand-50)}
 .co-sugg .feed-logo{width:26px;height:26px;font-size:0.52rem;border-radius:6px}
-.co-sugg b{font-size:0.82rem;color:var(--ink);font-weight:600}
-.co-sugg small{font-size:0.72rem;color:var(--muted);margin-left:auto}
-.icon-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.icon-btn.primary:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0.62rem 0.9rem;display:flex;gap:10px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;box-shadow:var(--shadow-sm);transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;min-width:0}
+.co-sugg b{font-size:0.86rem;color:var(--ink);font-weight:600}
+.co-sugg small{font-size:0.74rem;color:var(--muted);margin-left:auto}
+.kpi-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;text-align:left;font-family:inherit;transition:border-color .15s,box-shadow .15s,transform .15s;min-width:0}
 .kpi:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-1px)}
-.kpi .metric-icon{width:32px;height:32px;border-radius:9px}
-.kpi .metric-icon svg.i{width:17px;height:17px}
+.kpi .metric-icon{width:40px;height:40px;border-radius:10px;flex-shrink:0}
+.kpi .metric-icon svg.i{width:18px;height:18px}
 .kpi-body{min-width:0;flex:1}
-.kpi-label{font-size:0.7rem;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi-val{font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2}
-.kpi-sub{font-size:0.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-label{display:block;font-size:0.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-val{display:block;font-size:1.5rem;font-weight:700;color:var(--ink);line-height:1.15}
+.kpi-sub{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kpi-sub b{color:var(--brand-600);font-weight:600}
-.kpi-sub b.red{color:var(--rose)}
-.kpi .go{position:absolute;right:9px;top:9px;color:#C2CBD7;width:13px;height:13px;transition:color .15s}
-.kpi:hover .go{color:var(--brand)}
-.metric-icon.rose{background:#FDECEF;color:var(--rose)}
+.kpi-sub b.red{color:#B03A0A}
+.metric-icon.rose{background:#FDE7DC;color:#B03A0A}
 .metric-icon.green{background:#E8F7EE;color:var(--green)}
-.dash-row{display:grid;gap:14px;min-height:0}
-.dash-row.r1{grid-template-columns:1fr 1fr 1fr}
-.dash-row.r2{grid-template-columns:1.6fr 1fr}
-.dash .card{display:flex;flex-direction:column;min-height:0;padding:0.95rem 1.15rem;border-radius:14px}
-.dash .card-title{font-size:0.88rem;margin-bottom:0.6rem;min-height:22px}
-.dash .card-title .link{font-size:0.76rem}
-.dash .card-title small{font-size:0.74rem;font-weight:400;color:var(--muted);margin-left:6px}
-.dash .feed-logo{width:30px;height:30px;font-size:0.6rem;border-radius:7px}
-.dash .feed-title{font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dash .feed-meta{margin-top:2px;font-size:0.72rem}
-.scroll-y{flex:1;min-height:0;overflow-y:auto;margin-right:-6px;padding-right:6px}
-.scroll-y::-webkit-scrollbar{width:6px}
-.scroll-y::-webkit-scrollbar-thumb{background:#D5DCE5;border-radius:3px}
-.dash .feed-item{padding:7px 0;align-items:center;gap:10px}
-.dash .feed-body{min-width:0}
-.dash .feed-meta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
-.dash .feed-meta>*{margin-right:6px}
-.dash .chart-box{flex:1;min-height:160px;height:auto}
-.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;margin-top:8px;border-top:1px solid var(--line-2);font-size:0.76rem;color:var(--muted)}
-.card-foot .link{font-size:0.78rem}
-
-/* Upcoming earnings (prominent) */
-.ue-card{border-top:3px solid var(--brand)}
-.ue-live{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;background:#FEF2F3;border:1px solid #F9CDD3;margin-bottom:6px;cursor:pointer;transition:border-color .15s}
-.ue-live:hover{border-color:var(--rose)}
-.ue-live svg{color:var(--rose)}
+.db-main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:360px 272px;gap:20px;grid-template-areas:"cal int watch" "cal pipe pipe"}
+.db-main>.db-card{overflow:hidden}
+.a-cal{grid-area:cal}.a-int{grid-area:int;padding-bottom:8px}.a-watch{grid-area:watch;padding-bottom:8px}.a-pipe{grid-area:pipe}
+.scroll-y{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#BFD0CC transparent;padding-right:6px;margin-right:-6px}
+.scroll-y::-webkit-scrollbar{width:6px;height:6px}
+.scroll-y::-webkit-scrollbar-thumb{background:#BFD0CC;border-radius:3px}
+.db-live{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:#FDEDE7;border:1px solid #F5C8B6;cursor:pointer;transition:border-color .15s}
+.db-live:hover{border-color:#C2410C}
+.db-live .tile{flex:0 0 48px;height:48px;border-radius:10px;background:#C2410C;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;letter-spacing:.05em}
+.db-live .tile i{width:6px;height:6px;border-radius:3px;background:#fff;margin-bottom:3px;animation:pulse 1.2s infinite}
+.db-live .row-s{color:#8F2F08}
+.db-live .go{font-size:0.82rem;font-weight:600;color:#8F2F08;white-space:nowrap}
+.cal-row{display:flex;align-items:center;gap:12px;min-height:58px;padding:6px 0;border-top:1px solid var(--line-2)}
+.cal-row:first-child{border-top:none}
+.cal-date{flex:0 0 48px;height:46px;border-radius:9px;border:1px solid #DCE6E3;overflow:hidden;display:flex;flex-direction:column;text-align:center;background:#fff}
+.cal-date span{background:var(--brand);color:#fff;font-size:0.62rem;font-weight:700;padding:2px 0;letter-spacing:.05em}
+.cal-date b{font-size:1.06rem;font-weight:700;flex:1;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.row-main{flex:1;min-width:0;cursor:pointer}
+.row-t{display:block;font-size:0.94rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s}
+.row-t span{font-weight:500;color:var(--muted)}
+.row-s{display:block;font-size:0.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.row-s b{color:var(--brand-600);font-weight:600}
+.row-main:hover .row-t,.db-row:hover .row-t{color:var(--brand-600)}
+.remind-btn{flex:0 0 40px;width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.remind-btn:hover,.remind-btn.on{border-color:var(--brand);color:var(--brand);background:var(--brand-50)}
+.remind-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+.remind-btn.on svg{fill:currentColor}
+.db-row{display:flex;align-items:center;gap:12px;padding:10px 0;min-height:44px;cursor:pointer}
+.db-row+.db-row{border-top:1px solid var(--line-2)}
+.db-row .row-main{cursor:inherit}
+.db-av{flex:0 0 40px;height:40px;border-radius:20px;color:#fff;font-size:0.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.db-tile{flex:0 0 42px;height:42px;border-radius:9px;font-size:0.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:.02em}
+.row-tag{display:inline-block;font-size:0.72rem;font-weight:600;border-radius:5px;padding:1px 7px;margin-right:8px}
+.row-tag.research{background:#FBF0D9;color:#6E4300}.row-tag.transcript{background:#E3EAFC;color:#23449E}.row-tag.expert{background:#E5F3EF;color:#155A4B}.row-tag.filing{background:#FDECEF;color:#B4253B}.row-tag.live{background:#C2410C;color:#fff}
+.pipe-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
+.pipe-col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.pipe-hd{display:flex;flex-direction:column;gap:2px;padding:0 0 6px;border:none;border-bottom:3px solid;background:none;cursor:pointer;text-align:left;font-family:inherit;min-width:0}
+.pipe-hd span{font-size:0.68rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pipe-hd b{font-size:1rem;font-weight:700;color:var(--ink)}
+.pipe-hd:hover span{color:var(--brand-600)}
+.pipe-card{background:#F3F6F6;border-radius:8px;padding:9px 10px;display:flex;flex-direction:column;gap:2px;cursor:pointer;border:1px solid transparent;transition:border-color .15s;min-width:0}
+.pipe-card:hover{border-color:var(--brand)}
+.pipe-card b{font-size:0.8rem;font-weight:600;line-height:1.3;color:var(--ink)}
+.pipe-card span{font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0;animation:pulse 1.2s infinite;display:inline-block}
 .live-pill{display:inline-flex;align-items:center;gap:5px;font-size:0.64rem;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--rose);border-radius:4px;padding:2px 7px;flex-shrink:0}
 .live-pill i{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
-.ue-item{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line-2)}
-.ue-item:last-child{border-bottom:none}
-.ue-date{width:46px;flex-shrink:0;border-radius:9px;border:1px solid var(--brand-100);overflow:hidden;text-align:center;background:#fff}
-.ue-date span{display:block;background:var(--brand);color:#fff;font-size:0.58rem;font-weight:700;letter-spacing:.08em;padding:2px 0}
-.ue-date b{display:block;font-size:1.05rem;color:var(--ink);padding:1px 0 2px;line-height:1.2}
-.ue-body{flex:1;min-width:0;cursor:pointer}
-.ue-body:hover .ue-co{color:var(--brand-600)}
-.ue-co{font-size:0.84rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ue-meta{font-size:0.72rem;color:var(--muted);margin-top:1px}
-.ue-meta b{color:var(--brand-600);font-weight:600}
-.remind-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s}
-.remind-btn:hover,.remind-btn.on{border-color:var(--brand);color:var(--brand);background:var(--brand-50)}
-.remind-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
-.remind-btn.on svg{fill:currentColor}
-
-/* Smart summary actions */
-.ai-acts{list-style:none;display:flex;flex-direction:column;gap:4px}
-.ai-acts button{width:100%;display:flex;gap:10px;align-items:center;text-align:left;background:none;border:1px solid transparent;border-radius:8px;padding:8px 8px;font-family:inherit;font-size:0.8rem;line-height:1.45;color:var(--ink-2);cursor:pointer;transition:all .15s}
-.ai-acts button:hover{background:#fff;border-color:var(--brand-100);box-shadow:var(--shadow-sm)}
-.ai-acts button b{color:var(--ink)}
-.ai-acts .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0}
-.ai-acts .chev{color:#B6C1CE;flex-shrink:0;width:15px;height:15px;transition:color .15s,transform .15s}
-.ai-acts button:hover .chev{color:var(--brand);transform:translateX(2px)}
-.ai-acts li+li{border-top:1px solid rgba(14,140,127,0.08)}
-.ai-acts .txt{flex:1;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ai-acts .act{display:block;font-size:0.7rem;font-weight:600;color:var(--brand-600);margin-top:2px;opacity:.7;transition:opacity .15s}
-.ai-acts button:hover .act{opacity:1}
 
 /* Watchlist */
 .wl-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
@@ -470,26 +478,25 @@ select.btn{appearance:none;padding-right:30px;background-image:url("data:image/s
 .doc-link:hover{background:var(--brand-100)}
 .doc-link.zero{color:var(--muted);background:#EEF2F6}
 
-/* Dashboard fits the viewport on desktop; slim footer there */
+/* Dashboard: slim footer, responsive grid */
 body.on-dash .foot-inner{display:none}
 body.on-dash .foot-bottom{margin-top:0;padding-top:0;border-top:none}
-body.on-dash .app-footer{padding:9px 24px}
-@media(min-width:961px) and (min-height:640px){
-  body.on-dash .content-inner{padding:14px 24px;display:flex;flex-direction:column;min-height:0}
-  body.on-dash #page-dashboard.active{flex:1;min-height:0;display:flex}
-  .dash-row{flex:1 1 0;min-height:165px}
+body.on-dash .app-footer{padding:12px 24px}
+@media(max-width:1280px){ .kpi-row{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media(max-width:1180px){
+  .db-main{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:360px 520px;grid-template-areas:"int watch" "cal pipe"}
+  .pipe-cols{grid-template-columns:repeat(5,200px);overflow-x:auto;padding-bottom:6px}
 }
-@media(max-width:1280px){ .kpi-row{grid-template-columns:repeat(3,1fr)} }
-@media(max-width:1180px) and (min-width:961px){ .dash-hero{grid-template-columns:1fr auto} .co-search{grid-column:1 / -1;grid-row:2} }
-@media(max-width:960px){
-  .dash-row.r1,.dash-row.r2{grid-template-columns:1fr}
-  .dash-hero{grid-template-columns:1fr auto}
-  .co-search{grid-column:1 / -1;grid-row:2}
-  .scroll-y{max-height:360px}
-  .dash .chart-box{height:230px;flex:none}
-  .ex-grid{grid-template-columns:1fr}
+@media(max-width:960px){ .ex-grid{grid-template-columns:1fr} }
+@media(max-width:760px){
+  .db-hero{grid-template-columns:minmax(0,1fr)}
+  .db-search{order:-1}
+  .kpi-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .db-main{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"cal" "int" "watch" "pipe"}
+  .db-main>.db-card{overflow:visible}
+  .scroll-y{max-height:380px}
 }
-@media(max-width:560px){ .kpi-row{grid-template-columns:1fr 1fr} .kpi .metric-icon{display:none} .kpi-label,.kpi-sub{white-space:normal} .wl-grid{grid-template-columns:1fr} }
+@media(max-width:560px){ .kpi .metric-icon{display:none} .kpi-label,.kpi-sub{white-space:normal} .wl-grid{grid-template-columns:1fr} }
 
 .chip{height:28px;padding:0 12px;border-radius:20px;font-size:0.78rem;font-family:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .chip:hover{border-color:var(--brand);color:var(--brand-600)}
@@ -1064,18 +1071,28 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
     <!-- ─── DASHBOARD ─── -->
     <section class="page active" id="page-dashboard">
       <div class="dash">
-        <div class="dash-hero">
-          <div class="hero-greet">
-            <h2 id="greeting">Good morning, James.</h2>
-            <p>Your coverage at a glance · <span id="asOf">Oct 13, 2026</span></p>
-          </div>
-          <div class="co-search">
-            <form role="search" onsubmit="event.preventDefault();const q=$('heroSearch').value;$('heroSearch').value='';$('coSugg').classList.remove('open');runSearch(q)">
-              <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-              <input id="heroSearch" placeholder="Search a company, ticker, deal or theme…" aria-label="Search companies" autocomplete="off">
-              <button class="btn btn-primary btn-sm" type="submit">Search</button>
-            </form>
-            <div class="co-sugg" id="coSugg" role="listbox"></div>
+        <div class="db-hero">
+          <section class="db-card db-ai" aria-labelledby="sumH">
+            <div class="db-h"><h2 id="sumH">Smart summary</h2><span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI · cited</span></div>
+            <ul id="aiList"></ul>
+            <button class="link follow" onclick="$('heroSearch').focus()">Ask a follow-up →</button>
+          </section>
+          <section class="db-card db-search" aria-labelledby="greeting">
+            <div class="db-greet">
+              <div><h1 id="greeting">Good morning, James.</h1><p>Your coverage at a glance · <span id="asOf">Oct 13, 2026</span></p></div>
+              <div class="dash-actions">
+                <button class="icon-btn" title="Download briefing (PDF)" aria-label="Download briefing" onclick="printReport('summary','Q3 2026')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+                <button class="icon-btn primary" title="Upload a document" aria-label="Upload a document" onclick="openUpload()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
+              </div>
+            </div>
+            <div class="co-search">
+              <form role="search" onsubmit="event.preventDefault();const q=$('heroSearch').value;$('heroSearch').value='';$('coSugg').classList.remove('open');runSearch(q)">
+                <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+                <input id="heroSearch" placeholder="Search a company, ticker, deal or theme…" aria-label="Search a company, ticker, deal or theme" autocomplete="off">
+                <button class="btn btn-primary" type="submit">Search</button>
+              </form>
+              <div class="co-sugg" id="coSugg" role="listbox"></div>
+            </div>
             <div class="co-chips">Trending:
               <button class="chip" data-q="Apex TechCo">Apex TechCo</button>
               <button class="chip" data-q="Northwind Logistics">Northwind</button>
@@ -1083,39 +1100,30 @@ mark{background:#FFE58F;color:inherit;border-radius:2px;padding:0 1px}
               <button class="chip" data-q="synergies">synergies</button>
               <button class="chip" data-q="antitrust">antitrust</button>
             </div>
-          </div>
-          <div class="dash-actions">
-            <button class="icon-btn" title="Export dashboard as PDF" aria-label="Export PDF" onclick="printReport('summary','Q3 2026')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
-            <button class="icon-btn primary" title="Upload document" aria-label="Upload document" onclick="openUpload()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></button>
-          </div>
+          </section>
         </div>
 
         <div class="kpi-row" id="kpiRow"></div>
 
-        <div class="dash-row r1">
-          <div class="card ue-card">
-            <div class="card-title">Upcoming earnings calls <button class="link" onclick="setCallFilter('all');navTo('earnings')">All calls →</button></div>
+        <div class="db-main">
+          <section class="db-card a-cal" aria-labelledby="calH">
+            <div class="db-h"><h2 id="calH">Upcoming earnings calls</h2><button class="link" id="calAll" onclick="setCallFilter('all');navTo('earnings')">All calls →</button></div>
+            <div id="liveCall"></div>
             <div class="scroll-y" id="upcomingList"></div>
-          </div>
-          <div class="card">
-            <div class="card-title">Latest expert interviews <button class="link" onclick="navTo('experts')">View all →</button></div>
+          </section>
+          <section class="db-card a-int" aria-labelledby="intH">
+            <div class="db-h"><h2 id="intH">Latest expert interviews</h2><button class="link" onclick="navTo('experts')">View all →</button></div>
             <div class="scroll-y" id="dashExperts"></div>
-          </div>
-          <div class="card ai-card">
-            <div class="card-title">Smart summary <span class="ai-badge"><svg class="i" viewBox="0 0 24 24"><path d="m12 3 1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z"/></svg>AI</span></div>
-            <ul class="ai-acts scroll-y" id="aiList"></ul>
-          </div>
-        </div>
-
-        <div class="dash-row r2">
-          <div class="card">
-            <div class="card-title"><span>Latest from your watchlist <small id="wlSummary"></small></span><button class="link" onclick="openWatchlist()">Manage watchlist</button></div>
+          </section>
+          <section class="db-card a-watch" aria-labelledby="watchH">
+            <div class="db-h"><h2 id="watchH">Latest from your watchlist</h2><button class="link" onclick="openWatchlist()">Manage</button></div>
+            <div class="db-sub" id="wlSummary"></div>
             <div class="scroll-y" id="feedList"></div>
-          </div>
-          <div class="card">
-            <div class="card-title"><span>M&amp;A pipeline <small id="pipeTotal"></small></span><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Deal tracker →</button></div>
-            <div class="chart-box"><canvas id="dealStageChart" aria-label="Deal value by stage — click a bar to open those deals"></canvas></div>
-          </div>
+          </section>
+          <section class="db-card a-pipe" aria-labelledby="pipeH">
+            <div class="db-h"><h2 id="pipeH">M&amp;A pipeline <small id="pipeTotal"></small></h2><button class="link" onclick="state.dealStage='';navTo('deals');renderDeals()">Deal tracker →</button></div>
+            <div class="pipe-cols scroll-y" id="pipeCols"></div>
+          </section>
         </div>
       </div>
     </section>
@@ -2601,15 +2609,16 @@ function renderUpcoming() {
   const today = day(DEMO_TODAY), rem = store.get('reminders') || [];
   const live = EARNINGS.filter(e => e.status === 'live');
   const up = EARNINGS.filter(e => e.status === 'upcoming').sort((a, b) => a.date.localeCompare(b.date));
-  $('upcomingList').innerHTML = live.map(e => {
+  $('calAll').textContent = `All ${EARNINGS.length} calls →`;
+  $('liveCall').innerHTML = live.map(e => {
     const t = TRANSCRIPTS.find(x => x.id === e.tr);
-    return `<div class="ue-live" data-tr="${e.tr}" title="Open live transcript"><span class="live-pill"><i></i>LIVE</span>
-      <div class="ue-body"><div class="ue-co">${esc(coName(e.tk))} · ${esc(e.q)}</div><div class="ue-meta">Started ${t ? t.startedMin : 0} min ago · follow the live transcript</div></div>${SVG.chev}</div>`;
-  }).join('') + up.map(e => {
+    return `<div class="db-live" data-call="${e.id}" title="Listen live"><span class="tile"><i></i>LIVE</span>
+      <span class="row-main"><span class="row-t">${esc(coName(e.tk))} <span>${esc(e.tk)}</span></span><span class="row-s">${esc(e.q)} · started ${t ? t.startedMin : 0} min ago</span></span><span class="go">Join →</span></div>`;
+  }).join('');
+  $('upcomingList').innerHTML = up.map(e => {
     const d = day(e.date), n = Math.round((d - today) / 86400000);
-    return `<div class="ue-item"><div class="ue-date"><span>${d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</span><b>${d.getDate()}</b></div>
-      <div class="ue-body" data-call="${e.id}"><div class="ue-co">${esc(coName(e.tk))} <span style="color:var(--muted);font-weight:500">${esc(e.tk)}</span></div>
-      <div class="ue-meta">${esc(e.q)} · ${esc(e.time || '08:30 ET')} · <b>${n <= 0 ? 'today' : 'in ' + n + ' day' + (n === 1 ? '' : 's')}</b></div></div>
+    return `<div class="cal-row"><span class="cal-date"><span>${d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}</span><b>${d.getDate()}</b></span>
+      <span class="row-main" data-call="${e.id}"><span class="row-t">${esc(coName(e.tk))} <span>${esc(e.tk)}</span></span><span class="row-s">${esc(e.q)} · ${esc(e.time || '08:30 ET')} · <b>${n <= 0 ? 'today' : 'in ' + n + ' day' + (n === 1 ? '' : 's')}</b></span></span>
       <button class="remind-btn ${rem.includes(e.id) ? 'on' : ''}" data-remind="${e.id}" title="${rem.includes(e.id) ? 'Reminder set' : 'Remind me'}" aria-label="Remind me about ${esc(coName(e.tk))}">${SVG.remind}</button></div>`;
   }).join('');
 }
@@ -2632,7 +2641,7 @@ const AI_ITEMS = [
   { html: '<b>Apex TechCo</b> beat and raised; Northbridge lifts its price target to <b>$245</b>.', act: 'Read research', go: () => openResearch('r1') },
 ];
 function renderAi() {
-  $('aiList').innerHTML = AI_ITEMS.map((a, i) => `<li><button data-ai="${i}" title="${esc(a.act)}"><span class="dot"></span><span class="txt">${a.html}</span><svg class="i chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button></li>`).join('');
+  $('aiList').innerHTML = AI_ITEMS.slice(0, 3).map((a, i) => `<li data-ai="${i}" title="${esc(a.act)}"><span class="dot"></span><span>${a.html} <button class="cite" aria-label="Source: ${esc(a.act)}">[${i + 1}]</button></span></li>`).join('');
 }
 $('aiList').addEventListener('click', e => { const b = e.target.closest('[data-ai]'); if (b) AI_ITEMS[+b.dataset.ai].go(); });
 
@@ -2643,13 +2652,14 @@ let wlDraft = null;
 const EX_TYPES = { 'Former Executive': ['FE', '#0E8C7F'], 'Customer': ['CU', '#3B82F6'], 'Competitor': ['CO', '#E0435A'], 'Industry Specialist': ['IS', '#7C5CE0'], 'Channel Partner': ['CP', '#E89B0C'] };
 const exAvatar = (x, sm) => { const [ab, c] = EX_TYPES[x.type] || ['EX', '#6B7A90']; return `<div class="ex-av ${sm ? 'sm' : ''}" style="background:${c}" title="${esc(x.type)}">${ab}</div>`; };
 
+const coTile = tk => { const c = (COMPANIES[tk] || {}).color || '#6B7A90'; return `<span class="db-tile" style="background:${c}1F;color:${c}">${esc(tk.slice(0, 4))}</span>`; };
+const dbRow = (attr, lead, title, tag, date) => `<div class="db-row" ${attr}>${lead}<span class="row-main"><span class="row-t">${esc(title)}</span><span class="row-s">${tag}${fmtDate(day(date))}</span></span></div>`;
 function feedItems() {
-  const badge = t => t.type === 'Expert Call' ? 'expert' : 'transcript';
   return [
-    ...RESEARCH.map(r => ({ d: r.date, tks: [r.tk], text: r.title + ' ' + r.summary, html: `<div class="feed-item" data-rs="${r.id}">${coLogo(r.tk)}<div class="feed-body"><div class="feed-title">${esc(r.title)}</div><div class="feed-meta"><span class="tbadge research">Research</span><span>${fmtDate(day(r.date))}</span></div></div></div>` })),
-    ...TRANSCRIPTS.map(t => ({ d: t.date, tks: [t.tk], text: t.title + ' ' + t.summary.join(' '), html: `<div class="feed-item" data-tr="${t.id}">${coLogo(t.tk)}<div class="feed-body"><div class="feed-title">${esc(t.title)}</div><div class="feed-meta">${tStage(t) === 'live' ? stagePill(t) : `<span class="tbadge ${badge(t)}">Transcript</span>`}<span>${fmtDate(day(t.date))}</span></div></div></div>` })),
-    ...FILINGS.map(f => ({ d: f.date, tks: [f.tk], text: f.title, html: `<div class="feed-item" data-fil="${f.id}">${coLogo(f.tk)}<div class="feed-body"><div class="feed-title">${esc(coName(f.tk))}: ${esc(f.title)}</div><div class="feed-meta"><span class="tbadge filing">${esc(f.form)}</span><span>${fmtDate(day(f.date))}</span></div></div></div>` })),
-    ...EXPERTS.map(x => ({ d: x.date, tks: x.tks, text: x.title + ' ' + x.quote, html: `<div class="feed-item" data-exp="${x.id}">${coLogo(x.tks[0])}<div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span class="tbadge expert">Expert</span><span>${fmtDate(day(x.date))}</span></div></div></div>` })),
+    ...RESEARCH.map(r => ({ d: r.date, tks: [r.tk], text: r.title + ' ' + r.summary, html: dbRow(`data-rs="${r.id}"`, coTile(r.tk), r.title, '<span class="row-tag research">Research</span>', r.date) })),
+    ...TRANSCRIPTS.map(t => ({ d: t.date, tks: [t.tk], text: t.title + ' ' + t.summary.join(' '), html: dbRow(`data-tr="${t.id}"`, coTile(t.tk), t.title, tStage(t) === 'live' ? '<span class="row-tag live">LIVE</span>' : '<span class="row-tag transcript">Transcript</span>', t.date) })),
+    ...FILINGS.map(f => ({ d: f.date, tks: [f.tk], text: f.title, html: dbRow(`data-fil="${f.id}"`, coTile(f.tk), coName(f.tk) + ': ' + f.title, `<span class="row-tag filing">${esc(f.form)}</span>`, f.date) })),
+    ...EXPERTS.map(x => ({ d: x.date, tks: x.tks, text: x.title + ' ' + x.quote, html: dbRow(`data-exp="${x.id}"`, coTile(x.tks[0]), x.title, '<span class="row-tag expert">Expert</span>', x.date) })),
   ];
 }
 function renderWatchFeed() {
@@ -2686,9 +2696,23 @@ function saveWatchlist() {
 }
 
 function renderDashExperts() {
-  $('dashExperts').innerHTML = [...EXPERTS].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8).map(x => `<div class="feed-item" data-exp="${x.id}">${exAvatar(x, true)}
-    <div class="feed-body"><div class="feed-title">${esc(x.title)}</div><div class="feed-meta"><span>${esc(x.role)}</span><span>· ${fmtDate(day(x.date))}</span></div></div></div>`).join('');
+  $('dashExperts').innerHTML = [...EXPERTS].sort((a, b) => b.date.localeCompare(a.date)).map(x => {
+    const [ab, c] = EX_TYPES[x.type] || ['EX', '#6B7A90'];
+    return `<div class="db-row" data-exp="${x.id}"><span class="db-av" style="background:${c}" title="${esc(x.type)}">${ab}</span>
+      <span class="row-main"><span class="row-t">${esc(x.title)}</span><span class="row-s">${esc(x.role)} · ${fmtDate(day(x.date))}</span></span></div>`;
+  }).join('');
 }
+
+// M&A pipeline as stage columns of deal cards
+const STAGE_COLOR = { Rumored: '#8A95A3', Announced: '#3E6FE0', 'Regulatory Review': '#7A55D6', 'Shareholder Vote': '#0E8C7F', Closed: '#B4570B' };
+function renderPipeline() {
+  $('pipeCols').innerHTML = STAGES.map(([st]) => {
+    const ds = DEALS.filter(d => d.stage === st);
+    return `<div class="pipe-col"><button class="pipe-hd" style="border-bottom-color:${STAGE_COLOR[st]}" data-stagego="${esc(st)}" title="Open ${esc(st)} deals"><span>${esc(st)}</span><b>${bn(ds.reduce((a, d) => a + d.value, 0))}</b></button>
+      ${ds.map(d => `<div class="pipe-card" data-deal="${d.id}"><b>${esc(dealTarget(d))}</b><span>${bn(d.value)} · ${esc(d.acqName)}</span></div>`).join('')}</div>`;
+  }).join('');
+}
+$('pipeCols').addEventListener('click', e => { const h = e.target.closest('[data-stagego]'); if (h) { state.dealStage = h.dataset.stagego; navTo('deals'); renderDeals(); } });
 
 // Company search band: live company suggestions + trending chips
 const coMatches = q => { q = q.toLowerCase(); return Object.entries(COMPANIES).filter(([tk, c]) => tk.toLowerCase().startsWith(q) || c.name.toLowerCase().includes(q)).slice(0, 6); };
@@ -2703,8 +2727,8 @@ document.querySelector('.co-chips').addEventListener('click', e => { const c = e
 
 function renderDashboard() {
   const deals = openDeals();
-  $('pipeTotal').textContent = `${deals.length} open · ${bn(deals.reduce((a, d) => a + d.value, 0))}`;
-  renderKpis(); renderUpcoming(); renderAi(); renderWatchFeed(); renderDashExperts();
+  $('pipeTotal').textContent = `· ${deals.length} open · ${bn(deals.reduce((a, d) => a + d.value, 0))}`;
+  renderKpis(); renderUpcoming(); renderAi(); renderWatchFeed(); renderDashExperts(); renderPipeline();
 }
 
 // One delegated handler for clickable cards/rows anywhere in the app
@@ -3536,16 +3560,6 @@ function initCharts() {
   const defaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip },
     scales: { x: { grid: { display: false }, border: { color: '#E3E8EF' }, ticks: { color: textColor, font: { size: 11 } } }, y: { grid: { color: gridColor }, border: { display: false }, ticks: { color: textColor, font: { size: 11 } } } } };
   const quarters = ["Q4'24", "Q1'25", "Q2'25", "Q3'25", "Q4'25", "Q1'26", "Q2'26", "Q3'26"];
-
-  // Dashboard: deal value by stage — click a bar to open the Deal Tracker filtered to that stage
-  const stageVal = STAGES.map(([s]) => +DEALS.filter(d => d.stage === s).reduce((a, d) => a + d.value, 0).toFixed(1));
-  const stageCnt = STAGES.map(([s]) => DEALS.filter(d => d.stage === s).length);
-  new Chart($('dealStageChart'), { type: 'bar', data: { labels: STAGES.map(s => s[0].split(' ')), datasets: [{ label: 'Deal value ($B)', data: stageVal, backgroundColor: [slate, blue, violet, teal, green], borderRadius: 5, maxBarThickness: 48 }] },
-    options: { ...defaults,
-      onClick: (ev, els) => { if (els.length) { state.dealStage = STAGES[els[0].index][0]; navTo('deals'); renderDeals(); } },
-      onHover: (ev, els) => { ev.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
-      plugins: { legend: { display: false }, tooltip: { ...tooltip, callbacks: { label: c => ` ${bn(c.parsed.y)} · ${stageCnt[c.dataIndex]} deal${stageCnt[c.dataIndex] === 1 ? '' : 's'}`, footer: () => 'Click to open in Deal Tracker' } } },
-      scales: { x: { ...defaults.scales.x, ticks: { ...defaults.scales.x.ticks, font: { size: 10 } } }, y: { ...defaults.scales.y, ticks: { ...defaults.scales.y.ticks, callback: v => '$' + v + 'B' } } } } });
 
   new Chart($('navChart'), { type: 'line', data: { labels: ['2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'], datasets: [{ label: 'Portfolio NAV ($M)', data: [18, 22, 28, 32, 38, 44, 54, 61.2], fill: true, backgroundColor: 'rgba(14,140,127,0.08)', borderColor: teal, borderWidth: 2, pointBackgroundColor: teal, pointRadius: 3, tension: 0.35 }] }, options: defaults });
 
